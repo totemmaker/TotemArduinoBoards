@@ -118,6 +118,9 @@ typedef unsigned int word;
 void setup(void);
 void loop(void);
 
+// Create additional loop() function
+void addLoop(void (*loopFunc)(void));
+
 long random(long, long);
 void randomSeed(unsigned long);
 long map(long, long, long, long, long);
