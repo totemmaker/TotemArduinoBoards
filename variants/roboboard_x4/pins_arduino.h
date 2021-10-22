@@ -19,6 +19,11 @@ static const uint8_t RX = 3;
 static const uint8_t SDA = 21;
 static const uint8_t SCL = 22;
 
+static const uint8_t MOSI  = 14;
+static const uint8_t MISO  = 23;
+static const uint8_t SCK   = 25;
+static const uint8_t SS    = 26;
+
 static const uint8_t A0 = 14;
 static const uint8_t A2 = 25;
 static const uint8_t A3 = 26;
@@ -27,5 +32,10 @@ static const uint8_t T0 = 14;
 
 static const uint8_t DAC2 = 25;
 static const uint8_t DAC3 = 26;
+
+static const uint8_t GPIOA = 14;
+static const uint8_t GPIOB = 23;
+static const uint8_t GPIOC = 25;
+static const uint8_t GPIOD = 26;
 
 #endif /* Pins_Arduino_h */
