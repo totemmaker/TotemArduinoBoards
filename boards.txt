@@ -9,6 +9,7 @@ menu.PSRAM=PSRAM
 menu.Revision=Board Revision
 menu.LORAWAN_REGION=LoRaWan Region
 menu.LoRaWanDebugLevel=LoRaWan Debug Level
+menu.AppControl=App control
 
 ##############################################################
 
@@ -41,6 +42,13 @@ roboboardx4.build.partitions=default_8MB
 roboboardx4.build.defines=
 roboboardx4.build.loop_core=
 roboboardx4.build.event_core=
+
+roboboardx4.menu.AppControl.Disabled=Disabled
+roboboardx4.menu.AppControl.Disabled.app.control=DISABLED
+roboboardx4.menu.AppControl.Enabled=Enabled
+roboboardx4.menu.AppControl.Enabled.app.control=ENABLED
+
+roboboardx4.app.control=Disabled
 
 ##############################################################
 
