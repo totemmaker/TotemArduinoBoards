@@ -1,0 +1,2 @@
+esptool_py.name=ESPTool
+esptool_py.protocol=esp32

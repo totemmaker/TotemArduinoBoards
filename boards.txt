@@ -43,6 +43,8 @@ roboboardx4.build.defines=
 roboboardx4.build.loop_core=
 roboboardx4.build.event_core=
 
+roboboardx4.bootloader.tool=esptool_py
+
 roboboardx4.menu.AppControl.Disabled=Disabled
 roboboardx4.menu.AppControl.Disabled.app.control=DISABLED
 roboboardx4.menu.AppControl.Enabled=Enabled
@@ -52,7 +54,7 @@ roboboardx4.app.control=Disabled
 
 ##############################################################
 
-esp32.name = ESP32 (USB)
+esp32.name = ESP32 USB
 esp32.build.board = DUMMY_ESP32
 esp32.vid.0=0x10c4
 esp32.pid.0=0xea60
