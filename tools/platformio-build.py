@@ -209,6 +209,9 @@ if "build.variants_dir" in env.BoardConfig():
 
 if "build.variant" in env.BoardConfig():
     env.Append(
+        PROJECT_VARIANT_DIR=[
+            join(variants_dir, env.BoardConfig().get("build.variant"))
+        ],
         CPPPATH=[
             join(variants_dir, env.BoardConfig().get("build.variant"))
         ]
