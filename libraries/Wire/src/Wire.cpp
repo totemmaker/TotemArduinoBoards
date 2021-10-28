@@ -117,6 +117,12 @@ bool TwoWire::begin(int sdaPin, int sclPin, uint32_t frequency)
 
 }
 
+void TwoWire::end(void)
+{
+    if (i2c)
+        i2cRelease(i2c);
+}
+
 void TwoWire::setTimeOut(uint16_t timeOutMillis)
 {
     _timeOutMillis = timeOutMillis;
