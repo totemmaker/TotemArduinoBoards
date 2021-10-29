@@ -60,4 +60,14 @@ void addLoop(void (*loopFunc)(void)) {
     xTaskCreateUniversal(extraLoopTask, taskName, CONFIG_ARDUINO_LOOP_STACK_SIZE, (void*)loopFunc, 1, nullptr, CONFIG_ARDUINO_RUNNING_CORE);
 }
 
+static uint32_t toneEndTime;
+void tone(uint8_t _pin, unsigned int frequency, unsigned long duration) {
+    toneEndTime = millis()+duration;
+    X4.dcAB.tone(frequency, duration);
+}
+void noTone(uint8_t _pin) {
+    if (toneEndTime > millis())
+        X4.dcAB.tone(0);
+}
+
 #endif
