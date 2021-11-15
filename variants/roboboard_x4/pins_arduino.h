@@ -38,4 +38,9 @@ static const uint8_t GPIOB = 23;
 static const uint8_t GPIOC = 25;
 static const uint8_t GPIOD = 26;
 
+#ifdef __cplusplus
+#include "RoboBoardX4.h"
+#include "TotemModuleList.h"
+#endif
+
 #endif /* Pins_Arduino_h */

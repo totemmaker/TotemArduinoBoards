@@ -52,6 +52,8 @@ roboboardx4.menu.AppControl.Enabled.app.control=ENABLED
 
 roboboardx4.app.control=Disabled
 
+roboboardx4.compiler.libraries.ldflags="-L{build.variant.path}/lib" -lRoboBoardX4
+
 ##############################################################
 
 esp32.name = ESP32 USB

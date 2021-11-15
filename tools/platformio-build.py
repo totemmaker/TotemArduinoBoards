@@ -221,6 +221,10 @@ if "build.variant" in env.BoardConfig():
         join(variants_dir, env.BoardConfig().get("build.variant"))
     )
 
+env.Append(LIBPATH=[
+    join(variants_dir, env.BoardConfig().get("build.variant"), "lib")
+])
+
 envsafe = env.Clone()
 
 libs.append(envsafe.BuildLibrary(
