@@ -8,8 +8,13 @@
 */
 // Include I2C library
 #include <Wire.h>
+// Stored MEMS sensor I2C address
+int MEMS_I2C_address;
 // Initialize program
 void setup() {
+  // Get MEMS I2C address depending on board revision
+  // For v1.0 -> 0x6A. For v1.1 -> 0x68
+  MEMS_I2C_address = (strcmp(X4.getRevision(), "1.0") == 0) ? 0x6A : 0x68;
   // Start Serial Monitor communication at 9600 speed
   Serial.begin(9600);
   // Initialize I2C library
@@ -32,7 +37,7 @@ void loop() {
     if (error == 0) {
       // Ignore on-board LSM6DS3 MEMS sensor at address 0x6A.
       // Connected to same I2C line as Qwiic
-      if (address == 0x6A)
+      if (address == MEMS_I2C_address)
         continue; // Skip
       // Print detected address
       Serial.print("I2C address: 0x");
