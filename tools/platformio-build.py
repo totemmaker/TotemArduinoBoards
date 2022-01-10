@@ -163,7 +163,7 @@ env.Append(
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "esp-face"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "fb_gfx"),
         join(FRAMEWORK_DIR, "cores", env.BoardConfig().get("build.core")),
-        join(FRAMEWORK_DIR, "libraries", "TotemBUS", "include")
+        join(FRAMEWORK_DIR, "libraries", "TotemModules", "include")
     ],
 
     LIBPATH=[
