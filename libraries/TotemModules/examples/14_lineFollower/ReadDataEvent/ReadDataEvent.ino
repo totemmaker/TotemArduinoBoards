@@ -3,7 +3,7 @@
   Module:  [14] Totem Line Follower
   Details: Example showing how to read module data without blocking code execution
   
-  Note: Reading values directly (sensor.pos.get()) delays code for
+  Note: Reading values directly (sensor.linePos.get()) delays code for
   ~700 microseconds (less than 1ms). Function will send request to module and
   and awaits for response. Same as I2C based communication.
   This example shows how to use event functions to avoid blocking code.
@@ -18,12 +18,12 @@ void sensorEvent() {
   // Getting parameters inside event won't delay code execution.
   // Data is taken from current received event.
   // Check if received event is for "pos" parameter and update value
-  if (sensor.pos.isEvent()) value[0] = sensor.pos.get();
+  if (sensor.linePos.isEvent()) value[0] = sensor.linePos.get();
   // Check if receiver event is for "color"
-  else if (sensor.color.isEvent()) value[1] = sensor.color.get();
-  else if (sensor.junction.isEvent()) value[2] = sensor.junction.isDetected();
-  else if (sensor.accuracy.isEvent()) value[3] = sensor.accuracy.get();
-  else if (sensor.raw.isEvent()) { sensor.raw.get(raw); }
+  else if (sensor.lineColor.isEvent()) value[1] = sensor.lineColor.get();
+  else if (sensor.lineCross.isEvent()) value[2] = sensor.lineCross.isDetected();
+  else if (sensor.lineRange.isEvent()) value[3] = sensor.lineRange.get();
+  else if (sensor.lineRaw.isEvent()) { sensor.lineRaw.get(raw); }
 }
 // Initialize program
 void setup() {
@@ -32,11 +32,11 @@ void setup() {
   // Register event function for Distance module
   sensor.addEvent(sensorEvent);
   // Enable events for distance parameter
-  sensor.pos.event(); // When value is changed
-  sensor.color.event(100); // Call event each 100ms
-  sensor.junction.event(100); // Call event each 100ms
-  sensor.accuracy.event(100); // Call event each 100ms
-  sensor.raw.event(200); // Call event each 100ms
+  sensor.linePos.event(); // When value is changed
+  sensor.lineColor.event(100); // Call event each 100ms
+  sensor.lineCross.event(100); // Call event each 100ms
+  sensor.lineRange.event(100); // Call event each 100ms
+  sensor.lineRaw.event(200); // Call event each 200ms
 }
 // Loop program
 void loop() {

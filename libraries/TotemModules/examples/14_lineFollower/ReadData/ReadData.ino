@@ -19,17 +19,17 @@ void setup() {
 void loop() {
   // Print module data
   Serial.printf("Position %3d Color: %c, Junction: %d, Accuracy: %2d%%, Raw: ", 
-    sensor.pos.get(),
-    sensor.color.get(),
-    sensor.junction.isDetected(),
-    sensor.accuracy.get()
+    sensor.linePos.get(),
+    sensor.lineColor.get(),
+    sensor.lineCross.isDetected(),
+    sensor.lineRange.get()
   );
   // Read raw sensor values
   // Percentage in amount of light reflected
   // 100 - all light reflected (white surface)
   // 0 - none light reflected (black surface)
   uint8_t sensorRaw[8];
-  sensor.raw.get(sensorRaw);
+  sensor.lineRaw.get(sensorRaw);
   for (int i=0; i<8; i++) {
     Serial.printf("%4d", sensorRaw[i]);
   }

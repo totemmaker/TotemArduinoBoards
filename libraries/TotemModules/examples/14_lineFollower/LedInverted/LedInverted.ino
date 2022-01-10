@@ -18,7 +18,7 @@ void setup() {
 // Loop program
 void loop() {
   // Convert position to led number (index)
-  int led = map(sensor.pos.get(), -35, 35, 0, 7);
+  int led = map(sensor.linePos.get(), -35, 35, 0, 7);
   // Prepare LED array binary with single LED enabled
   // Need to substract from 7 to change direction
   // Example: 5 -> B00000100 (led index starts at 0 (0-7))

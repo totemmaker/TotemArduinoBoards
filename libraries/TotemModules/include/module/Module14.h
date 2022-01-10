@@ -123,19 +123,19 @@ public:
 
 class Module14 : public TotemModuleX {
 public:
-    Features14::Junction junction;
-    Features14::Color color;
-    Features14::Pos pos;
-    Features14::Accuracy accuracy;
-    Features14::Raw raw;
+    Features14::Junction lineCross;
+    Features14::Color lineColor;
+    Features14::Pos linePos;
+    Features14::Accuracy lineRange;
+    Features14::Raw lineRaw;
     Features14::Led led;
 
     Module14(uint16_t serial = 0) : TotemModuleX(14, serial),
-    junction(this, C("line/junction")),
-    color(this, C("line/color")),
-    pos(this, C("line/pos")),
-    accuracy(this, C("sensor/range")),
-    raw(this, C("sensor/raw")),
+    lineCross(this, C("line/junction")),
+    lineColor(this, C("line/color")),
+    linePos(this, C("line/pos")),
+    lineRange(this, C("sensor/range")),
+    lineRaw(this, C("sensor/raw")),
     led(this, C("led"))
     { }
 };
