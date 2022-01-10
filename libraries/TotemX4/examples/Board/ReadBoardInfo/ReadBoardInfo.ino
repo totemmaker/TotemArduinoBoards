@@ -8,7 +8,7 @@ void loop() {
   // Print ports info
   Serial.printf("Port: DC: %s, USB: %s\n",
     X4.isDC() ? "Plugged" : "Unplugged", 
-    X4.isUSB()  ? "Plugged" : "Unplugger"
+    X4.isUSB()  ? "Plugged" : "Unplugged"
   );
   // Print battery info
   Serial.printf("Battery: voltage: %.2fV, low: %s, charging: %s (%ds)\n",

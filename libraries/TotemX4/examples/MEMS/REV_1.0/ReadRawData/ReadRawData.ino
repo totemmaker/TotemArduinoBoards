@@ -1,5 +1,5 @@
 /*
-  Board:  [X4] RoboBoard X4
+  Board:  [X4] RoboBoard X4 revision 1.0
   Details: Example of Arduino LSM6DS3 library usage with RoboBoard X4
            to read Accelerometer and Gyroscope sensor data
 
@@ -12,8 +12,16 @@
 void setup() {
   // Start Serial Monitor communication at 9600 speed
   Serial.begin(9600);
-  // Initialize library
-  IMU.begin();
+  // Wait for Serial to initialize
+  while (!Serial) {}
+  // Check RoboBoard X4 revision
+  if (strcmp(X4.getRevision(), "1.0") != 0)
+    do { Serial.println("This tutorial is for RoboBoard X4 revision v1.0"); delay(1000); }
+    while(1);
+  // Initialize library and sensor
+  if (!IMU.begin())
+    do { Serial.println("Failed to communicate with LSM6DS3"); delay(1000); }
+    while(1);
 }
 // Variables to store measurements data
 float accX, accY, accZ;
