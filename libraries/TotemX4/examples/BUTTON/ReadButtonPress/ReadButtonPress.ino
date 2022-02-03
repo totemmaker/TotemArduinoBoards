@@ -24,11 +24,12 @@ void loop() {
       // Loop if button is pressed for 1s or longer
       while (X4.button.isPressedFor(1000)) { 
         // Toggle RGB LED every 50ms
-        X4.rgb.toggle();
+        X4.rgb.toggle(chAll);
         delay(50);
       }
       delay(1); // Just to prevent blocking CPU core
     }
+    X4.rgb.on(chAll); // Make sure RGB is on after toggle
     // Turn LED back on
     X4.led.on();
   }

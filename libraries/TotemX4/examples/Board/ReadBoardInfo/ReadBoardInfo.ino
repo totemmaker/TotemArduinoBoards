@@ -1,3 +1,4 @@
+#include <Arduino.h>
 // Initialize program
 void setup() {
   // Start Serial Monitor communication at 9600 speed

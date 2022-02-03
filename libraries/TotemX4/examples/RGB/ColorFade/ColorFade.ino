@@ -13,26 +13,26 @@ void loop() {
     Animate ALL LED
   */
   // Prepare violet color for animation
-  X4.rgb.fadeColor(255, 0x6C3483); // brightness | RGB color HEX
+  X4.rgb.fadeColorHEX(chAll, 0x6C3483); // RGB color HEX
   // Start animation for 3 seconds duration
-  X4.rgb.fadeStart(3000);
+  X4.rgb.fadeStart(chAll, 3000);
   delay(4000); // Wait for animation to finish
   /*
     Set individual LED color
   */
-  X4.rgbA.fadeColor(255, 255, 255);
-  X4.rgbB.fadeColor(0, 0, 255);
-  X4.rgbC.fadeColor(0, 255, 0);
-  X4.rgbD.fadeColor(255, 0, 0);
-  X4.rgb.fadeStart(3000);
+  X4.rgb.fadeColorRGB(chA, 255, 255, 255);
+  X4.rgb.fadeColorRGB(chB, 0, 0, 255);
+  X4.rgb.fadeColorRGB(chC, 0, 255, 0);
+  X4.rgb.fadeColorRGB(chD, 255, 0, 0);
+  X4.rgb.fadeStart(chAll, 3000);
   delay(4000);
   /*
     Set individual LED animation
   */
   X4.rgb.fadeColorTotem();
-  X4.rgbA.fadeStart(500);
-  X4.rgbB.fadeStart(1000);
-  X4.rgbC.fadeStart(1500);
-  X4.rgbD.fadeStart(2000);
+  X4.rgb.fadeStart(chA, 500);
+  X4.rgb.fadeStart(chB, 1000);
+  X4.rgb.fadeStart(chC, 1500);
+  X4.rgb.fadeStart(chD, 2000);
   delay(3000);
 }

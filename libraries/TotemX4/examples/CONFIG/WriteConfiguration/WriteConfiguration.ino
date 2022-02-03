@@ -7,7 +7,8 @@
 */
 // Initialize program
 void setup() {
-  // Empty
+  // Enable App connectivity (will override Tools -> App control -> Disabled)
+  X4.enableAppControl();
 }
 // Loop program
 void loop() {
@@ -16,7 +17,7 @@ void loop() {
     // Generate HEX with random RGB color (0xFFFFFF)
     int newColor = (rand() % 255) << 16 | (rand() % 255) << 8 | (rand() % 255);
     // Update RGB LED to display generated color
-    X4.rgb.color(255, newColor); // Brightness, RGB HEX (0xFFFFFF)
+    X4.rgb.colorHEX(chAll, newColor); // RGB HEX (0xFFFFFF)
     // Save color to configuration storage
     X4.config.setRobotColor(newColor);
     // After pressing RESET, X4 will reboot and use configured RGB color

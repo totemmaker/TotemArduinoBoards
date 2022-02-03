@@ -26,8 +26,8 @@ HIGH|         <-- 50Hz -->         |
 void setup() {
   // Increase power range to 0-1000.
   // This gives more fine control than 0-100
-  X4.dcAB.setPowerRange(1000);
-  X4.dcA.power(325); // Set duty cycle to 32.5%
+  X4.dc.setPowerRange(1000);
+  X4.dc.power(chA, 325); // Set duty cycle to 32.5%
 }
 // Loop program
 void loop() {
