@@ -18,16 +18,16 @@ void setup() {
 // Loop program
 void loop() {
   // Receive knob positions
-  int knobA = pot.knobA.get();
-  int knobB = pot.knobB.get();
-  int knobC = pot.knobC.get();
+  int knobA = pot.knob.get(chA);
+  int knobB = pot.knob.get(chB);
+  int knobC = pot.knob.get(chC);
   // Set Line Follower LED
-  line.led.off();
-  line.led.onX(
-    map(knobA, 0, 255, 0, 7) // map [0:255] -> [0:7]
+  line.led.off(chAll);
+  line.led.on(
+    map(knobA, 0, 255, chA, chH) // map [0:255] -> [0:7]
   );
   // Set X4 RGB LED
-  X4.rgb.color(
+  X4.rgb.colorARGB(chAll,
     knobB, knobC, 255-knobC, 0 // alpha, reg, green, blue
   );
   // Delay 20 milliseconds

@@ -11,43 +11,33 @@
 // Initialize Environment sensor module
 Module22 sensor;
 // Define variables required for this example
-int color[3], colorP[3], IR, lumen, humidity, resistance;
+int color[3], IR, lumen, humidity, resistance;
 float temp[2], ntc, pressure[2], altitude;
 // Function to receive Distance module events
 void sensorEvent() {
   // Getting parameters inside event won't delay code execution.
   // Data is taken from current received event.
-  // Check if received event is for "color" parameter
-  if (sensor.color.isEvent()) {
-    // Store color value to variables
-    color[0] = sensor.color.getR();
-    color[1] = sensor.color.getG();
-    color[2] = sensor.color.getB();
-  }
-  // Read precise colors [0:262143]
-  else if (sensor.colorR.isEvent()) colorP[0] = sensor.colorR.get();
-  else if (sensor.colorG.isEvent()) colorP[1] = sensor.colorG.get();
-  else if (sensor.colorB.isEvent()) colorP[2] = sensor.colorB.get();
-  // Read light
-  else if (sensor.IR.isEvent()) IR = sensor.IR.get();
-  else if (sensor.lumen.isEvent()) lumen = sensor.lumen.get();
+  // Read precise colors and IR + Lumen [0:262143]
+       if (sensor.light.isEventRed()) color[0] = sensor.light.getRed();
+  else if (sensor.light.isEventGreen()) color[1] = sensor.light.getGreen();
+  else if (sensor.light.isEventBlue()) color[2] = sensor.light.getBlue();
+  else if (sensor.light.isEventIR()) IR = sensor.light.getIR();
+  else if (sensor.light.isEventLumen()) lumen = sensor.light.getLumen();
   // Read temperature
-  else if (sensor.temp.isEvent()) {
+  else if (sensor.temp.isEventTemperature()) {
     temp[0] = sensor.temp.getC();
     temp[1] = sensor.temp.getF();
   }
   // Read humidity
-  else if (sensor.humidity.isEvent()) humidity = sensor.humidity.get();
-  else if (sensor.ntc.isEvent()) {
-    ntc = sensor.ntc.getC();
-    resistance = sensor.ntc.getResistance();
-  }
+  else if (sensor.temp.isEventHumidity()) humidity = sensor.temp.getHumidity();
+  else if (sensor.ntc.isEventTemperature()) ntc = sensor.ntc.getC();
+  else if (sensor.ntc.isEventResistance()) resistance = sensor.ntc.getResistance();
   // Read pressure
-  else if (sensor.pressure.isEvent()) {
+  else if (sensor.pressure.isEventPressure()) {
     pressure[0] = sensor.pressure.getMbar();
     pressure[1] = sensor.pressure.getPsi();
   }
-  else if (sensor.altitude.isEvent()) altitude = sensor.altitude.getMeter();
+  else if (sensor.pressure.isEventAltitude()) altitude = sensor.pressure.getAltMeter();
 }
 // Initialize program
 void setup() {
@@ -59,15 +49,11 @@ void setup() {
 // Loop program
 void loop() {
   Serial.print("LIGHT: ");
-  // Print RGB color [0-255]
-  Serial.printf("Color: R:%3d G:%3d B:%3d",
+  // Print precise color values [0:262143]
+  Serial.printf("Color R: %5d G: %5d B: %5d | ", 
     color[0], color[1], color[2]
   );
-  // Print precise color values [0:262143]
-  Serial.printf(" Precise R: %5d G: %5d B: %5d | ", 
-    colorP[0], colorP[1], colorP[2]
-  );
-  // Print amount of infrared light and luminosity
+  // Print amount of infrared light and luminosity [0:262143]
   Serial.printf("Infrared %5d Luminosity: %5d\n",
     IR, lumen
   );
@@ -87,17 +73,17 @@ void loop() {
   );
   // Call single parameter read and return it inside event function
   // Won't delay code execution. Updated values will be ready for next print
-  sensor.color.eventOnce();
-  sensor.colorR.eventOnce();
-  sensor.colorG.eventOnce();
-  sensor.colorB.eventOnce();
-  sensor.IR.eventOnce();
-  sensor.lumen.eventOnce();
-  sensor.temp.eventOnce();
-  sensor.humidity.eventOnce();
-  sensor.ntc.eventOnce();
-  sensor.pressure.eventOnce();
-  sensor.altitude.eventOnce();
+  sensor.light.eventOnceRed();
+  sensor.light.eventOnceGreen();
+  sensor.light.eventOnceBlue();
+  sensor.light.eventOnceIR();
+  sensor.light.eventOnceLumen();
+  sensor.temp.eventOnceTemperature();
+  sensor.temp.eventOnceHumidity();
+  sensor.ntc.eventOnceTemperature();
+  sensor.ntc.eventOnceResistance();
+  sensor.pressure.eventOncePressure();
+  sensor.pressure.eventOnceAltitude();
   // Delay printing for 1000ms
   delay(1000);
 }

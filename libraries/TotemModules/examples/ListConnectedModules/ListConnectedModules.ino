@@ -26,9 +26,9 @@ void loop() {
   // Start list of modules
   Serial.println("Connected modules:");
   // Ping modules every 1s to receive their response
-  X4.module.ping(); // Ping all modules
-  // X4.module.ping(11); // Ping dinstance sensor modules
-  // X4.module.ping(11, 9724); // Ping specific dinstance sensor modules (with serial 9724)
+  X4.module.scan(); // Scan for all modules
+  // X4.module.scan(11); // Scan for dinstance sensor modules
+  // X4.module.scan(11, 9724); // Scan for specific dinstance sensor modules (with serial 9724)
   delay(1000); // Wait 1s for event to collect data
   // Print "none" message if nothing was found
   if (!moduleFound) {

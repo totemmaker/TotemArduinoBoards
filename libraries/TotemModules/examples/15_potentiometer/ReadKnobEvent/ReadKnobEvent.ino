@@ -23,15 +23,15 @@ void potentiometerEvent() {
   // Getting parameters inside event won't delay code execution.
   // Data is taken from current received event.
   // If knob event, store position to variable
-  if (pot.knobA.isEvent()) knobValue[0] = pot.knobA.get();
-  if (pot.knobB.isEvent()) knobValue[1] = pot.knobB.get();
-  if (pot.knobC.isEvent()) knobValue[2] = pot.knobC.get();
+  if (pot.knob.isEvent(chA)) knobValue[0] = pot.knob.get(chA);
+  if (pot.knob.isEvent(chB)) knobValue[1] = pot.knob.get(chB);
+  if (pot.knob.isEvent(chC)) knobValue[2] = pot.knob.get(chC);
   // If button A pressed
-  if (pot.buttonA.isEvent()) {
+  if (pot.button.isEvent(chA)) {
     // Store button state to variable
-    buttonValue[0] = pot.buttonA.isPressed();
+    buttonValue[0] = pot.button.isPressed(chA);
     // Check if button is pressed
-    if (pot.buttonA.isPressed()) {
+    if (pot.button.isPressed(chA)) {
       // Decrement selected resolution
       if (currentBits > 0) currentBits--;
       // Set new selected resolution
@@ -39,13 +39,13 @@ void potentiometerEvent() {
     }
   }
   // If button B pressed, store state to variable
-  if (pot.buttonB.isEvent()) buttonValue[1] = pot.buttonB.isPressed();
+  if (pot.button.isEvent(chB)) buttonValue[1] = pot.button.isPressed(chB);
   // If button C pressed
-  if (pot.buttonC.isEvent()) {
+  if (pot.button.isEvent(chC)) {
     // Store button state to variable
-    buttonValue[2] = pot.buttonC.isPressed();
+    buttonValue[2] = pot.button.isPressed(chC);
     // Check if button is pressed
-    if (pot.buttonC.isPressed()) {
+    if (pot.button.isPressed(chC)) {
       // Increment selected resolution
       if (currentBits < 3) currentBits++;
       // Set new selected resolution
@@ -60,12 +60,12 @@ void setup() {
   // Register event function for Potentiometer module
   pot.addEvent(potentiometerEvent);
   // Enable events for knob & button parameters
-  pot.knobA.event(); // When value is changed
-  pot.knobB.event(); // When value is changed
-  pot.knobC.event(); // When value is changed
-  pot.buttonA.event(); // When value is changed
-  pot.buttonB.event(); // When value is changed
-  pot.buttonC.event(); // When value is changed
+  pot.knob.event(chA); // When value is changed
+  pot.knob.event(chB); // When value is changed
+  pot.knob.event(chC); // When value is changed
+  pot.button.event(chA); // When value is changed
+  pot.button.event(chB); // When value is changed
+  pot.button.event(chC); // When value is changed
 }
 
 // Loop program

@@ -24,12 +24,12 @@ void loop() {
     // Calculate color according to distance
     int color = map(constrain(distance, 100, 500), 100, 500, 0, 255);
     // Set all LED color (bright)
-    sensor.rgb.color(255-color, color, 0);
+    sensor.rgb.colorRGB(chAll, 255-color, color, 0);
   }
   else {
     // Update random color per each LED
-    for (int i=0; i<8; i++) {
-      sensor.rgb.colorX(i, rand()%255, rand()%255, rand()%255);
+    for (int i=chA; i<8; i++) {
+      sensor.rgb.colorRGB(i, rand()%255, rand()%255, rand()%255);
     }
     // Delay 100ms between color update
     delay(100);

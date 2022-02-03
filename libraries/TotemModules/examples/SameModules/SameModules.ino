@@ -20,12 +20,12 @@ void setup() {
 void loop() {
   // Update Module 1 color (GREEN) with distance data received from Module 2
   // Module 2 distance is constrained to [0:255] and inverted to color GREEN
-  sensor1.rgb.color(
+  sensor1.rgb.colorRGB(chAll,
     0, 255-constrain(sensor2.distance.getMM(), 0, 255), 0 // red, green, blue
   );
   // Update Module 2 color (RED) with distance data received from Module 1
   // Module 1 distance is constrained to [0:255] and inverted to color RED
-  sensor2.rgb.color(
+  sensor2.rgb.colorRGB(chAll,
     255-constrain(sensor1.distance.getMM(), 0, 255), 0, 0 // red, green, blue
   );
   // Delay 30ms between updates

@@ -17,14 +17,16 @@ void setup() {
 }
 // Loop program
 void loop() {
-  // Convert position to led number (index)
-  int led = map(sensor.linePos.get(), -35, 35, 0, 7);
-  // Prepare LED array binary with single LED enabled
-  // Need to substract from 7 to change direction
-  // Example: 5 -> B00000100 (led index starts at 0 (0-7))
-  led = 5;
-  uint8_t binary = BIT(7-led);
-  // Set binary to module. Invert all 0->1 and 0->1
-  // to light up all LED and turn off selected one
+  // Convert position to led channel
+  int ledCh = map(sensor.line.getPosition(), -35, 35, chA, chH);
+  // Prepare binary value with single LED enabled
+  // Each bit represents LED state (1 - on, 0 - off)
+  // B00000000 <- 8-bit value
+  //  HGFEDCBA <- LED name
+  // Example: (chF)(5) -> B00100000. Turns LED F on.
+  uint8_t binary = BIT(ledCh);
+  // Now invert 8-bit value to turn off selected LED and on all others.
+  // B00100000 -> B11011111
+  // Send inverted binary value to module
   sensor.led.setBinary(~binary);
 }

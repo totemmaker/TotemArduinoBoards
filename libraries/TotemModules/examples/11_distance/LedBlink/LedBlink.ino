@@ -19,16 +19,16 @@ void loop() {
     Blink
   */
   for (int c=0; c<15; c++) {
-    sensor.rgb.toggle(); // Toggle all LED (on / off)
+    sensor.rgb.toggle(chAll); // Toggle all LED (on / off)
     delay(100);
   }
   /*
     Spin
   */
   for (int c=0; c<10; c++) {
-    for (int i=0; i<8; i++) {
-      sensor.rgb.off(); // Turn all LED off
-      sensor.rgb.colorX(i, 0, 255, 0); // Set single LED color (0, 1, or ...)
+    for (int i=chA; i<8; i++) {
+      sensor.rgb.off(chAll); // Turn all LED off
+      sensor.rgb.colorRGB(i, 0, 255, 0); // Set single LED color (0, 1, or ...)
       delay(50);
     }
   }
@@ -37,8 +37,8 @@ void loop() {
   */
   // Update random color per each LED
   for (int c=0; c<40; c++) {
-    for (int i=0; i<8; i++) {
-      sensor.rgb.colorX(i, rand()%255, rand()%255, rand()%255);
+    for (int i=chA; i<8; i++) {
+      sensor.rgb.colorRGB(i, rand()%255, rand()%255, rand()%255);
     }
     delay(100);
   }
@@ -46,10 +46,10 @@ void loop() {
     Spin back
   */
   for (int c=0; c<10; c++) {
-    for (int i=7; i>=0; i--) {
-      sensor.rgb.off();
-      sensor.rgb.colorX(i, 0, 255, 0);
-      sensor.rgb.colorX((i+4)%8, 255, 0, 0);
+    for (int i=7; i>=chA; i--) {
+      sensor.rgb.off(chAll);
+      sensor.rgb.colorRGB(i, 0, 255, 0);
+      sensor.rgb.colorRGB((i+4)%8, 255, 0, 0);
       delay(50);
     }
   }
@@ -57,19 +57,19 @@ void loop() {
     Fade
   */
   for (int c=250; c>=0; c-=10) {
-    sensor.rgb.color(c, 0, 0); // Set all LED color (0, 1, and ...)
+    sensor.rgb.colorRGB(chAll, c, 0, 0); // Set all LED color (0, 1, and ...)
     delay(30);
   }
   for (int c=0; c<=250; c+=10) {
-    sensor.rgb.color(0, 0, c);
+    sensor.rgb.colorRGB(chAll, 0, 0, c);
     delay(30);
   }
   for (int c=250; c>=0; c-=10) {
-    sensor.rgb.color(0, 0, c);
+    sensor.rgb.colorRGB(chAll, 0, 0, c);
     delay(30);
   }
   for (int c=0; c<=250; c+=10) {
-    sensor.rgb.color(0, c, 0);
+    sensor.rgb.colorRGB(chAll, 0, c, 0);
     delay(30);
   }
 }

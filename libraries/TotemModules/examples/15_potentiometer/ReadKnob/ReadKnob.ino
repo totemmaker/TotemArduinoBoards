@@ -19,8 +19,8 @@ void setup() {
 void loop() {
   // Print knob & button values
   Serial.printf("Knob A: %4d B: %4d C: %4d, Button A: %d B: %d C: %d\n", 
-    pot.knobA.get(), pot.knobB.get(), pot.knobC.get(),
-    pot.buttonA.isPressed(), pot.buttonB.isPressed(), pot.buttonC.isPressed()
+    pot.knob.get(chA), pot.knob.get(chB), pot.knob.get(chC),
+    pot.button.isPressed(chA), pot.button.isPressed(chB), pot.button.isPressed(chC)
   );
   // Delay printing
   delay(50);

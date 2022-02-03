@@ -20,22 +20,22 @@ void loop() {
   /*
     Loading
   */
-  sensor.led.off();
+  sensor.led.off(chAll);
   for (int c=0; c<2; c++) {
-    for (int i=0; i<8; i++) {
-      sensor.led.onX(i); // Turn on single LED (A, B, C...)
+    for (int i=chA; i<8; i++) {
+      sensor.led.on(i); // Turn on single LED (A, B, C...)
       delay(50);
     }
-    for (int i=0; i<8; i++) {
-      sensor.led.offX(i); // Turn off single LED (A, B, C...)
+    for (int i=chA; i<8; i++) {
+      sensor.led.off(i); // Turn off single LED (A, B, C...)
       delay(50);
     }
-    for (int i=7; i>=0; i--) {
-      sensor.led.onX(i); // Turn on single LED (A, B, C...)
+    for (int i=7; i>=chA; i--) {
+      sensor.led.on(i); // Turn on single LED (A, B, C...)
       delay(50);
     }
-    for (int i=7; i>=0; i--) {
-      sensor.led.offX(i); // Turn off single LED (A, B, C...)
+    for (int i=7; i>=chA; i--) {
+      sensor.led.off(i); // Turn off single LED (A, B, C...)
       delay(50);
     }
   }
@@ -43,14 +43,14 @@ void loop() {
     Binary count
   */
   for (int c=0; c<32; c++) {
-    sensor.led.setBinary(c); // Output binary value B101... -> A:on, B:off, C:on...
+    sensor.led.setBinary(c); // Output binary value B00000101 -> A:on, B:off, C:on, D: off, ..., H: off
     delay(500);
   }
   /*
     Blink
   */
   for (int c=0; c<10; c++) {
-    sensor.led.toggle(); // Toggle all LED (on / off)
+    sensor.led.toggle(chAll); // Toggle all LED (on / off)
     delay(100);
   }
 }

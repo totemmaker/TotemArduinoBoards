@@ -18,29 +18,20 @@ void setup() {
 // Loop program
 void loop() {
   Serial.print("LIGHT: ");
-  // Print RGB color [0-255]
-  Serial.printf("Color: R:%3d G:%3d B:%3d",
-    sensor.color.getR(),
-    sensor.color.getG(),
-    sensor.color.getB()
-  );
-  // Print precise color values [0:262143]
-  Serial.printf(" Precise R: %5d G: %5d B: %5d | ", 
-    sensor.colorR.get(),
-    sensor.colorG.get(),
-    sensor.colorB.get()
-  );
-  // Print amount of infrared light and luminosity
-  Serial.printf("Infrared %5d Luminosity: %5d\n",
-    sensor.IR.get(),
-    sensor.lumen.get()
+  // Print precise color values and amount of infrared light and luminosity [0:262143]
+  Serial.printf(" Color R: %5d G: %5d B: %5d | IR: %5d Lumen: %5d\n", 
+    sensor.light.getRed(),
+    sensor.light.getGreen(),
+    sensor.light.getBlue(),
+    sensor.light.getIR(),
+    sensor.light.getLumen()
   );
   // Print temperature and humidity
   Serial.print("HUMID: ");
   Serial.printf("Temp: %.2fC %.2fF Humidity: %3d%% | ", 
     sensor.temp.getC(),
     sensor.temp.getF(),
-    sensor.humidity.get()
+    sensor.temp.getHumidity()
   );
   // Print external NTC thermistor temperature (if connected)
   Serial.printf("NTC Temp: %.2fC NTC resistance: %5dR\n",
@@ -52,7 +43,7 @@ void loop() {
   Serial.printf("Pressure: %.3fbar %2fpsi Altitude: %3.0fm\n", 
     sensor.pressure.getMbar(),
     sensor.pressure.getPsi(),
-    sensor.altitude.getMeter()
+    sensor.pressure.getAltMeter()
   );
   // Delay printing for 1000ms
   delay(1000);

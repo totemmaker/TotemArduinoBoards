@@ -18,12 +18,14 @@ void sensorEvent() {
   // Getting parameters inside event won't delay code execution.
   // Data is taken from current received event.
   // Check if received event is for "pos" parameter and update value
-  if (sensor.linePos.isEvent()) value[0] = sensor.linePos.get();
+  if (sensor.line.isEventPosition()) value[0] = sensor.line.getPosition();
   // Check if receiver event is for "color"
-  else if (sensor.lineColor.isEvent()) value[1] = sensor.lineColor.get();
-  else if (sensor.lineCross.isEvent()) value[2] = sensor.lineCross.isDetected();
-  else if (sensor.lineRange.isEvent()) value[3] = sensor.lineRange.get();
-  else if (sensor.lineRaw.isEvent()) { sensor.lineRaw.get(raw); }
+  else if (sensor.line.isEventColor()) {
+    value[1] = sensor.line.getColor();
+    value[2] = sensor.line.isJunction();
+  }
+  else if (sensor.sensor.isEventAccuracy()) value[3] = sensor.sensor.getAccuracy();
+  else if (sensor.sensor.isEventRaw()) { sensor.sensor.getRaw(raw); }
 }
 // Initialize program
 void setup() {
@@ -32,11 +34,10 @@ void setup() {
   // Register event function for Distance module
   sensor.addEvent(sensorEvent);
   // Enable events for distance parameter
-  sensor.linePos.event(); // When value is changed
-  sensor.lineColor.event(100); // Call event each 100ms
-  sensor.lineCross.event(100); // Call event each 100ms
-  sensor.lineRange.event(100); // Call event each 100ms
-  sensor.lineRaw.event(200); // Call event each 200ms
+  sensor.line.eventPosition(); // When value is changed
+  sensor.line.eventColor(100); // Call event each 100ms
+  sensor.sensor.eventAccuracy(100); // Call event each 100ms
+  sensor.sensor.eventRaw(200); // Call event each 200ms
 }
 // Loop program
 void loop() {
