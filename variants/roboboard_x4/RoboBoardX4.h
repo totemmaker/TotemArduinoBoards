@@ -8,16 +8,13 @@ public:
     Feature::Config config;
     Feature::Button button;
     Feature::Led led;
-    Feature::DCABCD dc;
+    Feature::DC dc;
     Feature::DCXX dcAB, dcCD;
-    Feature::DCX dcA, dcB, dcC, dcD;
-    Feature::SERVOABC servo;
-    Feature::SERVOX servoA, servoB, servoC;
-    Feature::RGBABCD rgb;
-    Feature::RGBX rgbA, rgbB, rgbC, rgbD;
+    Feature::SERVO servo;
+    Feature::RGB rgb;
     Feature::GPIO gpioA, gpioB, gpioC, gpioD;
     Feature::ModuleScan module;
-    Feature::Function functionA, functionB, functionC, functionD;
+    Feature::Function function;
     
     RoboBoardX4();
     // Read battery voltage [8.40:12.60]
