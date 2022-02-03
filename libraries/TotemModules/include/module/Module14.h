@@ -1,142 +1,147 @@
 #ifndef MODULE14
 #define MODULE14
 
-#include "lib/TotemModuleX.h"
+#include "lib/TotemEventModule.h"
 
 namespace Features14 {
-struct Junction : public TotemModuleFeature {
-    Junction(TotemModuleX *m, uint32_t cmd) : TotemModuleFeature(m, cmd) { }
-    // Check if lines junction is detected
-    bool isDetected() {
-        return getCmd()->getInt();
+class Line : public Feature::MultiEventHidden {
+    const uint32_t cmdList[2] = {
+        Feature::CMD("line/pos"), Feature::CMD("line/color")
+    };
+public:
+    Line(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    // Get line position [-35:35]
+    int getPosition() {
+        return this->getCmd(0)->getInt();
     }
-};
-struct Color : public TotemModuleFeature {
-    Color(TotemModuleX *m, uint32_t cmd) : TotemModuleFeature(m, cmd) { }
     // Get color of detected line ['W','B',0]
-    char get() {
-        return getCmd()->getInt();
-    }
-    // Check if line is detected
-    bool isDetected() {
-        return get() != 0;
+    char getColor() {
+        return this->getCmd(1)->getInt();
     }
     // Check if detected line color is white
-    bool isWhite() {
-        return get() == 'W';
+    bool isColorWhite() {
+        return this->getColor() == 'W';
     }
     // Check if detected line color is black
-    bool isBlack() {
-        return get() == 'B';
+    bool isColorBlack() {
+        return this->getColor() == 'B';
     }
+    // Check if lines junction is detected (got from color)
+    bool isJunction() {
+        return this->getColor() == 0;
+    }
+    // Event Position
+    bool isEventPosition() { return this->isEvent(0); }
+    void eventPosition() { this->event(0); }
+    void eventPosition(uint32_t intervalMs) { this->event(0, intervalMs); }
+    void eventOncePosition() { this->eventOnce(0); }
+    // Event Color (junction)
+    bool isEventColor() { return this->isEvent(1); }
+    void eventColor() { this->event(1); }
+    void eventColor(uint32_t intervalMs) { this->event(1, intervalMs); }
+    void eventOnceColor() { this->eventOnce(1); }
 };
-struct Accuracy : public TotemModuleFeature {
-    Accuracy(TotemModuleX *m, uint32_t cmd) : TotemModuleFeature(m, cmd) { }
+class Sensor : public Feature::MultiEventHidden {
+    const uint32_t cmdList[2] = {
+        Feature::CMD("sensor/range"), Feature::CMD("sensor/raw")
+    };
+public:
+    Sensor(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
     // Get accuracy of line detection [0:100]%. Higher is better
-    int get() {
-        return getCmd()->getInt();
+    int getAccuracy() {
+        return this->getCmd(0)->getInt();
     }
-    // Set minimum required accuracy to start line following [0:100]%
-    void setThreshold(uint8_t contrast) {
-        writeCmd(C("sensor/threshold"), contrast);
-    }
-};
-struct Raw : public TotemModuleFeature {
-    Raw(TotemModuleX *m, uint32_t cmd) : TotemModuleFeature(m, cmd) { }
     // Get raw sensor contrast readings [0:100]%
-    void get(uint8_t raw[8]) {
+    void getRaw(uint8_t raw[8]) {
         uint8_t *ptr;
-        if (!getCmd()->getData(ptr))
+        if (!(this->getCmd(1)->getData(ptr)))
             return;
         for (int i=0; i<8; i++) 
             raw[i] = ptr[i];
     }
-};
-struct Pos : public TotemModuleFeature {
-    Pos(TotemModuleX *m, uint32_t cmd) : TotemModuleFeature(m, cmd) { }
-    // Get line position [-35:35]
-    int get() {
-        return getCmd()->getInt();
+    // Set minimum required accuracy to start line following [0:100]%
+    void setThreshold(uint8_t contrast) {
+        this->writeCustomCmd(Feature::CMD("sensor/threshold"), contrast);
     }
+    // Event Accuracy
+    bool isEventAccuracy() { return this->isEvent(0); }
+    void eventAccuracy() { this->event(0); }
+    void eventAccuracy(uint32_t intervalMs) { this->event(0, intervalMs); }
+    void eventOnceAccuracy() { this->eventOnce(0); }
+    // Event Raw
+    bool isEventRaw() { return this->isEvent(1); }
+    void eventRaw() { this->event(1); }
+    void eventRaw(uint32_t intervalMs) { this->event(1, intervalMs); }
+    void eventOnceRaw() { this->eventOnce(1); }
 };
-class Led : protected TotemModuleFeature {
-    uint8_t ledState = 0b00000000;
+template <int LED_CNT>
+class Led : public Feature::Simple {
+    uint8_t ledState = 0;
+    const uint32_t cmdList[1] = {
+        Feature::CMD("led")
+    };
 public:
-    Led(TotemModuleX *m, uint32_t cmd) : TotemModuleFeature(m, cmd) { }
+    Led(TotemModuleData &d) : Feature::Simple(d, cmdList) { }
     // Turn LED on
-    void on() {
-        set(1);
+    void on(uint8_t ch) {
+        this->set(ch, 1);
     }
     // Turn LED off
-    void off() {
-        set(0);
+    void off(uint8_t ch) {
+        this->set(ch, 0);
     }
-    // Toggle LED on / off
-    void toggle() {
-        set(isOn() ? 0 : 1);
+    // Toggle LED (on / off)
+    void toggle(uint8_t ch) {
+        if (ch == chAll)
+            this->setBinary(~ledState);
+        else
+            this->set(ch, !(this->isOn(ch)));
     }
     // Set LED state [HIGH:LOW] (on / off)
-    void set(uint8_t state) {
-        ledState = state ? 0b11111111 : 0b00000000;
-        writeCmd(ledState); 
+    void set(uint8_t ch, uint8_t state) {
+        if (ch == chAll)
+            ledState = state ? 0xFF : 0;
+        else if (ch < LED_CNT) {
+            if (state) ledState |= (1 << ch);
+            else ledState &= ~(1 << ch);
+        }
+        else
+            return;
+        this->writeChannel(0, ledState); 
     }
     // Read LED state [HIGH:LOW] (on / off)
-    bool isOn() {
-        return ledState;
+    bool isOn(uint8_t ch) {
+        if (ch >= LED_CNT) return false;
+        return ledState & (1 << ch);
     }
-    // Turn on specified LED (A, B, C)
-    void onX(uint8_t num) {
-        setX(num, 1);
-    }
-    // Turn off specified LED (A, B, C)
-    void offX(uint8_t num) {
-        setX(num, 0);
-    }
-    // Toggle LED specified LED (on / off)
-    void toggleX(uint8_t num) {
-        setX(num, isOnX(num) ? 0 : 1);
-    }
-    // Set specified LED state [HIGH:LOW] (on / off)
-    void setX(uint8_t num, uint8_t state) {
-        if (num >= 8) return;
-        if (state) ledState |= (1 << (7-num));
-        else ledState &= ~(1 << (7-num));
-        writeCmd(ledState); 
-    }
-    // Read specified LED state [HIGH:LOW] (on / off)
-    bool isOnX(uint8_t num) {
-        if (num >= 8) return false;
-        return ledState & (1 << (7-num));
+    
+    // Reset LED to default operation (display line position)
+    void reset() {
+        ledState = 0;
+        this->writeChannel(0, -1);
     }
     // Set LED state by binary representation [B00000000:B11111111]
     void setBinary(uint8_t bin) {
+        uint8_t reverse = 0;
         ledState = bin;
-        writeCmd(ledState);
-    }
-    // Reset LED to default operation (display line position)
-    void reset() {
-        ledState = 0b00000000;
-        writeCmd(-1);
+        for (int i=0; i<8; i++) {
+            reverse <<= 1;
+            reverse |= (bin & 1);
+            bin >>= 1;
+        }
+        this->writeChannel(0, reverse);
     }
 };
 }
 
-class Module14 : public TotemModuleX {
+class Module14 : public TotemEventModule {
 public:
-    Features14::Junction lineCross;
-    Features14::Color lineColor;
-    Features14::Pos linePos;
-    Features14::Accuracy lineRange;
-    Features14::Raw lineRaw;
-    Features14::Led led;
+    Features14::Line line;
+    Features14::Sensor sensor;
+    Features14::Led<8> led;
 
-    Module14(uint16_t serial = 0) : TotemModuleX(14, serial),
-    lineCross(this, C("line/junction")),
-    lineColor(this, C("line/color")),
-    linePos(this, C("line/pos")),
-    lineRange(this, C("sensor/range")),
-    lineRaw(this, C("sensor/raw")),
-    led(this, C("led"))
+    Module14(uint16_t serial = 0) : TotemEventModule(14, serial),
+    line(data), sensor(data), led(data)
     { }
 };
 
