@@ -1,0 +1,257 @@
+#######################################
+# Syntax Coloring Map For Totem Boards
+#######################################
+
+#######################################
+# Boards
+#######################################
+
+### RoboBoard X4
+X4	KEYWORD1
+
+#######################################
+# Board features
+#######################################
+
+### RoboBoard X4
+config	LITERAL1
+button	LITERAL1
+led	LITERAL1
+dc	LITERAL1
+dcAB	LITERAL1
+dcCD	LITERAL1
+servo	LITERAL1
+rgb	LITERAL1
+module	LITERAL1
+function	LITERAL1
+
+#######################################
+# Board functions
+#######################################
+
+### RoboBoard X4 - main
+getBatteryVoltage	KEYWORD2
+getBatteryChargingTime	KEYWORD2
+isBatteryCharging	KEYWORD2
+isBatteryLow	KEYWORD2
+isDC	KEYWORD2
+isUSB	KEYWORD2
+enableAppControl	KEYWORD2
+reset	KEYWORD2
+restart	KEYWORD2
+getSerial	KEYWORD2
+getRevision	KEYWORD2
+getDriverVersion	KEYWORD2
+getSoftwareVersion	KEYWORD2
+
+### RoboBoard X4 - config
+setRobotName	KEYWORD2
+getRobotName	KEYWORD2
+setRobotModel	KEYWORD2
+getRobotModel	KEYWORD2
+setRobotColor	KEYWORD2
+getRobotColor	KEYWORD2
+setDCInvert	KEYWORD2
+getDCInvert	KEYWORD2
+setDCAutobrake	KEYWORD2
+getDCAutobrake	KEYWORD2
+
+### RoboBoard X4 - button
+isPressed	KEYWORD2
+isReleased	KEYWORD2
+isPressedFor	KEYWORD2
+isReleasedFor	KEYWORD2
+wasPressed	KEYWORD2
+wasReleased	KEYWORD2
+wasPressedFor	KEYWORD2
+wasReleasedFor	KEYWORD2
+wasDoubleClick	KEYWORD2
+lastChange	KEYWORD2
+
+### RoboBoard X4 - led
+on	KEYWORD2
+off	KEYWORD2
+toggle	KEYWORD2
+set	KEYWORD2
+isOn	KEYWORD2
+blink	KEYWORD2
+blinkTimes	KEYWORD2
+blinkFor	KEYWORD2
+
+### RoboBoard X4 - dc
+enable	KEYWORD2
+disable	KEYWORD2
+power	KEYWORD2
+brake	KEYWORD2
+setInvert	KEYWORD2
+setAutobrake	KEYWORD2
+tone	KEYWORD2
+setModeIndividual	KEYWORD2
+setModeCombined	KEYWORD2
+setFreq	KEYWORD2
+setPowerRange	KEYWORD2
+
+### RoboBoard X4 - servo
+pos	KEYWORD2
+angle	KEYWORD2
+pulse	KEYWORD2
+getPos	KEYWORD2
+getAngle	KEYWORD2
+getPulse	KEYWORD2
+setSpeed	KEYWORD2
+setSpeedRPH	KEYWORD2
+setPulseMinMax	KEYWORD2
+setPeriod	KEYWORD2
+
+### RoboBoard X4 - rgb
+colorARGB	KEYWORD2
+colorRGB	KEYWORD2
+colorAHEX	KEYWORD2
+colorHEX	KEYWORD2
+fadeColorARGB	KEYWORD2
+fadeColorRGB	KEYWORD2
+fadeColorAHEX	KEYWORD2
+fadeColorHEX	KEYWORD2
+fadeStart	KEYWORD2
+colorTotem	KEYWORD2
+fadeColorTotem	KEYWORD2
+setBinary	KEYWORD2
+
+### RoboBoard X4 - module
+getLastNumber	KEYWORD2
+getLastSerial	KEYWORD2
+scan	KEYWORD2
+
+#######################################
+# Module functions
+#######################################
+
+### class ModuleData
+ModuleData	KEYWORD1
+is	KEYWORD2
+isInt	KEYWORD2
+isString	KEYWORD2
+getInt	KEYWORD2
+getString	KEYWORD2
+getData	KEYWORD2
+getHashCmd	KEYWORD2
+
+### class TotemModule
+TotemModule	KEYWORD1
+writeWait	KEYWORD2
+readWait	KEYWORD2
+subscribe	KEYWORD2
+subscribeWait	KEYWORD2
+unsubscribe	KEYWORD2
+unsubscribeWait	KEYWORD2
+attachOnData	KEYWORD2
+setNumber	KEYWORD2
+setSerial	KEYWORD2
+getNumber	KEYWORD2
+getSerial	KEYWORD2
+getError	KEYWORD2
+hashCmd	KEYWORD2
+hashModel	KEYWORD2
+
+### class TotemEventModule
+addEvent	KEYWORD2
+isEvent	KEYWORD2
+event	KEYWORD2
+eventOnce	KEYWORD2
+
+### module Module11
+Module11	KEYWORD1
+distance	LITERAL1
+getMM	KEYWORD2
+getCm	KEYWORD2
+getFoot	KEYWORD2
+getInch	KEYWORD2
+inRange	KEYWORD2
+setBrightMode	KEYWORD2
+
+### module Module14
+Module14	KEYWORD1
+line	LITERAL1
+sensor	LITERAL1
+getPosition	KEYWORD2
+getColor	KEYWORD2
+isColorWhite	KEYWORD2
+isColorBlack	KEYWORD2
+isJunction	KEYWORD2
+isEventPosition	KEYWORD2
+eventPosition	KEYWORD2
+eventOncePosition	KEYWORD2
+isEventColor	KEYWORD2
+eventColor	KEYWORD2
+eventOnceColor	KEYWORD2
+getAccuracy	KEYWORD2
+getRaw	KEYWORD2
+setThreshold	KEYWORD2
+isEventAccuracy	KEYWORD2
+eventAccuracy	KEYWORD2
+eventOnceAccuracy	KEYWORD2
+isEventRaw	KEYWORD2
+eventRaw	KEYWORD2
+eventOnceRaw	KEYWORD2
+
+### module Module15
+Module15	KEYWORD1
+knob	LITERAL1
+setKnobBits	KEYWORD2
+
+### module Module22
+Module22	KEYWORD1
+light	LITERAL1
+temp	LITERAL1
+ntc	LITERAL1
+pressure	LITERAL1
+getRed	KEYWORD2
+getGreen	KEYWORD2
+getBlue	KEYWORD2
+getIR	KEYWORD2
+getLumen	KEYWORD2
+setLightSensorGain	KEYWORD2
+isEventRed	KEYWORD2
+eventRed	KEYWORD2
+eventOnceRed	KEYWORD2
+isEventGreen	KEYWORD2
+eventGreen	KEYWORD2
+eventOnceGreen	KEYWORD2
+isEventBlue	KEYWORD2
+eventBlue	KEYWORD2
+eventOnceBlue	KEYWORD2
+isEventIR	KEYWORD2
+eventIR	KEYWORD2
+eventOnceIR	KEYWORD2
+isEventLumen	KEYWORD2
+eventLumen	KEYWORD2
+eventOnceLumen	KEYWORD2
+getC	KEYWORD2
+getF	KEYWORD2
+getK	KEYWORD2
+getHumidity	KEYWORD2
+isEventTemperature	KEYWORD2
+eventTemperature	KEYWORD2
+eventOnceTemperature	KEYWORD2
+isEventHumidity	KEYWORD2
+eventHumidity	KEYWORD2
+eventOnceHumidity	KEYWORD2
+getResistance	KEYWORD2
+isEventResistance	KEYWORD2
+eventResistance	KEYWORD2
+eventOnceResistance	KEYWORD2
+getPa	KEYWORD2
+gethPa	KEYWORD2
+getMbar	KEYWORD2
+getBar	KEYWORD2
+getPsi	KEYWORD2
+getAltMeter	KEYWORD2
+getAltFoot	KEYWORD2
+getAltInch	KEYWORD2
+setSeaLevel	KEYWORD2
+isEventPressure	KEYWORD2
+eventPressure	KEYWORD2
+eventOncePressure	KEYWORD2
+isEventAltitude	KEYWORD2
+eventAltitude	KEYWORD2
+eventOnceAltitude	KEYWORD2
