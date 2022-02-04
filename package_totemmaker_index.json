@@ -28,17 +28,17 @@
           ],
           "toolsDependencies": [
             {
-              "packager": "esp32",
+              "packager": "totemmaker",
               "name": "xtensa-esp32-elf-gcc",
               "version": "1.22.0-97-gc752ad5-5.2.0"
             },
             {
-              "packager": "esp32",
+              "packager": "totemmaker",
               "name": "esptool_py",
               "version": "3.0.0"
             },
             {
-              "packager": "esp32",
+              "packager": "totemmaker",
               "name": "mkspiffs",
               "version": "0.2.3"
             }
