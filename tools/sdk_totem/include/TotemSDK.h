@@ -15,8 +15,8 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef TOTEMMODULELIST
-#define TOTEMMODULELIST
+#ifndef TOTEMSDK
+#define TOTEMSDK
 
 #include "Channels.h"
 #include "ColorList.h"
@@ -26,4 +26,4 @@
 #include "module/Module15.h"
 #include "module/Module22.h"
 
-#endif /* TOTEMMODULELIST */
+#endif /* TOTEMSDK */

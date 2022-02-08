@@ -40,7 +40,7 @@ static const uint8_t GPIOD = 26;
 
 #ifdef __cplusplus
 #include "RoboBoardX4.h"
-#include "TotemModuleList.h"
+#include "TotemSDK.h"
 #endif
 
 #endif /* Pins_Arduino_h */
