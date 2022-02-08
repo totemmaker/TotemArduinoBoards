@@ -70,6 +70,9 @@ void yield(void);
 #endif
 #endif
 
+//outputs pin analog value
+void analogWrite(uint8_t pin, int value);
+
 //returns chip temperature in Celsius
 float temperatureRead();
 

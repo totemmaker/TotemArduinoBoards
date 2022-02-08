@@ -278,3 +278,24 @@ void ledcDetachPin(uint8_t pin)
 {
     pinMatrixOutDetach(pin, false, false);
 }
+
+#define GPIO_LEDC_CHANNEL_NUM 8
+
+static int8_t pin_to_channel[GPIO_PIN_COUNT] = { 0 };
+static int cnt_channel = GPIO_LEDC_CHANNEL_NUM;
+void analogWrite(uint8_t pin, int value)
+{
+    // Use ledc hardware for internal pins
+    if (pin < GPIO_PIN_COUNT) {
+        if (pin_to_channel[pin] == 0) {
+        if (!cnt_channel) {
+            log_e("No more analogWrite channels available! You can have maximum %u", GPIO_LEDC_CHANNEL_NUM);
+            return;
+        }
+        pin_to_channel[pin] = cnt_channel--;
+        ledcAttachPin(pin, cnt_channel);
+        ledcSetup(cnt_channel, 1000, 8);
+        }
+        ledcWrite(pin_to_channel[pin] - 1, value);
+    }
+}
