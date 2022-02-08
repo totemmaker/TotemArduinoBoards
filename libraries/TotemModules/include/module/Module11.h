@@ -91,13 +91,13 @@ public:
         if (ch == chAll) {
             if (RGB_isMixed && state)
                 for (int i=0; i<RGB_CNT; i++) {
-                    this->colorAHEX(i, RGB_state[i].color);
+                    this->colorHEX(i, RGB_state[i].color);
                 }
             else
-                this->colorAHEX(ch, state ? RGB_state[0].color : 0);
+                this->colorHEX(ch, state ? RGB_state[0].color : 0);
         }
         else if (ch < RGB_CNT)
-            this->colorAHEX(ch, state ? RGB_state[ch].color : 0);
+            this->colorHEX(ch, state ? RGB_state[ch].color : 0);
     }
     // Read LED state [HIGH:LOW] (on / off)
     bool isOn(uint8_t ch) {
