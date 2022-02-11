@@ -349,38 +349,29 @@ public:
     void setBinary(uint16_t mask);
 };
 /*******************************
-          X4.gpioX
+          X4.tbus
 *******************************/
-class GPIO {
-protected:
-    const uint32_t cmd;
+class TBUS {
 public:
-    GPIO(uint32_t cmd) : cmd(cmd) { }
-    // Write pin digital state [HIGH:LOW]
-    void digitalWrite(uint8_t val);
-    // Read pin digital state [HIGH:LOW]
-    int digitalRead();
-    // Write PWM output [0:20]
-    void analogWrite(uint8_t val);
-    // Read analog input [0:1023]
-    int analogRead();
-    // Set pin pullup mode [HIGH:LOW]
-    void pullMode(uint8_t mode);
-    // Register GPIO event
-    // void addEvent(void (*gpioEvt)(void));
+    // Get discovered TotemBUS module number
+    uint16_t getNumber();
+    // Get discovered TotemBUS module serial
+    uint16_t getSerial();
+    // Start TotembBUS module scan
+    void scan(uint16_t number = 0, uint16_t serial = 0);
+    // Register TotemBUS module discovery event
+    void addEvent(void (*moduleEvt)(void));
 };
 /*******************************
-          X4.module
+          X4.qwiic
 *******************************/
-class ModuleScan {
+class Qwiic {
 public:
-    // Get last received module number
-    uint16_t getLastNumber();
-    // Get last received module serial
-    uint16_t getLastSerial();
-    // Start module scan
-    void scan(uint16_t number = 0, uint16_t serial = 0);
-    // Register module discovery event
+    // Get discovered Qwiic module address
+    uint8_t getAddr();
+    // Start Qwiic module scan
+    bool scan();
+    // Register Qwiic module discovery event
     void addEvent(void (*moduleEvt)(void));
 };
 /*******************************
@@ -389,7 +380,9 @@ public:
 class Function {
 public:
     // Get called event channel value
-    int32_t get(uint8_t ch);
+    int32_t getData();
+    // Get called channel
+    int8_t getCh();
     // Is called specified event channel
     bool isEvent(uint8_t ch);
     // Register function event channel

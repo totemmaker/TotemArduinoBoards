@@ -82,6 +82,7 @@ static InterruptHandle_t __pinInterruptHandlers[GPIO_PIN_COUNT] = {0,};
 
 extern void IRAM_ATTR __pinMode(uint8_t pin, uint8_t mode)
 {
+    __ROBOBARD_X4_REMAP_VOID(pin, 0, mode);
 
     if(!digitalPinIsValid(pin)) {
         return;
@@ -172,6 +173,7 @@ extern void IRAM_ATTR __pinMode(uint8_t pin, uint8_t mode)
 
 extern void IRAM_ATTR __digitalWrite(uint8_t pin, uint8_t val)
 {
+    __ROBOBARD_X4_REMAP_VOID(pin, OUTPUT, val);
     if(val) {
         if(pin < 32) {
             GPIO.out_w1ts = ((uint32_t)1 << pin);
@@ -189,6 +191,7 @@ extern void IRAM_ATTR __digitalWrite(uint8_t pin, uint8_t val)
 
 extern int IRAM_ATTR __digitalRead(uint8_t pin)
 {
+    __ROBOBARD_X4_REMAP_INT(pin, INPUT, 0);
     if(pin < 32) {
         return (GPIO.in >> pin) & 0x1;
     } else if(pin < 40) {
@@ -243,6 +246,8 @@ extern void cleanupFunctional(void* arg);
 
 extern void __attachInterruptFunctionalArg(uint8_t pin, voidFuncPtrArg userFunc, void * arg, int intr_type, bool functional)
 {
+    uint32_t args[3] = {(uint32_t)userFunc, (uint32_t)arg, (uint32_t)intr_type};
+    __ROBOBARD_X4_REMAP_VOID(pin, FUNCTION_2, (uint32_t)args);
     static bool interrupt_initialized = false;
 
     if(!interrupt_initialized) {
@@ -280,6 +285,7 @@ extern void __attachInterrupt(uint8_t pin, voidFuncPtr userFunc, int intr_type) 
 
 extern void __detachInterrupt(uint8_t pin)
 {
+    __ROBOBARD_X4_REMAP_VOID(pin, FUNCTION_2, 0);
     esp_intr_disable(gpio_intr_handle);
     if (__pinInterruptHandlers[pin].functional && __pinInterruptHandlers[pin].arg)
     {

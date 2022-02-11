@@ -285,6 +285,7 @@ static int8_t pin_to_channel[GPIO_PIN_COUNT] = { 0 };
 static int cnt_channel = GPIO_LEDC_CHANNEL_NUM;
 void analogWrite(uint8_t pin, int value)
 {
+    __ROBOBARD_X4_REMAP_VOID(pin, ANALOG|OUTPUT, value);
     // Use ledc hardware for internal pins
     if (pin < GPIO_PIN_COUNT) {
         if (pin_to_channel[pin] == 0) {
@@ -298,4 +299,10 @@ void analogWrite(uint8_t pin, int value)
         }
         ledcWrite(pin_to_channel[pin] - 1, value);
     }
+}
+
+void analogWriteMilliVolts(uint8_t pin, uint32_t value)
+{
+    if (value > 3300) value = 3300;
+    analogWrite(pin, value * 255 / 3300);
 }

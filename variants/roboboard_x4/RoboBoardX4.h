@@ -29,8 +29,8 @@ public:
     Feature::DCXX dcAB, dcCD;
     Feature::SERVO servo;
     Feature::RGB rgb;
-    Feature::GPIO gpioA, gpioB, gpioC, gpioD;
-    Feature::ModuleScan module;
+    Feature::TBUS tbus;
+    Feature::Qwiic qwiic;
     Feature::Function function;
     
     RoboBoardX4();
@@ -53,6 +53,9 @@ public:
     void restart();
 
     int getSerial();
+    int getRevisionNum();
+    int getDriverVersionNum();
+    int getSoftwareVersionNum();
     char* getRevision();
     char* getDriverVersion();
     char* getSoftwareVersion();

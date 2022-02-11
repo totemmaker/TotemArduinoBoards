@@ -22,7 +22,8 @@ dcAB	LITERAL1
 dcCD	LITERAL1
 servo	LITERAL1
 rgb	LITERAL1
-module	LITERAL1
+tbus	LITERAL1
+qwiic	LITERAL1
 function	LITERAL1
 
 #######################################
@@ -40,6 +41,9 @@ enableAppControl	KEYWORD2
 reset	KEYWORD2
 restart	KEYWORD2
 getSerial	KEYWORD2
+getRevisionNum	KEYWORD2
+getDriverVersionNum	KEYWORD2
+getSoftwareVersionNum	KEYWORD2
 getRevision	KEYWORD2
 getDriverVersion	KEYWORD2
 getSoftwareVersion	KEYWORD2
@@ -117,10 +121,16 @@ colorTotem	KEYWORD2
 fadeColorTotem	KEYWORD2
 setBinary	KEYWORD2
 
-### RoboBoard X4 - module
-getLastNumber	KEYWORD2
-getLastSerial	KEYWORD2
+### RoboBoard X4 - tbus
+getNumber	KEYWORD2
+getSerial	KEYWORD2
 scan	KEYWORD2
+
+### RoboBoard X4 - qwiic
+getAddr	KEYWORD2
+
+### RoboBoard X4 - function
+getCh	KEYWORD2
 
 #######################################
 # Module functions

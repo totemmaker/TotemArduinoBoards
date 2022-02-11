@@ -68,6 +68,7 @@ void __analogInit(){
 
 void __analogSetPinAttenuation(uint8_t pin, adc_attenuation_t attenuation)
 {
+    __ROBOBARD_X4_REMAP_VOID(pin, SPECIAL, 0);
     int8_t channel = digitalPinToAnalogChannel(pin);
     if(channel < 0 || attenuation > 3){
         return ;
@@ -81,6 +82,7 @@ void __analogSetPinAttenuation(uint8_t pin, adc_attenuation_t attenuation)
 }
 
 bool __adcAttachPin(uint8_t pin){
+    __ROBOBARD_X4_REMAP_BOOL(pin, SPECIAL, 0);
     int8_t channel = digitalPinToAnalogChannel(pin);
     if(channel < 0){
         log_e("Pin %u is not ADC pin!", pin);
@@ -116,6 +118,7 @@ void __analogReadResolution(uint8_t bits)
 
 uint16_t __analogRead(uint8_t pin)
 {
+    __ROBOBARD_X4_REMAP_INT(pin, ANALOG|INPUT, __analogWidth + 9);
     int8_t channel = digitalPinToAnalogChannel(pin);
     int value = 0;
     esp_err_t r = ESP_OK;
@@ -143,6 +146,7 @@ uint16_t __analogRead(uint8_t pin)
 }
 
 void __analogSetVRefPin(uint8_t pin){
+    __ROBOBARD_X4_REMAP_VOID(pin, SPECIAL, 0);
     if(pin <25 || pin > 27){
         pin = 0;
     }
@@ -150,6 +154,7 @@ void __analogSetVRefPin(uint8_t pin){
 }
 
 uint32_t __analogReadMilliVolts(uint8_t pin){
+    __ROBOBARD_X4_REMAP_INT(pin, ANALOG|INPUT|OPEN_DRAIN, 0);
     int8_t channel = digitalPinToAnalogChannel(pin);
     if(channel < 0){
         log_e("Pin %u is not ADC pin!", pin);
@@ -203,6 +208,9 @@ uint32_t __analogReadMilliVolts(uint8_t pin){
 
 int __hallRead()    //hall sensor without LNA
 {
+#ifdef ARDUINO_ROBOBOARD_X4
+    return 0; // Pins 36 & 39 are connected. Can't be used
+#else
     int Sens_Vp0;
     int Sens_Vn0;
     int Sens_Vp1;
@@ -223,6 +231,7 @@ int __hallRead()    //hall sensor without LNA
     CLEAR_PERI_REG_MASK(SENS_SAR_TOUCH_CTRL1_REG, SENS_XPD_HALL_FORCE);
     CLEAR_PERI_REG_MASK(SENS_SAR_TOUCH_CTRL1_REG, SENS_HALL_PHASE_FORCE);
     return (Sens_Vp1 - Sens_Vp0) - (Sens_Vn1 - Sens_Vn0);
+#endif
 }
 
 extern uint16_t analogRead(uint8_t pin) __attribute__ ((weak, alias("__analogRead")));

@@ -12,6 +12,7 @@
 #define digitalPinHasPWM(p)         (p < 34)
 
 static const uint8_t LED_BUILTIN = 13;
+static const uint8_t BUTTON_BUILTIN = 18;
 
 static const uint8_t TX = 1;
 static const uint8_t RX = 3;

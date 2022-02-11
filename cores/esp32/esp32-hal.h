@@ -72,6 +72,7 @@ void yield(void);
 
 //outputs pin analog value
 void analogWrite(uint8_t pin, int value);
+void analogWriteMilliVolts(uint8_t pin, uint32_t value);
 
 //returns chip temperature in Celsius
 float temperatureRead();
@@ -114,6 +115,17 @@ void arduino_phy_init();
 
 #if !CONFIG_AUTOSTART_ARDUINO
 void initArduino();
+#endif
+
+#ifdef ARDUINO_ROBOBOARD_X4
+int __override_rev10_pin(uint8_t pin, uint8_t flag, uint32_t arg);
+#define __ROBOBARD_X4_REMAP_VOID(pin, flag, arg) if (__override_rev10_pin(pin, flag, arg) != -1) return
+#define __ROBOBARD_X4_REMAP_BOOL(pin, flag, arg) if (__override_rev10_pin(pin, flag, arg) != -1) return false
+#define __ROBOBARD_X4_REMAP_INT(pin, flag, arg) int __ret = __override_rev10_pin(pin, flag, arg); if (__ret != -1) return __ret
+#else
+#define __ROBOBARD_X4_REMAP_VOID(pin, flag, arg)
+#define __ROBOBARD_X4_REMAP_BOOL(pin, flag, arg)
+#define __ROBOBARD_X4_REMAP_INT(pin, flag, arg)
 #endif
 
 #ifdef __cplusplus
