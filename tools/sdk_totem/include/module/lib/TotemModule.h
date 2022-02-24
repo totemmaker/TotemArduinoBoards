@@ -19,7 +19,6 @@
 #define TOTEMMODULE
 
 #include <stdint.h>
-#include <string>
 
 #include "LinkedObservers.h"
 #include "ModuleData.h"
@@ -45,9 +44,6 @@ public:
     bool write(const char *command, const char (&value)[VSIZE]) {
         return write(hashCmd(command), value);
     }
-    bool write(const char *command, const std::string value) {
-        return write(hashCmd(command), value);
-    }
     bool write(const char *command, const uint8_t *bytes, uint32_t bytesCount) {
         return write(hashCmd(command), bytes, bytesCount);
     }
@@ -65,9 +61,6 @@ public:
     }
     template <int VSIZE>
     bool writeWait(const char *command, const char (&value)[VSIZE]) {
-        return writeWait(hashCmd(command), value);
-    }
-    bool writeWait(const char *command, const std::string value) {
         return writeWait(hashCmd(command), value);
     }
     bool writeWait(const char *command, const uint8_t *bytes, uint32_t bytesCount) {
@@ -115,9 +108,6 @@ public:
     bool write(uint32_t command, const char (&value)[VSIZE]) {
         return moduleWrite(command, value, VSIZE-1, false);
     }
-    bool write(uint32_t command, const std::string value) {
-        return moduleWrite(command, value.c_str(), value.length(), false);
-    }
     bool write(uint32_t command, const uint8_t *bytes, uint32_t bytesCount) {
         return moduleWrite(command, reinterpret_cast<const char*>(bytes), bytesCount, false);
     }
@@ -136,9 +126,6 @@ public:
     template <int VSIZE>
     bool writeWait(uint32_t command, const char (&value)[VSIZE]) {
         return moduleWrite(command, value, VSIZE-1, true);
-    }
-    bool writeWait(uint32_t command, const std::string &value) {
-        return moduleWrite(command, value.c_str(), value.length(), true);
     }
     bool writeWait(uint32_t command, const uint8_t *bytes, uint32_t bytesCount) {
         return moduleWrite(command, reinterpret_cast<const char*>(bytes), bytesCount, true);
