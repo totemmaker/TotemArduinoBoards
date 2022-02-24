@@ -279,30 +279,67 @@ void ledcDetachPin(uint8_t pin)
     pinMatrixOutDetach(pin, false, false);
 }
 
-#define GPIO_LEDC_CHANNEL_NUM 8
+#define LEDC_CHANNEL_MAX 8
 
-static int8_t pin_to_channel[GPIO_PIN_COUNT] = { 0 };
-static int cnt_channel = GPIO_LEDC_CHANNEL_NUM;
+static struct PinMode {
+    uint8_t ch, mode;
+} pin_config[GPIO_PIN_COUNT] = { 0 };
+static int used_channel_cnt = 0;
 void analogWrite(uint8_t pin, int value)
 {
     __ROBOBARD_X4_REMAP_VOID(pin, ANALOG|OUTPUT, value);
-    // Use ledc hardware for internal pins
-    if (pin < GPIO_PIN_COUNT) {
-        if (pin_to_channel[pin] == 0) {
-        if (!cnt_channel) {
-            log_e("No more analogWrite channels available! You can have maximum %u", GPIO_LEDC_CHANNEL_NUM);
+    if (pin >= GPIO_PIN_COUNT)
+        return;
+    // Attach pin to channel
+    if (pin_config[pin].mode == 0) {
+        if (used_channel_cnt == LEDC_CHANNEL_MAX) {
+            log_e("No more analogWrite channels available! You can have maximum %u", LEDC_CHANNEL_MAX);
             return;
         }
-        pin_to_channel[pin] = cnt_channel--;
-        ledcAttachPin(pin, cnt_channel);
-        ledcSetup(cnt_channel, 1000, 8);
-        }
-        ledcWrite(pin_to_channel[pin] - 1, value);
+        pin_config[pin].ch = used_channel_cnt++;
+        ledcAttachPin(pin, pin_config[pin].ch);
     }
+    // Setup pin for specific mode
+    if (pin_config[pin].mode != 1) {
+        pin_config[pin].mode = 1; // Mode analog
+        ledcSetup(pin_config[pin].ch, 1000, 8);
+    }
+    // Workaround for duty cycle is not 100%
+    if (value == 255) value = 256;
+    // Write pin
+    ledcWrite(pin_config[pin].ch, value);
 }
 
 void analogWriteMilliVolts(uint8_t pin, uint32_t value)
 {
     if (value > 3300) value = 3300;
     analogWrite(pin, value * 255 / 3300);
+}
+
+void __tone(uint8_t pin, unsigned int frequency, unsigned long duration) //TODO: duration not implemented
+{
+    if (pin >= GPIO_PIN_COUNT)
+        return;
+    // Attach pin to channel
+    if (pin_config[pin].mode == 0) {
+        if (used_channel_cnt == LEDC_CHANNEL_MAX) {
+            log_e("No more analogWrite channels available! You can have maximum %u", LEDC_CHANNEL_MAX);
+            return;
+        }
+        pin_config[pin].ch = used_channel_cnt++;
+        ledcAttachPin(pin, pin_config[pin].ch);
+    }
+    pin_config[pin].mode = 2; // Mode tone
+    // Write pin
+    ledcSetup(pin_config[pin].ch, frequency, 10);
+    ledcWriteTone(pin_config[pin].ch, frequency);
+}
+void __noTone(uint8_t pin) {
+    if (pin >= GPIO_PIN_COUNT)
+        return;
+    // Check if mode is tone
+    if (pin_config[pin].mode == 2) {
+        // Write pin
+        ledcWrite(pin_config[pin].ch, 0);
+    }
 }

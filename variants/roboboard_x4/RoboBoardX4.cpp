@@ -27,3 +27,25 @@ void initVariant(void) {
     X4.enableAppControl();
 #endif
 }
+
+extern "C" void __tone(uint8_t _pin, unsigned int frequency, unsigned long duration);
+extern "C" void __noTone(uint8_t _pin);
+
+void tone(uint8_t _pin, unsigned int frequency, unsigned long duration) {
+    if ((_pin == GPIOA || _pin == GPIOB || _pin == GPIOC || _pin == GPIOD)
+        && X4.getRevisionNum() != 10) {
+        __tone(_pin, frequency, duration);
+    }
+    else {
+        X4.dcAB.tone(frequency, duration);
+    }
+}
+void noTone(uint8_t _pin) {
+    if ((_pin == GPIOA || _pin == GPIOB || _pin == GPIOC || _pin == GPIOD)
+        && X4.getRevisionNum() != 10) {
+        __noTone(_pin);
+    }
+    else {
+        X4.dcAB.tone(0, 0);
+    }
+}
