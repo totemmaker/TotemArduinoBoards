@@ -22,16 +22,16 @@
 
 class RoboBoardX4 {
 public:
-    Feature::Config config;
-    Feature::Button button;
-    Feature::Led led;
-    Feature::DC dc;
-    Feature::DCXX dcAB, dcCD;
-    Feature::SERVO servo;
-    Feature::RGB rgb;
-    Feature::TBUS tbus;
-    Feature::Qwiic qwiic;
-    Feature::Function function;
+    Features04::Config config;
+    Features04::Button button;
+    Features04::Led led;
+    Features04::DC dc;
+    Features04::DCXX dcAB, dcCD;
+    Features04::SERVO servo;
+    Features04::RGB rgb;
+    Features04::TBUS tbus;
+    Features04::Qwiic qwiic;
+    Features04::Function function;
     
     RoboBoardX4();
     // Read battery voltage [8.40:12.60]
@@ -48,17 +48,23 @@ public:
     bool isUSB();
     // Start Bluetooth control from App service (more code size)
     bool enableAppControl();
-
-    void reset();
+    // Restart processor
     void restart();
 
+    // Get X4 serial number
     int getSerial();
+    // Get X4 board revision version number
     int getRevisionNum();
+    // Get X4 driver version number
     int getDriverVersionNum();
-    int getSoftwareVersionNum();
+    // Get X4 firmware version number
+    int getFirmwareVersionNum();
+    // Get X4 board revision version string
     char* getRevision();
+    // Get X4 driver version string
     char* getDriverVersion();
-    char* getSoftwareVersion();
+    // Get X4 firmware version string
+    char* getFirmwareVersion();
 };
 
 extern RoboBoardX4 X4;

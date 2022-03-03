@@ -22,7 +22,7 @@
 #include <stdbool.h>
 #include "Channels.h"
 
-namespace Feature {
+namespace Features04 {
 /*******************************
           X4.config
 *******************************/
@@ -369,8 +369,8 @@ class Qwiic {
 public:
     // Get discovered Qwiic module address
     uint8_t getAddr();
-    // Start Qwiic module scan
-    bool scan();
+    // Scan for connected Qwiic modules
+    int scan();
     // Register Qwiic module discovery event
     void addEvent(void (*moduleEvt)(void));
 };
@@ -388,6 +388,6 @@ public:
     // Register function event channel
     void addEvent(uint8_t ch, void (*functionEvt)(void));
 };
-} // namespace Feature
+} // namespace Features04
 
 #endif /* LIB_ROBOBOARDX4_SRC_ROBOBOARDX4FEATURES */

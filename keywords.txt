@@ -43,10 +43,10 @@ restart	KEYWORD2
 getSerial	KEYWORD2
 getRevisionNum	KEYWORD2
 getDriverVersionNum	KEYWORD2
-getSoftwareVersionNum	KEYWORD2
+getFirmwareVersionNum	KEYWORD2
 getRevision	KEYWORD2
 getDriverVersion	KEYWORD2
-getSoftwareVersion	KEYWORD2
+getFirmwareVersion	KEYWORD2
 
 ### RoboBoard X4 - config
 setRobotName	KEYWORD2
