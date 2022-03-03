@@ -21,72 +21,75 @@
 #include "lib/TotemEventModule.h"
 
 namespace Features22 {
-class Light : public Feature::MultiEventHidden {
-    const uint32_t cmdList[5] = {
-        Feature::CMD("color/R"), Feature::CMD("color/G"), Feature::CMD("color/B"),
-        Feature::CMD("light/IR"), Feature::CMD("light/lumen")
-    };
+using namespace Feature;
+namespace cmd {
+enum Commands {
+    color              = CMD("color"),
+    color_R            = CMD("color/R"),
+    color_G            = CMD("color/G"),
+    color_B            = CMD("color/B"),
+    light_IR           = CMD("light/IR"),
+    light_lumen        = CMD("light/lumen"),
+    light_gain         = CMD("light/gain"),
+    ntc                = CMD("ntc"),
+    ntc_C              = CMD("ntc/C"),
+    ntc_F              = CMD("ntc/F"),
+    ntc_K              = CMD("ntc/K"),
+    ntc_R              = CMD("ntc/R"),
+    temperature        = CMD("temperature"),
+    temperature_C      = CMD("temperature/C"),
+    temperature_F      = CMD("temperature/F"),
+    temperature_K      = CMD("temperature/K"),
+    humidity           = CMD("humidity"),
+    pressure           = CMD("pressure"),
+    pressure_mbar      = CMD("pressure/mbar"),
+    pressure_Pa        = CMD("pressure/Pa"),
+    pressure_hPa       = CMD("pressure/hPa"),
+    pressure_psi       = CMD("pressure/psi"),
+    altitude           = CMD("altitude"),
+    altitude_m         = CMD("altitude/m"),
+    altitude_ft        = CMD("altitude/ft"),
+    altitude_seaLevel  = CMD("altitude/seaLevel"),
+    led                = CMD("led"),
+};
+} // namespace cmd
+class Color : public SingleEvent {
+    const uint32_t events[3] = {cmd::color_R, cmd::color_G, cmd::color_B};
 public:
-    Light(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    Color(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get Red color amount [0:262143]
     uint32_t getRed() {
-        return this->getCmd(0)->getInt();
+        return this->getCmd(cmd::color_R).getInt();
     }
     // Get Green color amount [0:262143]
     uint32_t getGreen() {
-        return this->getCmd(1)->getInt();
+        return this->getCmd(cmd::color_G).getInt();
     }
     // Get Blue color amount [0:262143]
     uint32_t getBlue() {
-        return this->getCmd(2)->getInt();
+        return this->getCmd(cmd::color_B).getInt();
     }
+};
+class Light : public SingleEvent {
+    const uint32_t events[2] = {cmd::light_IR, cmd::light_lumen};
+public:
+    Light(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get Infrared light amount [0:262143]
     uint32_t getIR() {
-        return this->getCmd(3)->getInt();
+        return this->getCmd(cmd::light_IR).getInt();
     }
     // Get Luminosity amount [0:262143]
     uint32_t getLumen() {
-        return this->getCmd(4)->getInt();
+        return this->getCmd(cmd::light_lumen).getInt();
     }
-    // Change light sensor gain
-    void setLightSensorGain(uint8_t gain) {
-        writeCustomCmd(Feature::CMD("light/gain"), gain);
-    }
-    // Event Red
-    bool isEventRed() { return this->isEvent(0); }
-    void eventRed() { this->event(0); }
-    void eventRed(uint32_t intervalMs) { this->event(0, intervalMs); }
-    void eventOnceRed() { this->eventOnce(0); }
-    // Event Green
-    bool isEventGreen() { return this->isEvent(1); }
-    void eventGreen() { this->event(1); }
-    void eventGreen(uint32_t intervalMs) { this->event(1, intervalMs); }
-    void eventOnceGreen() { this->eventOnce(1); }
-    // Event Blue
-    bool isEventBlue() { return this->isEvent(2); }
-    void eventBlue() { this->event(2); }
-    void eventBlue(uint32_t intervalMs) { this->event(2, intervalMs); }
-    void eventOnceBlue() { this->eventOnce(2); }
-    // Event Infrared
-    bool isEventIR() { return this->isEvent(3); }
-    void eventIR() { this->event(3); }
-    void eventIR(uint32_t intervalMs) { this->event(3, intervalMs); }
-    void eventOnceIR() { this->eventOnce(3); }
-    // Event Luminosity
-    bool isEventLumen() { return this->isEvent(4); }
-    void eventLumen() { this->event(4); }
-    void eventLumen(uint32_t intervalMs) { this->event(4, intervalMs); }
-    void eventOnceLumen() { this->eventOnce(4); }
 };
-class Temp : public Feature::MultiEventHidden {
-    const uint32_t cmdList[2] = {
-        Feature::CMD("temperature/C"), Feature::CMD("humidity")
-    };
+class Temp : public SingleEvent {
+    const uint32_t events[2] = {cmd::temperature_C, cmd::humidity};
 public:
-    Temp(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    Temp(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get temperature in Celsius
     float getC() {
-        float value = this->getCmd(0)->getInt();
+        float value = this->getCmd(cmd::temperature_C).getInt();
         return value / 100;
     }
     // Get temperature in Farenheit
@@ -99,28 +102,16 @@ public:
     }
     // Get humidity [0:100]%
     uint8_t getHumidity() {
-        return this->getCmd(1)->getInt();
+        return this->getCmd(cmd::humidity).getInt();
     }
-    // Event Temperature
-    bool isEventTemperature() { return this->isEvent(0); }
-    void eventTemperature() { this->event(0); }
-    void eventTemperature(uint32_t intervalMs) { this->event(0, intervalMs); }
-    void eventOnceTemperature() { this->eventOnce(0); }
-    // Event Humidity
-    bool isEventHumidity() { return this->isEvent(1); }
-    void eventHumidity() { this->event(1); }
-    void eventHumidity(uint32_t intervalMs) { this->event(1, intervalMs); }
-    void eventOnceHumidity() { this->eventOnce(1); }
 };
-class TempNTC : public Feature::MultiEventHidden {
-    const uint32_t cmdList[2] = {
-        Feature::CMD("nfc/C"), Feature::CMD("nfc/R")
-    };
+class TempNTC : public SingleEvent {
+    const uint32_t events[2] = {cmd::ntc_C, cmd::ntc_R};
 public:
-    TempNTC(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    TempNTC(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get temperature in Celsius
     float getC() {
-        float value = this->getCmd(0)->getInt();
+        float value = this->getCmd(cmd::ntc_C).getInt();
         return value / 100;
     }
     // Get temperature in Farenheit
@@ -133,28 +124,16 @@ public:
     }
     // Get NTC sensor resistance
     uint32_t getResistance() {
-        return this->getCmd(1)->getInt();
+        return this->getCmd(cmd::ntc_R).getInt();
     }
-    // Event Temperature
-    bool isEventTemperature() { return this->isEvent(0); }
-    void eventTemperature() { this->event(0); }
-    void eventTemperature(uint32_t intervalMs) { this->event(0, intervalMs); }
-    void eventOnceTemperature() { this->eventOnce(0); }
-    // Event Resistance
-    bool isEventResistance() { return this->isEvent(1); }
-    void eventResistance() { this->event(1); }
-    void eventResistance(uint32_t intervalMs) { this->event(1, intervalMs); }
-    void eventOnceResistance() { this->eventOnce(1); }
 };
-class Pressure : public Feature::MultiEventHidden {
-    const uint32_t cmdList[2] = {
-        Feature::CMD("pressure/Pa"), Feature::CMD("altitude/ft")
-    };
+class Pressure : public SingleEvent {
+    const uint32_t events[1] = {cmd::pressure_Pa};
 public:
-    Pressure(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    Pressure(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get pressure in Pa (Pascal)
     float getPa() {
-        return this->getCmd(0)->getInt();
+        return this->getCmd(cmd::pressure_Pa).getInt();
     }
     // Get pressure in hPa (hectopascal)
     float gethPa() {
@@ -172,40 +151,28 @@ public:
     float getPsi() {
         return this->getPa() / 6895;
     }
+};
+class Altitude : public SingleEvent {
+    const uint32_t events[1] = {cmd::altitude_ft};
+public:
+    Altitude(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get altitude in M (Meter)
-    float getAltMeter() {
-        return this->getAltFoot() * 0.3048f;
+    float getMeter() {
+        return this->getFoot() * 0.3048f;
     }
     // Get altitude in Ft (Foot)
-    float getAltFoot() {
-        return this->getCmd(1)->getInt();
+    float getFoot() {
+        return this->getCmd(cmd::altitude_ft).getInt();
     }
     // Get altitude in in (Inch)
-    float getAltInch() {
-        return this->getAltFoot() * 12;
+    float getInch() {
+        return this->getFoot() * 12;
     }
-    // Set current pressure at sea level (Pascal)
-    void setSeaLevel(uint32_t pressurePa) {
-        writeCustomCmd(Feature::CMD("altitude/seaLevel"), pressurePa);
-    }
-    // Event Pressure
-    bool isEventPressure() { return this->isEvent(0); }
-    void eventPressure() { this->event(0); }
-    void eventPressure(uint32_t intervalMs) { this->event(0, intervalMs); }
-    void eventOncePressure() { this->eventOnce(0); }
-    // Event Altitude
-    bool isEventAltitude() { return this->isEvent(1); }
-    void eventAltitude() { this->event(1); }
-    void eventAltitude(uint32_t intervalMs) { this->event(1, intervalMs); }
-    void eventOnceAltitude() { this->eventOnce(1); }
 };
-class Led : public Feature::Simple {
+class Led : public NoEvent {
     uint8_t ledState = 0;
-    const uint32_t cmdList[1] = {
-        Feature::CMD("led")
-    };
 public:
-    Led(TotemModuleData &d) : Feature::Simple(d, cmdList) { }
+    Led(TotemModuleData &d) : NoEvent(d) { }
     // Turn LED on
     void on() {
         set(1);
@@ -220,7 +187,7 @@ public:
     }
     // Set LED state [HIGH:LOW] (on / off)
     void set(uint8_t state) {
-        writeChannel(0, state ? 1 : 0);
+        writeCmd(cmd::led, state ? 1 : 0);
         ledState = state;
     }
     // Read LED state [HIGH:LOW] (on / off)
@@ -228,18 +195,43 @@ public:
         return ledState;
     }
 };
-};
+} // namespace Features22
 
-class Module22 : public TotemEventModule {
+class Module22 : public Feature::TotemEventModule {
+    Feature::Event eventsList[11] = {
+        cmd::color_R,
+        cmd::color_G,
+        cmd::color_B,
+        cmd::light_IR,
+        cmd::light_lumen,
+        cmd::temperature_C,
+        cmd::humidity,
+        cmd::ntc_C,
+        cmd::ntc_R,
+        cmd::pressure_Pa,
+        cmd::altitude_ft,
+    };
 public:
+    using cmd = Features22::cmd::Commands;
+    Features22::Color color;
     Features22::Light light;
     Features22::Temp  temp;
     Features22::TempNTC  ntc;
     Features22::Pressure pressure;
+    Features22::Altitude altitude;
     Features22::Led led;
+
+    // Change light sensor gain
+    void setLightSensorGain(uint8_t gain) {
+        data.module.write(cmd::light_gain, gain);
+    }
+    // Set current pressure at sea level (Pascal)
+    void setSeaLevel(uint32_t pressurePa) {
+        data.module.write(cmd::altitude_seaLevel, pressurePa);
+    }
     
-    Module22(uint16_t serial = 0) : TotemEventModule(22, serial),
-    light(data), temp(data), ntc(data), pressure(data), led(data)
+    Module22(uint16_t serial = 0) : Feature::TotemEventModule(22, serial, eventsList),
+    color(data), light(data), temp(data), ntc(data), pressure(data), altitude(data), led(data)
     { }
 };
 

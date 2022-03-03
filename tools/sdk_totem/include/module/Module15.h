@@ -21,28 +21,39 @@
 #include "lib/TotemEventModule.h"
 
 namespace Features15 {
-template <int KNOB_CNT>
-class Knob : public Feature::MultiEvent {
-    const uint32_t cmdList[KNOB_CNT] = {
-        Feature::CMD("knobA"), Feature::CMD("knobB"), Feature::CMD("knobC")
-    };
+using namespace Feature;
+namespace cmd {
+enum Commands {
+    knobA        = CMD("knobA"),
+    knobB        = CMD("knobB"),
+    knobC        = CMD("knobC"),
+    knobAll_bits = CMD("knobAll/bits"),
+    ledAll_reset = CMD("ledAll/reset"),
+    ledAll       = CMD("ledAll"),
+    ledA         = CMD("ledA"),
+    ledB         = CMD("ledB"),
+    ledC         = CMD("ledC"),
+    buttonA      = CMD("buttonA"),
+    buttonB      = CMD("buttonB"),
+    buttonC      = CMD("buttonC"),
+};
+} // namespace cmd
+class Knob : public ChannelEvent {
+    const uint32_t channels[3] = {cmd::knobA, cmd::knobB, cmd::knobC};
 public:
-    Knob(TotemModuleData &d) : Feature::MultiEvent(d, cmdList) { }
+    Knob(TotemModuleData &d) : ChannelEvent(d, channels) { }
     // Get knob position [0:255]
-    int get(uint8_t ch) {
-        return this->getCmd(ch)->getInt();
+    int getPosition(uint8_t ch) {
+        return this->getChannel(ch).getInt();
     }
 };
-template <int BUTTON_CNT>
-class Button : public Feature::MultiEvent {
-    const uint32_t cmdList[BUTTON_CNT] = {
-        Feature::CMD("buttonA"), Feature::CMD("buttonB"), Feature::CMD("buttonC")
-    };
+class Button : public ChannelEvent {
+    const uint32_t channels[3] = {cmd::buttonA, cmd::buttonB, cmd::buttonC};
 public:
-    Button(TotemModuleData &d) : Feature::MultiEvent(d, cmdList) { }
+    Button(TotemModuleData &d) : ChannelEvent(d, channels) { }
     // Is button pressed
     bool isPressed(uint8_t ch) {
-        return this->getCmd(ch)->getInt();
+        return this->getChannel(ch).getInt();
     }
     // Is button released
     bool isReleased(uint8_t ch) {
@@ -50,14 +61,12 @@ public:
     }
 };
 template <int LED_CNT>
-class Led : public Feature::Simple {
+class Led : public NoEvent {
+    const uint32_t channels[3] = {cmd::ledA, cmd::ledB, cmd::ledC};
     uint8_t led_alpha[LED_CNT] = { 255, 255, 255 };
     uint8_t ledState = 0;
-    const uint32_t cmdList[LED_CNT] = {
-        Feature::CMD("ledA"), Feature::CMD("ledB"), Feature::CMD("ledC")
-    };
 public:
-    Led(TotemModuleData &d) : Feature::Simple(d, cmdList) { }
+    Led(TotemModuleData &d) : NoEvent(d, channels) { }
     // Turn LED on
     void on(uint8_t ch) {
         this->set(ch, 1);
@@ -104,7 +113,7 @@ public:
     // Reset LED to default operation (display line position)
     void reset() {
         ledState = 0;
-        this->writeCustomCmd(Feature::CMD("ledAll/reset"));
+        this->writeCmd(cmd::ledAll_reset);
     }
     // Set LED state by binary representation [B000:B111]
     void setBinary(uint8_t bin) {
@@ -115,19 +124,29 @@ public:
         }
     }
 };
-}
+} // namespace Features15
 
-class Module15 : public TotemEventModule {
+class Module15 : public Feature::TotemEventModule {
+    Feature::Event eventsList[6] = {
+        cmd::knobA,
+        cmd::knobB,
+        cmd::knobC,
+        cmd::buttonA,
+        cmd::buttonB,
+        cmd::buttonC,
+    };
 public:
-    Features15::Knob<3> knob;
-    Features15::Button<3> button;
+    using cmd = Features15::cmd::Commands;
+    Features15::Knob knob;
+    Features15::Button button;
     Features15::Led<3> led;
     
+    // Configure knob resolution in bits [6,8,10,12]
     void setKnobBits(uint8_t resolution) {
-        data.module.write(Feature::CMD("knobAll/bits"), resolution);
+        data.module.write(cmd::knobAll_bits, resolution);
     }
-    
-    Module15(uint16_t serial = 0) : TotemEventModule(15, serial),
+
+    Module15(uint16_t serial = 0) : Feature::TotemEventModule(15, serial, eventsList),
     knob(data), button(data), led(data)
     { }
 };

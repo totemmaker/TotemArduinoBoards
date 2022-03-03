@@ -21,15 +21,23 @@
 #include "lib/TotemEventModule.h"
 
 namespace Features11 {
-class Distance : public Feature::SingleEvent {
-    const uint32_t cmdList[1] = {
-        Feature::CMD("distance")
-    };
+using namespace Feature;
+namespace cmd {
+enum Commands {
+    distance      = CMD("distance"),
+    rgbAll_totem  = CMD("rgbAll/totem"),
+    rgbAll_bright = CMD("rgbAll/bright"),
+    rgbAll        = CMD("rgbAll"),
+    rgbX          = CMD("rgbX"),
+};
+} // namespace cmd
+class Distance : public SingleEvent {
+    const uint32_t events[1] = {cmd::distance};
 public:
-    Distance(TotemModuleData &d) : Feature::SingleEvent(d, cmdList) { }
+    Distance(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get distance in milimeters
     uint32_t getMM() {
-        uint32_t mm = this->getCmd()->getInt();
+        uint32_t mm = this->getCmd(cmd::distance).getInt();
         if (mm >= 2000) mm = 0;
         return mm;
     }
@@ -46,12 +54,12 @@ public:
         return (float)getMM() * 0.0393701f;
     }
     // Check if sensor is detecting any obstacle
-    bool inRange() {
+    bool isDetected() {
         return getMM() != 0;
     }
 };
 template <int RGB_CNT>
-class RGB : public Feature::Simple {
+class RGB : public NoEvent {
     struct {
         uint32_t color;
         bool isOn;
@@ -66,11 +74,8 @@ class RGB : public Feature::Simple {
         {0xffff00, true}
     };
     bool RGB_isMixed = true;
-    const uint32_t cmdList[RGB_CNT] = {
-        Feature::CMD("rgbAll"), Feature::CMD("rgbX")
-    };
 public:
-    RGB(TotemModuleData &d) : Feature::Simple(d, cmdList) { }
+    RGB(TotemModuleData &d) : NoEvent(d) { }
     // Turn LED on
     void on(uint8_t ch) {
         this->set(ch, 1);
@@ -116,7 +121,7 @@ public:
         }
         uint32_t hex = (uint32_t)r << 16 | (uint32_t)g << 8 | b;
         if (ch == chAll) {
-            this->writeChannel(0, hex);
+            this->writeCmd(cmd::rgbAll, hex);
             for (int i=0; i<RGB_CNT; i++) {
                 if (hex) RGB_state[i].color = hex;
                 RGB_state[i].isOn = hex != 0;
@@ -124,7 +129,7 @@ public:
             if (hex) RGB_isMixed = false;
         }
         else {
-            this->writeChannel(1, (uint32_t)ch << 24 | hex);
+            this->writeCmd(cmd::rgbX, (uint32_t)ch << 24 | hex);
             if (hex) RGB_state[ch].color = hex;
             RGB_state[ch].isOn = hex != 0;
             RGB_isMixed = true;
@@ -144,12 +149,12 @@ public:
     }
     // Enable bright mode
     void setBrightMode(bool on) {
-        this->writeCustomCmd(Feature::CMD("rgbAll/bright"), on);
+        this->writeCmd(cmd::rgbAll_bright, on);
     }
 
     // Set all LED with Totem colors
     void colorTotem() {
-        this->writeCustomCmd(Feature::CMD("rgbAll/totem"));
+        this->writeCmd(cmd::rgbAll_totem);
         RGB_state[0].color = 0x18c712;
         RGB_state[1].color = 0xffff00;
         RGB_state[2].color = 0x1254c7;
@@ -168,14 +173,18 @@ public:
         }
     }
 };
-}
+} // namespace Features11
 
-class Module11 : public TotemEventModule {
+class Module11 : public Feature::TotemEventModule {
+    Feature::Event eventsList[1] = {
+        cmd::distance,
+    };
 public:
+    using cmd = Features11::cmd::Commands;
     Features11::Distance distance;
     Features11::RGB<8> rgb;
 
-    Module11(uint16_t serial = 0) : TotemEventModule(11, serial),
+    Module11(uint16_t serial = 0) : Feature::TotemEventModule(11, serial, eventsList),
     distance(data), rgb(data)
     { }
 };

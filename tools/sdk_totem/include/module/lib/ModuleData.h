@@ -19,7 +19,6 @@
 #define LIB_TOTEM_SRC_API_MODULEDATA
 
 struct ModuleData {
-    bool is(const char *command);
     bool isInt() {
         return ptr == nullptr;
     }

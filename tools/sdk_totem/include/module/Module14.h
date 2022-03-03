@@ -21,19 +21,33 @@
 #include "lib/TotemEventModule.h"
 
 namespace Features14 {
-class Line : public Feature::MultiEventHidden {
-    const uint32_t cmdList[2] = {
-        Feature::CMD("line/pos"), Feature::CMD("line/color")
-    };
+using namespace Feature;
+namespace cmd {
+enum Commands {
+    sensor_threshold = CMD("sensor/threshold"),
+    sensor_range     = CMD("sensor/range"),
+    sensor_raw       = CMD("sensor/raw"),
+    line_junction    = CMD("line/junction"),
+    line_color       = CMD("line/color"),
+    line_pos         = CMD("line/pos"),
+    led              = CMD("led"),
+};
+} // namespace cmd
+class Line : public SingleEvent {
+    const uint32_t events[2] = {cmd::line_pos, cmd::line_color};
 public:
-    Line(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    Line(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get line position [-35:35]
     int getPosition() {
-        return this->getCmd(0)->getInt();
+        return this->getCmd(cmd::line_pos).getInt();
+    }
+    // Get color of detected line ['W','B',0]
+    void setColor(char color) {
+        writeCmd(cmd::line_color, color);
     }
     // Get color of detected line ['W','B',0]
     char getColor() {
-        return this->getCmd(1)->getInt();
+        return this->getCmd(cmd::line_color).getInt();
     }
     // Check if detected line color is white
     bool isColorWhite() {
@@ -47,58 +61,37 @@ public:
     bool isJunction() {
         return this->getColor() == 0;
     }
-    // Event Position
-    bool isEventPosition() { return this->isEvent(0); }
-    void eventPosition() { this->event(0); }
-    void eventPosition(uint32_t intervalMs) { this->event(0, intervalMs); }
-    void eventOncePosition() { this->eventOnce(0); }
-    // Event Color (junction)
-    bool isEventColor() { return this->isEvent(1); }
-    void eventColor() { this->event(1); }
-    void eventColor(uint32_t intervalMs) { this->event(1, intervalMs); }
-    void eventOnceColor() { this->eventOnce(1); }
+    // Check if line is currently detected
+    bool isDetected() {
+        return this->getColor() != 0;
+    }
 };
-class Sensor : public Feature::MultiEventHidden {
-    const uint32_t cmdList[2] = {
-        Feature::CMD("sensor/range"), Feature::CMD("sensor/raw")
-    };
+class Sensor : public SingleEvent {
+    const uint32_t events[2] = {cmd::sensor_range, cmd::sensor_raw};
 public:
-    Sensor(TotemModuleData &d) : Feature::MultiEventHidden(d, cmdList) { }
+    Sensor(TotemModuleData &d) : SingleEvent(d, events) { }
     // Get accuracy of line detection [0:100]%. Higher is better
     int getAccuracy() {
-        return this->getCmd(0)->getInt();
+        return this->getCmd(cmd::sensor_range).getInt();
     }
     // Get raw sensor contrast readings [0:100]%
     void getRaw(uint8_t raw[8]) {
         uint8_t *ptr;
-        if (!(this->getCmd(1)->getData(ptr)))
+        if (!(this->getCmd(cmd::sensor_raw).getData(ptr)))
             return;
         for (int i=0; i<8; i++) 
             raw[i] = ptr[i];
     }
     // Set minimum required accuracy to start line following [0:100]%
     void setThreshold(uint8_t contrast) {
-        this->writeCustomCmd(Feature::CMD("sensor/threshold"), contrast);
+        this->writeCmd(cmd::sensor_threshold, contrast);
     }
-    // Event Accuracy
-    bool isEventAccuracy() { return this->isEvent(0); }
-    void eventAccuracy() { this->event(0); }
-    void eventAccuracy(uint32_t intervalMs) { this->event(0, intervalMs); }
-    void eventOnceAccuracy() { this->eventOnce(0); }
-    // Event Raw
-    bool isEventRaw() { return this->isEvent(1); }
-    void eventRaw() { this->event(1); }
-    void eventRaw(uint32_t intervalMs) { this->event(1, intervalMs); }
-    void eventOnceRaw() { this->eventOnce(1); }
 };
 template <int LED_CNT>
-class Led : public Feature::Simple {
+class Led : public NoEvent {
     uint8_t ledState = 0;
-    const uint32_t cmdList[1] = {
-        Feature::CMD("led")
-    };
 public:
-    Led(TotemModuleData &d) : Feature::Simple(d, cmdList) { }
+    Led(TotemModuleData &d) : NoEvent(d) { }
     // Turn LED on
     void on(uint8_t ch) {
         this->set(ch, 1);
@@ -124,7 +117,7 @@ public:
         }
         else
             return;
-        this->writeChannel(0, ledState); 
+        this->writeCmd(cmd::led, ledState); 
     }
     // Read LED state [HIGH:LOW] (on / off)
     bool isOn(uint8_t ch) {
@@ -135,7 +128,7 @@ public:
     // Reset LED to default operation (display line position)
     void reset() {
         ledState = 0;
-        this->writeChannel(0, -1);
+        this->writeCmd(cmd::led, -1);
     }
     // Set LED state by binary representation [B00000000:B11111111]
     void setBinary(uint8_t bin) {
@@ -146,18 +139,27 @@ public:
             reverse |= (bin & 1);
             bin >>= 1;
         }
-        this->writeChannel(0, reverse);
+        this->writeCmd(cmd::led, reverse);
     }
 };
-}
+} // namespace Features14
 
-class Module14 : public TotemEventModule {
+class Module14 : public Feature::TotemEventModule {
+    uint8_t rawBuffer[8];
+    Feature::Event eventsList[5] = {
+        cmd::sensor_threshold,
+        cmd::sensor_range,
+        {cmd::sensor_raw, rawBuffer, 8},
+        cmd::line_color,
+        cmd::line_pos,
+    };
 public:
+    using cmd = Features14::cmd::Commands;
     Features14::Line line;
     Features14::Sensor sensor;
     Features14::Led<8> led;
 
-    Module14(uint16_t serial = 0) : TotemEventModule(14, serial),
+    Module14(uint16_t serial = 0) : Feature::TotemEventModule(14, serial, eventsList),
     line(data), sensor(data), led(data)
     { }
 };
