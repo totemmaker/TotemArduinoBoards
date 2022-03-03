@@ -2,11 +2,14 @@
 /*
   Module:  [11] Totem Distance sensor
   Details: Example showing how to enable RGB bright mode.
+           When object is not detected - displaying multi colors at max brightness
+           When object is detected - displaying single color at max brightness
   
-  Note: Bright mode can only be used to set all LED at the same color.
-  If different colors per LED are required - module will switch to
-  standard mode. This mode disables multiplexing, allowing for more
-  time for LED to emit light.
+  Note: Bright mode can only be used when setting all LED to the same color.
+  If different colors per LED are set - brightness will be dimmed.
+  This mode disables multiplexing, giving for more
+  time for each LED to emit light.
+  It is disabled by default to match brightness.
 */
 // Initialize Distance sensor
 Module11 sensor;
@@ -19,10 +22,10 @@ void setup() {
 void loop() {
   // Read distance
   int distance = sensor.distance.getMM();
-  // Check if distance is more than 0 and less than 500 (mm)
-  if (distance != 0 && distance < 500) {
+  // Check if distance is more than 0 and less than 300 (mm)
+  if (distance != 0 && distance < 300) {
     // Calculate color according to distance
-    int color = map(constrain(distance, 100, 500), 100, 500, 0, 255);
+    int color = map(constrain(distance, 100, 300), 100, 300, 0, 255);
     // Set all LED color (bright)
     sensor.rgb.colorRGB(chAll, 255-color, color, 0);
   }

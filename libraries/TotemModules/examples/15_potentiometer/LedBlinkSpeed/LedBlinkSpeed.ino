@@ -15,7 +15,7 @@ Module15 pot;
 // Create separate loop for LED A
 void loopLEDA() {
   pot.led.toggle(chA); // Toggle LED A
-  int knob = pot.knob.get(chA); // Read knobA
+  int knob = pot.knob.getPosition(chA); // Read knobA
   // Delay amount of time depending on knob position
   // Avoid setting delay to 0 because it takes all 
   // module bandwidth, slowing down other tasks
@@ -24,14 +24,14 @@ void loopLEDA() {
 // Create separate loop for LED B
 void loopLEDB() {
   pot.led.toggle(chB); // Toggle LED B
-  int knob = pot.knob.get(chB); // Read knobB
+  int knob = pot.knob.getPosition(chB); // Read knobB
   // Delay amount of time depending on knob position
   delay(knob == 0 ? 1 : knob);
 }
 // Create separate loop for LED C
 void loopLEDC() {
   pot.led.toggle(chC); // Toggle LED C
-  int knob = pot.knob.get(chC); // Read knobC
+  int knob = pot.knob.getPosition(chC); // Read knobC
   // Delay amount of time depending on knob position
   delay(knob == 0 ? 1 : knob);
 }

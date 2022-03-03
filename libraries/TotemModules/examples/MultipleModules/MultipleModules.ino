@@ -18,9 +18,9 @@ void setup() {
 // Loop program
 void loop() {
   // Receive knob positions
-  int knobA = pot.knob.get(chA);
-  int knobB = pot.knob.get(chB);
-  int knobC = pot.knob.get(chC);
+  int knobA = pot.knob.getPosition(chA);
+  int knobB = pot.knob.getPosition(chB);
+  int knobC = pot.knob.getPosition(chC);
   // Set Line Follower LED
   line.led.off(chAll);
   line.led.on(

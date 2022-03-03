@@ -4,8 +4,8 @@
   Details: Example showing how to read distance
 
   Note: Reading values directly (sensor.distance.getMM()) delays code for
-  ~700 microseconds (less than 1ms). Function will send request to module and
-  and awaits for response. Same as I2C based communication.
+  ~1ms. Function will send request to module and and awaits for response.
+  Same as I2C based communication.
   If you want non-blocking code, check "Event" based example.
 */
 // Initialize Distance sensor

@@ -4,8 +4,8 @@
   Details: Example showing how to read sensor data
   
   Note: Reading values directly (sensor.distance.getMM()) delays code for
-  ~700 microseconds (less than 1ms). Function will send request to module and
-  and awaits for response. Same as I2C based communication.
+  ~1ms. Function will send request to module and and awaits for response.
+  Same as I2C based communication.
   If you want non-blocking code, check "Event" based example.
 */
 // Initialize Environment sensor module
@@ -20,9 +20,9 @@ void loop() {
   Serial.print("LIGHT: ");
   // Print precise color values and amount of infrared light and luminosity [0:262143]
   Serial.printf(" Color R: %5d G: %5d B: %5d | IR: %5d Lumen: %5d\n", 
-    sensor.light.getRed(),
-    sensor.light.getGreen(),
-    sensor.light.getBlue(),
+    sensor.color.getRed(),
+    sensor.color.getGreen(),
+    sensor.color.getBlue(),
     sensor.light.getIR(),
     sensor.light.getLumen()
   );
@@ -43,7 +43,7 @@ void loop() {
   Serial.printf("Pressure: %.3fbar %2fpsi Altitude: %3.0fm\n", 
     sensor.pressure.getMbar(),
     sensor.pressure.getPsi(),
-    sensor.pressure.getAltMeter()
+    sensor.altitude.getMeter()
   );
   // Delay printing for 1000ms
   delay(1000);

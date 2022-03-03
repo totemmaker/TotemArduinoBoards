@@ -4,8 +4,8 @@
   Details: Example showing how to read module data
   
   Note: Reading values directly (sensor.pos.get()) delays code for
-  ~700 microseconds (less than 1ms). Function will send request to module and
-  and awaits for response. Same as I2C based communication.
+  ~1ms. Function will send request to module and and awaits for response.
+  Same as I2C based communication.
   If you want non-blocking code, check "Event" based example.
 */
 // Initialize Line Follower
@@ -18,10 +18,10 @@ void setup() {
 // Loop program
 void loop() {
   // Print module data
-  Serial.printf("Position %3d Color: %c, Junction: %d, Accuracy: %2d%%, Raw: ", 
+  Serial.printf("Position %3d Color: %c, Detected: %3s, Accuracy: %2d%%, Raw: ", 
     sensor.line.getPosition(),
     sensor.line.getColor(),
-    sensor.line.isJunction(),
+    sensor.line.isDetected() ? "yes" : "no",
     sensor.sensor.getAccuracy()
   );
   // Read raw sensor values

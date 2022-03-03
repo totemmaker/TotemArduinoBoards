@@ -3,59 +3,66 @@
   Module:  [11] Totem Distance sensor
   Details: Example showing how to read distance without blocking code execution
 
-  Note: Reading values directly (sensor.distance.getMM()) delays code for
-  ~700 microseconds (less than 1ms). Function will send request to module and
-  and awaits for response. Same as I2C based communication.
-  This example shows how to use event functions to avoid blocking code.
+  Note: Reading values without event (sensor.distance.getMM()) delays code for
+  ~1ms. Function will send request to module and awaits for response.
+  Same as I2C based communication.
+  This example toggles events on / off and measures time required to call function.
+  When events are enabled - module starts to broadcast value changes, which are stored in
+  internal buffer. Latest stored value is returned on function call.
 */
 // Initialize Distance sensor
 Module11 sensor;
 // Define variables required for this example
-float measurements[4]; // Storage for sensor data
-bool updated;          // "true" when new sensor data received
-int lastUpdate, lastEvent; // Hold last event time
+bool eventsStarted; // State if events are enabled
+int eventsCount; // Amount of times event was called
 // Function to receive Distance module events
 void sensorEvent() {
-  // Getting parameters inside event won't delay code execution.
-  // Data is taken from current received event.
-  // Check if received event is for "distance" parameter
+  // Check if received "distance" event
   if (sensor.distance.isEvent()) {
-    // Update measurement variable with latest data
-    measurements[0] = sensor.distance.getMM();
-    measurements[1] = sensor.distance.getCm();
-    measurements[2] = sensor.distance.getFoot();
-    measurements[3] = sensor.distance.getInch();
-    updated = true; // Set that we have new data
-    lastEvent = millis() - lastUpdate; // Get time between last event
-    lastUpdate = millis(); // Update current event time
+    // Display red color if distance closer than 10cm
+    if (sensor.distance.getCm() < 10 && sensor.distance.isDetected())
+      sensor.rgb.colorHEX(chAll, Color::Red);
+    else
+      sensor.rgb.colorHEX(chAll, Color::Green);
   }
+  // Increment events counter
+  eventsCount++;
+}
+// Parallel loop to toggle events
+void loopToggleEvents() {
+  // Start sending events from module
+  sensor.distance.eventStart();
+  eventsStarted = true;
+  delay(3000); // Wait 3 seconds
+  // Stop sending events from module
+  sensor.distance.eventStop();
+  eventsStarted = false;
+  eventsCount = 0; // Reset counter
+  delay(3000); // Wait 3 seconds
 }
 // Initialize program
 void setup() {
   // Start Serial Monitor communication at 9600 speed
   Serial.begin(9600);
-  // Register event function for Distance module
+  // Register event function to change colors
+  // Optional. In case required to know when value is updated
   sensor.addEvent(sensorEvent);
-  // Enable events for distance parameter
-  sensor.distance.event(); // When value is changed
-  // sensor.distance.event(100); // Call event each 100ms
+  // Create parallel loop to toggle events
+  addLoop(loopToggleEvents);
 }
 // Loop program
 void loop() {
-  // Check if event was received
-  if (!updated)
-    return;
-  // Reset updated value
-  updated = false;
-  // Avoid overflowing Serial if events are too fast
-  if (lastEvent < 70)
-    delay(70);
-  // Print distance units received from event
-  Serial.printf("Distance: %4.0fmm, %3.0fcm, %4.2fft, %5.2fin, last update: %dms\n",
-    measurements[0],
-    measurements[1],
-    measurements[2],
-    measurements[3],
-    lastEvent
+  // Measure time (microseconds) it takes to receive value from module
+  int start, end, total;
+  start = micros(); // Save time before call
+  int distMM = sensor.distance.getMM();
+  end = micros(); // Save time after call
+  // Total time taken to read value from module
+  total = end-start;
+  // Print information
+  Serial.printf("Distance: %4dmm. Events: %s %d. Time: %dus.\n",
+    distMM, eventsStarted ? "on" : "off", eventsCount, total
   );
+  // Delay printing
+  delay(70);
 }

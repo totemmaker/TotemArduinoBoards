@@ -23,7 +23,7 @@ void loop() {
     X4.getSerial(),
     X4.getRevision(),
     X4.getDriverVersion(),
-    X4.getSoftwareVersion()
+    X4.getFirmwareVersion()
   );
   // Delay 2 seconds
   delay(2000);
