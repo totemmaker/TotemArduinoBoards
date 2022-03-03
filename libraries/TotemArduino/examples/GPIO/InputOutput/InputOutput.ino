@@ -1,15 +1,11 @@
 #include <Arduino.h>
 /*
-  Board:  [X4] RoboBoard X4 Revision v1.1
+  Board:  [X4] RoboBoard X4
   Details: Example how to interact with GPIO pins.
            GPIOA, GPIOB is set to output.
            GPIOC, GPIOD is set to input.
            Connect junper cable between GPIOA <-> GPIOC or
            GPIOB <-> GPIOD to light up LED.
-
-  WARNING: This example is for board revision v1.1.
-           For v1.0 examples check GPIO_REV1.0.
-           Revision number is printed on the top of RoboBoard.
 */
 // Initialize program
 void setup() {

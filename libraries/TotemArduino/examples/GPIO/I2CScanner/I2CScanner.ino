@@ -3,8 +3,8 @@
   Board:  [X4] RoboBoard X4 Revision v1.1
   Details: Example how to scan connected I2C devices using GPIO pins
 
-  WARNING: This example is for board revision v1.1.
-           For v1.0 examples check GPIO_REV1.0.
+  WARNING: !!!!!!!!!!!!!! This example will not work with X4 Revision v1.0 !!!!!!!!!!!!!!
+           Use revision v1.1 or later.
            Revision number is printed on the top of RoboBoard.
 */
 // Include I2C library
@@ -13,6 +13,10 @@
 void setup() {
   // Start Serial Monitor communication at 9600 speed
   Serial.begin(9600);
+  // Check board revision to print warning message
+  if (X4.getRevisionNum() == 10) {
+    while (1) { Serial.println("WARNING: I2C GPIO functionality is not available for revision v1.0"); delay(1000); }
+  }
   // Initialize I2C library
   // Set SDA pin to GPIOA, SCL to GPIOB
   Wire.begin(GPIOA, GPIOB);
