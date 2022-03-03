@@ -8,9 +8,9 @@ bool moduleFound = false;
 void moduleFoundEvent() {
   // Print module information
   Serial.print("number: ");
-  Serial.print(X4.module.getLastNumber());
+  Serial.print(X4.tbus.getNumber());
   Serial.print(", serial: ");
-  Serial.println(X4.module.getLastSerial());
+  Serial.println(X4.tbus.getSerial());
   // Mark at leas one module discovered
   moduleFound = true; 
 }
@@ -19,16 +19,16 @@ void setup() {
   // Start Serial Monitor communication at 9600 speed
   Serial.begin(9600);
   // Register event function to receive discovered modules
-  X4.module.addEvent(moduleFoundEvent);
+  X4.tbus.addEvent(moduleFoundEvent);
 }
 // Loop program
 void loop() {
   // Start list of modules
   Serial.println("Connected modules:");
   // Ping modules every 1s to receive their response
-  X4.module.scan(); // Scan for all modules
-  // X4.module.scan(11); // Scan for dinstance sensor modules
-  // X4.module.scan(11, 9724); // Scan for specific dinstance sensor modules (with serial 9724)
+  X4.tbus.scan(); // Scan for all modules
+  // X4.tbus.scan(11); // Scan for dinstance sensor modules
+  // X4.tbus.scan(11, 9724); // Scan for specific dinstance sensor modules (with serial 9724)
   delay(1000); // Wait 1s for event to collect data
   // Print "none" message if nothing was found
   if (!moduleFound) {
