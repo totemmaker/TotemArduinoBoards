@@ -12,10 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #include "sd_diskio.h"
+#include "esp_system.h"
 extern "C" {
-    #include "diskio.h"
-    #include "ffconf.h"
     #include "ff.h"
+    #include "diskio.h"
+#if ESP_IDF_VERSION_MAJOR > 3
+    #include "diskio_impl.h"
+#endif
     //#include "esp_vfs.h"
     #include "esp_vfs_fat.h"
     char CRC7(const char* data, int length);
@@ -118,9 +121,11 @@ bool sdSelectCard(uint8_t pdrv)
 {
     ardu_sdcard_t * card = s_cards[pdrv];
     digitalWrite(card->ssPin, LOW);
-    bool s = sdWait(pdrv, 300);
+    bool s = sdWait(pdrv, 500);
     if (!s) {
         log_e("Select Failed");
+        digitalWrite(card->ssPin, HIGH);
+        return false;
     }
     return true;
 }
@@ -501,10 +506,17 @@ DSTATUS ff_sd_initialize(uint8_t pdrv)
         card->spi->transfer(0XFF);
     }
 
-    if (sdTransaction(pdrv, GO_IDLE_STATE, 0, NULL) != 1) {
+    // Fix mount issue - sdWait fail ignored before command GO_IDLE_STATE
+    digitalWrite(card->ssPin, LOW);
+    if(!sdWait(pdrv, 500)){
+        log_w("sdWait fail ignored, card initialize continues");
+    }
+    if (sdCommand(pdrv, GO_IDLE_STATE, 0, NULL) != 1){
+        sdDeselectCard(pdrv);
         log_w("GO_IDLE_STATE failed");
         goto unknown_card;
     }
+    sdDeselectCard(pdrv);
 
     token = sdTransaction(pdrv, CRC_ON_OFF, 1, NULL);
     if (token == 0x5) {
@@ -604,6 +616,14 @@ unknown_card:
 
 DSTATUS ff_sd_status(uint8_t pdrv)
 {
+    ardu_sdcard_t * card = s_cards[pdrv];
+    AcquireSPI lock(card);
+    
+    if(sdTransaction(pdrv, SEND_STATUS, 0, NULL))
+    {
+        log_e("Check status failed");
+        return STA_NOINIT;
+    }
     return s_cards[pdrv]->status;
 }
 
@@ -672,6 +692,15 @@ DRESULT ff_sd_ioctl(uint8_t pdrv, uint8_t cmd, void* buff)
     return RES_PARERR;
 }
 
+bool sd_read_raw(uint8_t pdrv, uint8_t* buffer, DWORD sector)
+{
+    return ff_sd_read(pdrv, buffer, sector, 1) == ESP_OK;
+}
+
+bool sd_write_raw(uint8_t pdrv, uint8_t* buffer, DWORD sector)
+{
+    return ff_sd_write(pdrv, buffer, sector, 1) == ESP_OK;
+}
 
 /*
  * Public methods
@@ -689,6 +718,7 @@ uint8_t sdcard_uninit(uint8_t pdrv)
     esp_err_t err = ESP_OK;
     if (card->base_path) {
         err = esp_vfs_fat_unregister_path(card->base_path);
+        free(card->base_path);
     }
     free(card);
     return err;
@@ -774,8 +804,13 @@ bool sdcard_mount(uint8_t pdrv, const char* path, uint8_t max_files, bool format
     if (res != FR_OK) {
         log_e("f_mount failed: %s", fferr2str[res]);
         if(res == 13 && format_if_empty){
-            BYTE work[FF_MAX_SS];
+            BYTE* work = (BYTE*) malloc(sizeof(BYTE) * FF_MAX_SS);
+            if (!work) {
+              log_e("alloc for f_mkfs failed");
+              return false;
+            }
             res = f_mkfs(drv, FM_ANY, 0, work, sizeof(work));
+            free(work);
             if (res != FR_OK) {
                 log_e("f_mkfs failed: %s", fferr2str[res]);
                 esp_vfs_fat_unregister_path(path);

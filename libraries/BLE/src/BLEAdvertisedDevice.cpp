@@ -12,7 +12,7 @@
  *      Author: kolban
  */
 #include "sdkconfig.h"
-#if defined(CONFIG_BT_ENABLED)
+#if defined(CONFIG_BLUEDROID_ENABLED)
 #include <sstream>
 #include "BLEAdvertisedDevice.h"
 #include "BLEUtils.h"
@@ -555,10 +555,21 @@ std::string BLEAdvertisedDevice::toString() {
 		}
 	}
 	if (haveTXPower()) {
-		char val[4];
+		char val[6];
 		snprintf(val, sizeof(val), "%d", getTXPower());
 		res += ", txPower: ";
 		res += val;
+	}
+	if (haveRSSI()) {
+	       char val[4];
+	       snprintf(val, sizeof(val), "%i", getRSSI());
+	       res += ", rssi: ";
+	       res += val;
+	 }
+	if (haveServiceData()) {
+		for (int i=0; i <getServiceDataCount(); i++) {
+			res += ", serviceData: " + getServiceData(i);
+		}
 	}
 	return res;
 } // toString
@@ -579,5 +590,5 @@ size_t BLEAdvertisedDevice::getPayloadLength() {
 	return m_payloadLength;
 }
 
-#endif /* CONFIG_BT_ENABLED */
+#endif /* CONFIG_BLUEDROID_ENABLED */
 

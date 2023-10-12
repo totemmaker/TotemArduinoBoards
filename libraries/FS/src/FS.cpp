@@ -130,6 +130,15 @@ size_t File::size() const
     return _p->size();
 }
 
+bool File::setBufferSize(size_t size)
+{
+    if (!*this) {
+        return 0;
+    }
+
+    return _p->setBufferSize(size);
+}
+
 void File::close()
 {
     if (_p) {
@@ -141,6 +150,15 @@ void File::close()
 File::operator bool() const
 {
     return _p != nullptr && *_p != false;
+}
+
+const char* File::path() const
+{
+    if (!*this) {
+        return nullptr;
+    }
+
+    return _p->path();
 }
 
 const char* File::name() const
@@ -169,6 +187,31 @@ File File::openNextFile(const char* mode)
     return _p->openNextFile(mode);
 }
 
+boolean File::seekDir(long position){
+    if(!_p){
+        return false;
+    }
+    return _p->seekDir(position);
+}
+
+String File::getNextFileName(void)
+{
+    if (!_p) {
+        return ""; 
+    }
+    return _p->getNextFileName();
+
+}
+
+String File::getNextFileName(bool *isDir)
+{
+    if (!_p) {
+        return ""; 
+    }
+    return _p->getNextFileName(isDir);
+
+}
+
 void File::rewindDirectory(void)
 {
     if (!*this) {
@@ -177,18 +220,18 @@ void File::rewindDirectory(void)
     _p->rewindDirectory();
 }
 
-File FS::open(const String& path, const char* mode)
+File FS::open(const String& path, const char* mode, const bool create)
 {
-    return open(path.c_str(), mode);
+    return open(path.c_str(), mode, create);
 }
 
-File FS::open(const char* path, const char* mode)
+File FS::open(const char* path, const char* mode, const bool create)
 {
     if (!_impl) {
         return File();
     }
 
-    return File(_impl->open(path, mode));
+    return File(_impl->open(path, mode, create));
 }
 
 bool FS::exists(const char* path)

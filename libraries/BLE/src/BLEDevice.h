@@ -8,7 +8,7 @@
 #ifndef MAIN_BLEDevice_H_
 #define MAIN_BLEDevice_H_
 #include "sdkconfig.h"
-#if defined(CONFIG_BT_ENABLED)
+#if defined(CONFIG_BLUEDROID_ENABLED)
 #include <esp_gap_ble_api.h> // ESP32 BLE
 #include <esp_gattc_api.h>   // ESP32 BLE
 #include <map>               // Part of C++ STL
@@ -73,6 +73,7 @@ private:
 	static BLEAdvertising* m_bleAdvertising;
 	static esp_gatt_if_t getGattcIF();
 	static std::map<uint16_t, conn_status_t> m_connectedClientsMap;	
+	static portMUX_TYPE mux;
 
 	static void gattClientEventHandler(
 		esp_gattc_cb_event_t      event,
@@ -96,5 +97,5 @@ public:
 
 }; // class BLE
 
-#endif // CONFIG_BT_ENABLED
+#endif // CONFIG_BLUEDROID_ENABLED
 #endif /* MAIN_BLEDevice_H_ */

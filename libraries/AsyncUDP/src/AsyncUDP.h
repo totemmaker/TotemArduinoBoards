@@ -4,10 +4,10 @@
 #include "IPAddress.h"
 #include "IPv6Address.h"
 #include "Print.h"
+#include "Stream.h"
 #include <functional>
 extern "C" {
-#include "lwip/ip_addr.h"
-#include <tcpip_adapter.h>
+#include "esp_netif.h"
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
 }

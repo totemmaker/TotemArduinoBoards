@@ -54,7 +54,10 @@ class MDNSResponder {
 public:
   MDNSResponder();
   ~MDNSResponder();
-  bool begin(const char* hostName);
+  bool begin(const String& hostName);
+  bool begin(const char* hostName){
+    return begin(String(hostName));
+  }
   void end();
 
   void setInstanceName(String name);
@@ -84,7 +87,7 @@ public:
   void enableArduino(uint16_t port=3232, bool auth=false);
   void disableArduino();
 
-  void enableWorkstation(wifi_interface_t interface=WIFI_IF_STA);
+  void enableWorkstation(esp_interface_t interface=ESP_IF_WIFI_STA);
   void disableWorkstation();
 
   IPAddress queryHost(char *host, uint32_t timeout=2000);
@@ -111,11 +114,13 @@ public:
   bool hasTxt(int idx, const char * key);
   String txt(int idx, const char * key);
   String txt(int idx, int txtIdx);
+  String txtKey(int idx, int txtIdx);
   
 private:
   String _hostname;
   mdns_result_t * results;
   mdns_result_t * _getResult(int idx);
+  mdns_txt_item_t * _getResultTxt(int idx, int txtIdx);
 };
 
 extern MDNSResponder MDNS;

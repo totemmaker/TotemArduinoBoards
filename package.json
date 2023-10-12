@@ -1,14 +1,12 @@
 {
-  "name": "framework-arduinototemmaker",
-  "version": "1.0.0",
+  "name": "framework-arduinoespressif32",
+  "version": "2.0.14",
   "description": "Arduino Framework for Totem RoboBoard products",
   "keywords": [
     "totem",
+    "totemmaker",
     "roboboard",
     "robotic",
-    "framework",
-    "arduino",
-    "espressif",
     "esp32"
   ],
   "license": "LGPL-2.1-or-later",

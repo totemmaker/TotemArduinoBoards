@@ -1,23 +1,22 @@
+# Official Espressif options
 menu.UploadSpeed=Upload Speed
-menu.CPUFreq=CPU Frequency
-menu.FlashFreq=Flash Frequency
-menu.FlashMode=Flash Mode
-menu.FlashSize=Flash Size
-menu.PartitionScheme=Partition Scheme
-menu.DebugLevel=Core Debug Level
-menu.PSRAM=PSRAM
-menu.Revision=Board Revision
-menu.LORAWAN_REGION=LoRaWan Region
-menu.LoRaWanDebugLevel=LoRaWan Debug Level
-menu.AppControl=App control
+menu.EraseFlash=Erase All Flash Before Sketch Upload
+
+# Custom options
 
 ##############################################################
 
 roboboardx4.name=RoboBoard X4
 
+roboboardx4.bootloader.tool=esptool_py
+roboboardx4.bootloader.tool.default=esptool_py
+
 roboboardx4.upload.tool=esptool_py
+roboboardx4.upload.tool.default=esptool_py
+roboboardx4.upload.tool.network=esp_ota
 roboboardx4.upload.speed=921600
-roboboardx4.upload.maximum_size=1310720
+
+roboboardx4.upload.maximum_size=3342336
 roboboardx4.upload.maximum_data_size=327680
 roboboardx4.upload.flags=
 roboboardx4.upload.extra_flags=
@@ -35,29 +34,33 @@ roboboardx4.build.board=ROBOBOARD_X4
 
 roboboardx4.build.f_cpu=240000000L
 roboboardx4.build.flash_size=8MB
-roboboardx4.build.flash_freq=40m
+roboboardx4.build.flash_freq=80m
 roboboardx4.build.flash_mode=dio
-roboboardx4.build.boot=dio
+roboboardx4.build.boot=qio
 roboboardx4.build.partitions=default_8MB
 roboboardx4.build.defines=
-roboboardx4.build.loop_core=
-roboboardx4.build.event_core=
+roboboardx4.build.code_debug=1
+roboboardx4.build.loop_core=-DARDUINO_RUNNING_CORE=1
+roboboardx4.build.event_core=-DARDUINO_EVENT_RUNNING_CORE=1
 
-roboboardx4.bootloader.tool=esptool_py
+roboboardx4.menu.UploadSpeed.921600=921600
+roboboardx4.menu.UploadSpeed.921600.upload.speed=921600
+roboboardx4.menu.UploadSpeed.512000.windows=512000
+roboboardx4.menu.UploadSpeed.512000.upload.speed=512000
+roboboardx4.menu.UploadSpeed.460800.linux=460800
+roboboardx4.menu.UploadSpeed.460800.macosx=460800
+roboboardx4.menu.UploadSpeed.460800.upload.speed=460800
+roboboardx4.menu.UploadSpeed.256000.windows=256000
+roboboardx4.menu.UploadSpeed.256000.upload.speed=256000
+roboboardx4.menu.UploadSpeed.230400.windows.upload.speed=256000
+roboboardx4.menu.UploadSpeed.230400=230400
+roboboardx4.menu.UploadSpeed.230400.upload.speed=230400
+roboboardx4.menu.UploadSpeed.115200=115200
+roboboardx4.menu.UploadSpeed.115200.upload.speed=115200
 
-roboboardx4.menu.AppControl.Disabled=Disabled
-roboboardx4.menu.AppControl.Disabled.app.control=DISABLED
-roboboardx4.menu.AppControl.Enabled=Enabled
-roboboardx4.menu.AppControl.Enabled.app.control=ENABLED
-
-roboboardx4.app.control=Disabled
-
-roboboardx4.compiler.libraries.ldflags="-L{build.variant.path}/lib" -lRoboBoardX4
+roboboardx4.menu.EraseFlash.none=Disabled
+roboboardx4.menu.EraseFlash.none.upload.erase_cmd=
+roboboardx4.menu.EraseFlash.all=Enabled
+roboboardx4.menu.EraseFlash.all.upload.erase_cmd=-e
 
 ##############################################################
-
-esp32.name = ESP32 USB
-esp32.build.board = DUMMY_ESP32
-esp32.vid.0=0x10c4
-esp32.pid.0=0xea60
-esp32.hide=

@@ -5,7 +5,7 @@
  *      Author: kolban
  */
 #include "sdkconfig.h"
-#if defined(CONFIG_BT_ENABLED)
+#if defined(CONFIG_BLUEDROID_ENABLED)
 #include <string.h>
 #include "BLEBeacon.h"
 #include "esp32-hal-log.h"
@@ -40,7 +40,7 @@ uint16_t BLEBeacon::getMinor() {
 }
 
 BLEUUID BLEBeacon::getProximityUUID() {
-	return BLEUUID(m_beaconData.proximityUUID, 16, false);
+	return BLEUUID(m_beaconData.proximityUUID, 16, true);
 }
 
 int8_t BLEBeacon::getSignalPower() {

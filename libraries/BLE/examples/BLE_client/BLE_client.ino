@@ -29,7 +29,8 @@ static void notifyCallback(
     Serial.print(" of data length ");
     Serial.println(length);
     Serial.print("data: ");
-    Serial.println((char*)pData);
+    Serial.write(pData, length);
+    Serial.println();
 }
 
 class MyClientCallback : public BLEClientCallbacks {
@@ -54,7 +55,8 @@ bool connectToServer() {
     // Connect to the remove BLE Server.
     pClient->connect(myDevice);  // if you pass BLEAdvertisedDevice instead of address, it will be recognized type of peer device address (public or private)
     Serial.println(" - Connected to server");
-
+    pClient->setMTU(517); //set client to request maximum MTU from server (default is 23 otherwise)
+  
     // Obtain a reference to the service we are after in the remote BLE server.
     BLERemoteService* pRemoteService = pClient->getService(serviceUUID);
     if (pRemoteService == nullptr) {

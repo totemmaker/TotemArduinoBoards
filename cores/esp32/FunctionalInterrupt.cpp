@@ -16,7 +16,7 @@ extern "C"
 	extern void __attachInterruptFunctionalArg(uint8_t pin, voidFuncPtrArg userFunc, void * arg, int intr_type, bool functional);
 }
 
-void IRAM_ATTR interruptFunctional(void* arg)
+void ARDUINO_ISR_ATTR interruptFunctional(void* arg)
 {
     InterruptArgStructure* localArg = (InterruptArgStructure*)arg;
 	if (localArg->interruptFunction)
@@ -28,7 +28,7 @@ void IRAM_ATTR interruptFunctional(void* arg)
 void attachInterrupt(uint8_t pin, std::function<void(void)> intRoutine, int mode)
 {
 	// use the local interrupt routine which takes the ArgStructure as argument
-	__attachInterruptFunctionalArg (pin, (voidFuncPtrArg)interruptFunctional, new InterruptArgStructure{intRoutine}, mode, true);
+	__attachInterruptFunctionalArg (digitalPinToGPIONumber(pin), (voidFuncPtrArg)interruptFunctional, new InterruptArgStructure{intRoutine}, mode, true);
 }
 
 extern "C"
