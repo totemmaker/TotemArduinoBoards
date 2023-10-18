@@ -221,5 +221,8 @@ void noTone(uint8_t _pin);
 
 #include "pins_arduino.h"
 #include "io_pin_remap.h"
+#ifdef __cplusplus
+#include "private/totem-sdk.h"
+#endif
 
 #endif /* _ESP32_CORE_ARDUINO_H_ */

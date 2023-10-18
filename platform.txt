@@ -85,11 +85,11 @@ compiler.warning_flags.all=-Wall -Werror=all -Wextra
 compiler.c.extra_flags=
 compiler.c.elf.extra_flags=
 compiler.S.extra_flags=
-compiler.cpp.extra_flags=
+compiler.cpp.extra_flags=-DTOTEMMAKER_PLATFORM "-I{runtime.platform.path}/tools/totem/include"
 compiler.ar.extra_flags=
 compiler.objcopy.eep.extra_flags=
 compiler.elf2hex.extra_flags=
-compiler.libraries.ldflags=
+compiler.libraries.ldflags="-L{runtime.platform.path}/tools/totem/lib" -lBLE -lRoboBoard -lBluetoothServices -l{build.variant}
 
 # This can be overriden in boards.txt
 build.flash_size=4MB

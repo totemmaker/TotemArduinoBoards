@@ -168,6 +168,17 @@ SConscript(
     )
 )
 
+SConscript(
+    join(
+        DefaultEnvironment()
+        .PioPlatform()
+        .get_package_dir("framework-arduinoespressif32"),
+        "tools",
+        "totem",
+        "platformio-build.py",
+    )
+)
+
 #
 # Target: Build Core Library
 #

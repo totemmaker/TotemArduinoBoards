@@ -209,7 +209,9 @@ extern HardwareSerial Serial;
 extern HardwareSerial Serial1;
 #endif
 #if SOC_UART_NUM > 2
+#ifndef ARDUINO_ROBOBOARD_X4 // Not available in RoboBoard X4
 extern HardwareSerial Serial2;
+#endif
 #endif
 #endif
 

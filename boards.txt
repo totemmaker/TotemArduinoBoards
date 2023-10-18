@@ -3,6 +3,8 @@ menu.UploadSpeed=Upload Speed
 menu.EraseFlash=Erase All Flash Before Sketch Upload
 
 # Custom options
+menu.RemoteControl=Remote control
+menu.BoardStatus=Board status
 
 ##############################################################
 
@@ -38,7 +40,7 @@ roboboardx4.build.flash_freq=80m
 roboboardx4.build.flash_mode=dio
 roboboardx4.build.boot=qio
 roboboardx4.build.partitions=default_8MB
-roboboardx4.build.defines=
+roboboardx4.build.defines=-D_MENU_REMOTE_{remote.control} -D_MENU_STATUS_{board.status}
 roboboardx4.build.code_debug=1
 roboboardx4.build.loop_core=-DARDUINO_RUNNING_CORE=1
 roboboardx4.build.event_core=-DARDUINO_EVENT_RUNNING_CORE=1
@@ -62,5 +64,14 @@ roboboardx4.menu.EraseFlash.none=Disabled
 roboboardx4.menu.EraseFlash.none.upload.erase_cmd=
 roboboardx4.menu.EraseFlash.all=Enabled
 roboboardx4.menu.EraseFlash.all.upload.erase_cmd=-e
+
+roboboardx4.menu.RemoteControl.off=Default
+roboboardx4.menu.RemoteControl.off.remote.control=
+roboboardx4.menu.RemoteControl.on=Totem App
+roboboardx4.menu.RemoteControl.on.remote.control=APP
+roboboardx4.menu.BoardStatus.off=Default
+roboboardx4.menu.BoardStatus.off.board.status=
+roboboardx4.menu.BoardStatus.on=RGB + Beep
+roboboardx4.menu.BoardStatus.on.board.status=ON
 
 ##############################################################
