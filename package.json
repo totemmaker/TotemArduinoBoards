@@ -1,6 +1,6 @@
 {
   "name": "framework-arduinoespressif32",
-  "version": "2.0.14",
+  "version": "2.0.14-totem.1",
   "description": "Arduino Framework for Totem RoboBoard products",
   "keywords": [
     "totem",
