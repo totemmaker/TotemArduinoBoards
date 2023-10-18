@@ -23,6 +23,9 @@
           },
           "boards": [
             {
+              "name": "RoboBoard X3"
+            },
+            {
               "name": "RoboBoard X4"
             }
           ],

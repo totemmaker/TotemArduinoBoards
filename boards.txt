@@ -5,6 +5,79 @@ menu.EraseFlash=Erase All Flash Before Sketch Upload
 # Custom options
 menu.RemoteControl=Remote control
 menu.BoardStatus=Board status
+menu.ChargingMode=Charging mode
+
+##############################################################
+
+roboboardx3.name=RoboBoard X3
+
+roboboardx3.bootloader.tool=esptool_py
+roboboardx3.bootloader.tool.default=esptool_py
+
+roboboardx3.upload.tool=esptool_py
+roboboardx3.upload.tool.default=esptool_py
+roboboardx3.upload.tool.network=esp_ota
+roboboardx3.upload.speed=921600
+
+roboboardx3.upload.maximum_size=3342336
+roboboardx3.upload.maximum_data_size=327680
+roboboardx3.upload.flags=
+roboboardx3.upload.extra_flags=
+
+roboboardx3.serial.disableDTR=true
+roboboardx3.serial.disableRTS=true
+
+roboboardx3.build.tarch=xtensa
+roboboardx3.build.bootloader_addr=0x1000
+roboboardx3.build.target=esp32
+roboboardx3.build.mcu=esp32
+roboboardx3.build.core=esp32
+roboboardx3.build.variant=roboboard_x3
+roboboardx3.build.board=ROBOBOARD_X3
+
+roboboardx3.build.f_cpu=240000000L
+roboboardx3.build.flash_size=8MB
+roboboardx3.build.flash_freq=80m
+roboboardx3.build.flash_mode=dio
+roboboardx3.build.boot=qio
+roboboardx3.build.partitions=default_8MB
+roboboardx3.build.defines=-D_MENU_REMOTE_{remote.control} -D_MENU_CHARGING_{charging.mode} -D_MENU_STATUS_{board.status}
+roboboardx3.build.code_debug=1
+roboboardx3.build.loop_core=-DARDUINO_RUNNING_CORE=1
+roboboardx3.build.event_core=-DARDUINO_EVENT_RUNNING_CORE=1
+
+roboboardx3.menu.UploadSpeed.921600=921600
+roboboardx3.menu.UploadSpeed.921600.upload.speed=921600
+roboboardx3.menu.UploadSpeed.512000.windows=512000
+roboboardx3.menu.UploadSpeed.512000.upload.speed=512000
+roboboardx3.menu.UploadSpeed.460800.linux=460800
+roboboardx3.menu.UploadSpeed.460800.macosx=460800
+roboboardx3.menu.UploadSpeed.460800.upload.speed=460800
+roboboardx3.menu.UploadSpeed.256000.windows=256000
+roboboardx3.menu.UploadSpeed.256000.upload.speed=256000
+roboboardx3.menu.UploadSpeed.230400.windows.upload.speed=256000
+roboboardx3.menu.UploadSpeed.230400=230400
+roboboardx3.menu.UploadSpeed.230400.upload.speed=230400
+roboboardx3.menu.UploadSpeed.115200=115200
+roboboardx3.menu.UploadSpeed.115200.upload.speed=115200
+
+roboboardx3.menu.EraseFlash.none=Disabled
+roboboardx3.menu.EraseFlash.none.upload.erase_cmd=
+roboboardx3.menu.EraseFlash.all=Enabled
+roboboardx3.menu.EraseFlash.all.upload.erase_cmd=-e
+
+roboboardx3.menu.RemoteControl.off=Default
+roboboardx3.menu.RemoteControl.off.remote.control=
+roboboardx3.menu.RemoteControl.on=Totem App
+roboboardx3.menu.RemoteControl.on.remote.control=APP
+roboboardx3.menu.BoardStatus.off=Default
+roboboardx3.menu.BoardStatus.off.board.status=
+roboboardx3.menu.BoardStatus.on=RGB + Beep
+roboboardx3.menu.BoardStatus.on.board.status=ON
+roboboardx3.menu.ChargingMode.off=Default
+roboboardx3.menu.ChargingMode.off.charging.mode=
+roboboardx3.menu.ChargingMode.on=Enabled
+roboboardx3.menu.ChargingMode.on.charging.mode=ON
 
 ##############################################################
 
