@@ -12,8 +12,6 @@ void setFlipper(int pos) {
 }
 // Initialize program
 void setup() {
-  TotemApp.begin();
-  return;
   /**
    * Tank drive configuration
    */
@@ -37,7 +35,6 @@ void setup() {
 }
 // Loop program
 void loop() {
-  return;
   // Drive forward and turn right
   Drivetrain.driveTurn(50, 60);
   delay(1000); // Wait 1 second
