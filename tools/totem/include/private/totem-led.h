@@ -8,8 +8,6 @@
 #ifndef INCLUDE_TOTEM_LED
 #define INCLUDE_TOTEM_LED
 
-#include "pins_arduino.h"
-
 class IOLED {
 public:
     /// @brief Create LED control interface

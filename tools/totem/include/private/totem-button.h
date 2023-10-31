@@ -8,8 +8,6 @@
 #ifndef INCLUDE_TOTEM_BUTTON
 #define INCLUDE_TOTEM_BUTTON
 
-#include "pins_arduino.h"
-
 namespace _Totem {
 
 struct ButtonStatus {

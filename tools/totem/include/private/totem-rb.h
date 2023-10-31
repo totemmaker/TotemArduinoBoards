@@ -178,7 +178,7 @@ public:
 
 }; // class RoboBoard
 
-} // namespace Totem
+} // namespace _Totem
 
 extern _Totem::RoboBoard RB;
 

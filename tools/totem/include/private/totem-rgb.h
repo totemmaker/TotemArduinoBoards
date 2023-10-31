@@ -8,8 +8,6 @@
 #ifndef INCLUDE_TOTEM_RGB
 #define INCLUDE_TOTEM_RGB
 
-#include "pins_arduino.h"
-
 namespace _Totem {
 
 class SingleRGB {
