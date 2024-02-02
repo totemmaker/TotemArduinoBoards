@@ -8,7 +8,7 @@
 #ifndef INCLUDE_TOTEM_COLOR
 #define INCLUDE_TOTEM_COLOR
 
-namespace Color {
+struct Color {
 enum {
     // Red HTML Color Names
     IndianRed = 0xFFCD5C5C,
@@ -167,14 +167,32 @@ enum {
 /// @param g [0:255] amount of Green color
 /// @param b [0:255] amount of Blue color
 /// @return [0:0xFFFFFF] HEX color code
-inline uint32_t rgb(uint8_t r, uint8_t g, uint8_t b) {
+static uint32_t rgb(uint8_t r, uint8_t g, uint8_t b) {
     return r << 16 | g << 8 | b;
 }
 /// @brief Generate random color HEX code
 /// @return [0:0xFFFFFF] HEX color code
-inline uint32_t random() {
+static uint32_t random() {
     return rgb(::random(256), ::random(256), ::random(256));
 }
-} // namespace Color
+/// @brief Assign color code to Color object
+/// @param color color code
+/// @return reference to Color object
+Color& operator= (const uint32_t color) {
+    this->code = color;
+    return *this;
+}
+/// @brief Constructor for creating Color variable
+/// @param color color code
+Color(const uint32_t color = 0) {
+    this->code = color;
+}
+/// @brief Return color code from Color object
+operator uint32_t() {
+    return this->code;
+}
+private:
+    uint32_t code;
+};
 
 #endif /* INCLUDE_TOTEM_COLOR */
