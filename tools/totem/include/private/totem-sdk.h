@@ -13,6 +13,7 @@
 #include "totem-battery.h"
 #include "totem-board.h"
 #include "totem-button.h"
+#include "totem-can.h"
 #include "totem-color.h"
 #include "totem-drivetrain.h"
 #include "totem-imu.h"

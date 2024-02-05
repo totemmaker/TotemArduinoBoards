@@ -56,6 +56,25 @@ public:
     /// @brief Register command override function
     /// @param func function
     void addOverride(bool (*func)(int cmd, int value));
+    void addOverride(bool (*func)(int cmd, const char *data, int len));
+
+    /// @brief Experimental: send 32-bit value to TotemLibrary
+    /// @param command any 32-bit command
+    /// @param value any 32-bit value
+    /// @return 0-success
+    int sendValue(int command, int value);
+    /// @brief Experimental: send data array to TotemLibrary
+    /// @param command any 32-bit command
+    /// @param data array pointer
+    /// @param len array size
+    /// @return 0-success
+    int sendData(int command, const char *data, int len);
+    int sendData(int command, const uint8_t *data, int len) { return sendData(command, (const char*)data, len); }
+    /// @brief Experimental: send string (text) to TotemLibrary
+    /// @param command any 32-bit command
+    /// @param str null terminated string
+    /// @return 0-success
+    int sendString(int command, const char *str) { return sendData(command, str, strlen(str)); }
 };
 
 } // namespace _Totem

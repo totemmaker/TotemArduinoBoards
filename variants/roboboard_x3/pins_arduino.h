@@ -25,6 +25,10 @@ static const uint8_t RX = 3;
 static const uint8_t SDA = 15;
 static const uint8_t SCL = 5;
 
+#define WIRE1_PIN_DEFINED 1
+static const uint8_t SDA1 = 33;
+static const uint8_t SCL1 = 32;
+
 static const uint8_t MOSI  = 26;
 static const uint8_t MISO  = 32;
 static const uint8_t SCK   = 33;
@@ -34,9 +38,9 @@ static const uint8_t A0 = 26;
 static const uint8_t A1 = 32;
 static const uint8_t A2 = 33;
 
-static const uint8_t T0 = 32;
-static const uint8_t T1 = 33;
-static const uint8_t T2 = 15;
+static const uint8_t T0 = 26;
+static const uint8_t T1 = 32;
+static const uint8_t T2 = 33;
 
 static const uint8_t DAC1 = 25;
 static const uint8_t DAC2 = 26;

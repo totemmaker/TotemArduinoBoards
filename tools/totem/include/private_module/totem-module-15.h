@@ -10,35 +10,34 @@
 
 #ifdef ARDUINO_ROBOBOARD_X4
 
-#include "private_module/totem-event-module.h"
+#include "private_module/totem-x4-module.h"
 
 namespace Features15 {
-using namespace Feature;
 namespace cmd {
 enum Commands {
-    knobA        = CMD("knobA"),
-    knobB        = CMD("knobB"),
-    knobC        = CMD("knobC"),
-    knobAll_bits = CMD("knobAll/bits"),
-    ledAll_reset = CMD("ledAll/reset"),
-    ledAll       = CMD("ledAll"),
-    ledA         = CMD("ledA"),
-    ledB         = CMD("ledB"),
-    ledC         = CMD("ledC"),
-    buttonA      = CMD("buttonA"),
-    buttonB      = CMD("buttonB"),
-    buttonC      = CMD("buttonC"),
+    knobA        = 0x8068c520, //CMD("knobA"),
+    knobB        = 0x8368c9d9, //CMD("knobB"),
+    knobC        = 0x8268c846, //CMD("knobC"),
+    knobAll_bits = 0x2ef5b8c9, //CMD("knobAll/bits"),
+    ledAll_reset = 0x04595f5d, //CMD("ledAll/reset"),
+    ledAll       = 0x7002f4f1, //CMD("ledAll"),
+    ledA         = 0xf34f38d1, //CMD("ledA"),
+    ledB         = 0xf04f3418, //CMD("ledB"),
+    ledC         = 0xf14f35ab, //CMD("ledC"),
+    buttonA      = 0xc1ece790, //CMD("buttonA"),
+    buttonB      = 0xc4ecec49, //CMD("buttonB"),
+    buttonC      = 0xc3eceab6, //CMD("buttonC"),
 };
 } // namespace cmd
 template <int LED_CNT>
 class Led {
-    TotemModule &m;
+    _Totem::TotemModule &m;
     const uint32_t channels[3] = {cmd::ledA, cmd::ledB, cmd::ledC};
     uint8_t led_alpha[LED_CNT] = { 255, 255, 255 };
     uint8_t ledState = 0;
     uint8_t ch = 0xFF;
 public:
-    Led(TotemModule &m) : m(m) { }
+    Led(_Totem::TotemModule &m) : m(m) { }
     // Turn LED on
     void on() {
         set(1);
@@ -106,7 +105,7 @@ public:
 };
 } // namespace Features15
 
-class TotemModule15 : public Feature::TotemEventModule {
+class TotemModule15 : public TotemX4Module {
 public:
     // Available TotemModule15 events registered with addEvent() function
     enum {
@@ -140,11 +139,11 @@ public:
         writeCmdInt(cmd::knobAll_bits, resolution);
     }
 
-    TotemModule15(uint16_t serial = 0) : Feature::TotemEventModule(15, serial, eventsList),
+    TotemModule15(uint16_t serial = 0) : TotemX4Module(15, serial, eventsList),
     led(module)
     { }
 private:
-    Feature::Event eventsList[6] = {
+    _Totem::Event eventsList[6] = {
         cmd::knobA,
         cmd::knobB,
         cmd::knobC,

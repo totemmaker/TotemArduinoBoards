@@ -290,8 +290,10 @@ public:
     SingleServoClass &B;
     /// @brief Access Servo motor C control interface
     SingleServoClass &C;
+    /// @brief Access Servo motor D control interface
+    SingleServoClass &D;
     /// @brief Access specific Servo motor with array index
-    /// @param num [0:2] array index
+    /// @param num [0:3] array index
     /// @return single Servo motor control interface
     SingleServoClass& operator[](int num);
 

@@ -10,46 +10,45 @@
 
 #ifdef ARDUINO_ROBOBOARD_X4
 
-#include "private_module/totem-event-module.h"
+#include "private_module/totem-x4-module.h"
 
 namespace Features22 {
-using namespace Feature;
 namespace cmd {
 enum Commands {
-    color              = CMD("color"),
-    color_R            = CMD("color/R"),
-    color_G            = CMD("color/G"),
-    color_B            = CMD("color/B"),
-    light_IR           = CMD("light/IR"),
-    light_lumen        = CMD("light/lumen"),
-    light_gain         = CMD("light/gain"),
-    ntc                = CMD("ntc"),
-    ntc_C              = CMD("ntc/C"),
-    ntc_F              = CMD("ntc/F"),
-    ntc_K              = CMD("ntc/K"),
-    ntc_R              = CMD("ntc/R"),
-    temperature        = CMD("temperature"),
-    temperature_C      = CMD("temperature/C"),
-    temperature_F      = CMD("temperature/F"),
-    temperature_K      = CMD("temperature/K"),
-    humidity           = CMD("humidity"),
-    pressure           = CMD("pressure"),
-    pressure_mbar      = CMD("pressure/mbar"),
-    pressure_Pa        = CMD("pressure/Pa"),
-    pressure_hPa       = CMD("pressure/hPa"),
-    pressure_psi       = CMD("pressure/psi"),
-    altitude           = CMD("altitude"),
-    altitude_m         = CMD("altitude/m"),
-    altitude_ft        = CMD("altitude/ft"),
-    altitude_seaLevel  = CMD("altitude/seaLevel"),
-    led                = CMD("led"),
+    color              = 0x3d7e6258, //CMD("color"),
+    color_R            = 0x94b09e05, //CMD("color/R"),
+    color_G            = 0x9fb0af56, //CMD("color/G"),
+    color_B            = 0xa4b0b735, //CMD("color/B"),
+    light_IR           = 0xd8b6633b, //CMD("light/IR"),
+    light_lumen        = 0x1c8e34a9, //CMD("light/lumen"),
+    light_gain         = 0x6b98d143, //CMD("light/gain"),
+    ntc                = 0x3c74e4b4, //CMD("ntc"),
+    ntc_C              = 0x8d1a07e6, //CMD("ntc/C"),
+    ntc_F              = 0x921a0fc5, //CMD("ntc/F"),
+    ntc_K              = 0x951a147e, //CMD("ntc/K"),
+    ntc_R              = 0x9e1a22a9, //CMD("ntc/R"),
+    temperature        = 0xe9f2a935, //CMD("temperature"),
+    temperature_C      = 0x86515957, //CMD("temperature/C"),
+    temperature_F      = 0x81515178, //CMD("temperature/F"),
+    temperature_K      = 0x7e514cbf, //CMD("temperature/K"),
+    humidity           = 0x25c5b9a0, //CMD("humidity"),
+    pressure           = 0xcfa8a3a2, //CMD("pressure"),
+    pressure_mbar      = 0xb07c67d7, //CMD("pressure/mbar"),
+    pressure_Pa        = 0x95aaa7cc, //CMD("pressure/Pa"),
+    pressure_hPa       = 0xd5ea2ab2, //CMD("pressure/hPa"),
+    pressure_psi       = 0xa1d802b1, //CMD("pressure/psi"),
+    altitude           = 0x527d2af7, //CMD("altitude"),
+    altitude_m         = 0x3e7214ff, //CMD("altitude/m"),
+    altitude_ft        = 0xd6adacfa, //CMD("altitude/ft"),
+    altitude_seaLevel  = 0x7fd6bcc7, //CMD("altitude/seaLevel"),
+    led                = 0x406aeaca, //CMD("led"),
 };
 } // namespace cmd
 class Led {
-    TotemModule &m;
+    _Totem::TotemModule &m;
     uint8_t ledState = 1;
 public:
-    Led(TotemModule &m) : m(m) { }
+    Led(_Totem::TotemModule &m) : m(m) { }
     // Turn LED on
     void on() {
         set(1);
@@ -74,7 +73,7 @@ public:
 };
 } // namespace Features22
 
-class TotemModule22 : public Feature::TotemEventModule {
+class TotemModule22 : public TotemX4Module {
 public:
     // Available TotemModule22 events registered with addEvent() function
     enum {
@@ -149,16 +148,16 @@ public:
         writeCmdInt(cmd::light_gain, gain);
     }
 
-    TotemModule22(uint16_t serial = 0) : Feature::TotemEventModule(22, serial, eventsList),
+    TotemModule22(uint16_t serial = 0) : TotemX4Module(22, serial, eventsList),
     led(module)
     { }
 private:
     void callEventHandler(int evt) override {
         if (evt == evtColor+1 || evt == evtColor+2) evt = evtColor;
-        Feature::TotemEventModule::callEventHandler(evt);
+        TotemX4Module::callEventHandler(evt);
     }
 
-    Feature::Event eventsList[11] = {
+    _Totem::Event eventsList[11] = {
         cmd::color_R,
         cmd::color_G,
         cmd::color_B,

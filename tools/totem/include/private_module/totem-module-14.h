@@ -10,28 +10,27 @@
 
 #ifdef ARDUINO_ROBOBOARD_X4
 
-#include "private_module/totem-event-module.h"
+#include "private_module/totem-x4-module.h"
 
 namespace Features14 {
-using namespace Feature;
 namespace cmd {
 enum Commands {
-    sensor_threshold = CMD("sensor/threshold"),
-    sensor_range     = CMD("sensor/range"),
-    sensor_raw       = CMD("sensor/raw"),
-    line_junction    = CMD("line/junction"),
-    line_color       = CMD("line/color"),
-    line_pos         = CMD("line/pos"),
-    led              = CMD("led"),
+    sensor_threshold = 0x96534e9f, //CMD("sensor/threshold"),
+    sensor_range     = 0xe04bc4e1, //CMD("sensor/range"),
+    sensor_raw       = 0x13d43132, //CMD("sensor/raw"),
+    line_junction    = 0x4c055d1c, //CMD("line/junction"),
+    line_color       = 0xa8d5682f, //CMD("line/color"),
+    line_pos         = 0x9cbc99f2, //CMD("line/pos"),
+    led              = 0x406aeaca, //CMD("led"),
 };
 } // namespace cmd
 template <int LED_CNT>
 class Led {
-    TotemModule &m;
+    _Totem::TotemModule &m;
     uint8_t ledState = 0;
     uint8_t ch = 0xFF;
 public:
-    Led(TotemModule &m) : m(m) { }
+    Led(_Totem::TotemModule &m) : m(m) { }
     // Turn LED on
     void on() {
         set(1);
@@ -93,7 +92,7 @@ public:
     }
 };
 } // namespace Features14
-class TotemModule14 : public Feature::TotemEventModule {
+class TotemModule14 : public TotemX4Module {
 public:
     // Available TotemModule14 events registered with addEvent() function
     enum {
@@ -139,12 +138,12 @@ public:
         writeCmdInt(cmd::line_color, color);
     }
 
-    TotemModule14(uint16_t serial = 0) : Feature::TotemEventModule(14, serial, eventsList),
+    TotemModule14(uint16_t serial = 0) : TotemX4Module(14, serial, eventsList),
     led(module)
     { }
 private:
     uint8_t rawBuffer[8];
-    Feature::Event eventsList[3] = {
+    _Totem::Event eventsList[3] = {
         {cmd::sensor_raw, rawBuffer, 8},
         cmd::line_pos,
         cmd::line_color,

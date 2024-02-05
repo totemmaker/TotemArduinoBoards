@@ -10,22 +10,21 @@
 
 #ifdef ARDUINO_ROBOBOARD_X4
 
-#include "private_module/totem-event-module.h"
+#include "private_module/totem-x4-module.h"
 
 namespace Features11 {
-using namespace Feature;
 namespace cmd {
 enum Commands {
-    distance      = CMD("distance"),
-    rgbAll_totem  = CMD("rgbAll/totem"),
-    rgbAll_bright = CMD("rgbAll/bright"),
-    rgbAll        = CMD("rgbAll"),
-    rgbX          = CMD("rgbX"),
+    distance      = 0x2eb31462, //_Totem::CMD("distance"),
+    rgbAll_totem  = 0x07969199, //_Totem::CMD("rgbAll/totem"),
+    rgbAll_bright = 0xa0009f24, //_Totem::CMD("rgbAll/bright"),
+    rgbAll        = 0xb6ca12a7, //_Totem::CMD("rgbAll"),
+    rgbX          = 0xde063dac, //_Totem::CMD("rgbX"),
 };
 } // namespace cmd
 template <int RGB_CNT>
 class RGB {
-    TotemModule &m;
+    _Totem::TotemModule &m;
     struct {
         uint32_t color;
         bool isOn;
@@ -42,7 +41,7 @@ class RGB {
     bool RGB_isMixed = true;
     uint8_t ch = 0xFF;
 public:
-    RGB(TotemModule &m) : m(m) { }
+    RGB(_Totem::TotemModule &m) : m(m) { }
     // Turn LED on
     void on() {
         set(1);
@@ -136,7 +135,7 @@ public:
 };
 } // namespace Features11
 
-class TotemModule11 : public Feature::TotemEventModule {
+class TotemModule11 : public TotemX4Module {
 public:
     // Available TotemModule11 events registered with addEvent() function
     enum {
@@ -161,11 +160,11 @@ public:
     // Check if sensor is detecting any obstacle
     bool isDetected() { return getMM() != 0; }
 
-    TotemModule11(uint16_t serial = 0) : Feature::TotemEventModule(11, serial, eventsList),
+    TotemModule11(uint16_t serial = 0) : TotemX4Module(11, serial, eventsList),
     rgb(module)
     { }
 private:
-    Feature::Event eventsList[1] = {
+    _Totem::Event eventsList[1] = {
         cmd::distance,
     };
 };

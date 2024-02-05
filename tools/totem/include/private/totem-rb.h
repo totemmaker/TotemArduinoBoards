@@ -174,7 +174,7 @@ public:
     DCGroup dc;
     DC dcA, dcB, dcC, dcD;
     ServoGroup servo;
-    Servo servoA, servoB, servoC;
+    Servo servoA, servoB, servoC, servoD;
 
 }; // class RoboBoard
 
