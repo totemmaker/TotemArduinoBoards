@@ -73,9 +73,12 @@ void loop() {
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d%%", DC[i].getSpin()); }
   // Servo settings
   Serial.printf("\n\n-----Servo-----\n");
-  cnt = (Board.getNumber() == 3) ? 2 : 3;
+  if (Board.getNumber() == 4) cnt = 3;
+  else if (Board.getRevision() == 30) cnt = 2;
+  else cnt = 4;
   if (cnt == 2) Serial.printf("Servo\t\tA\tB");
   if (cnt == 3) Serial.printf("Servo\t\tA\tB\tC");
+  if (cnt == 4) Serial.printf("Servo\t\tA\tB\tC\tD");
   Serial.printf("\nEnabled:");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%s", Servo[i].getEnable() ? "Yes" : "No"); }
   Serial.printf("\nInvert:\t");

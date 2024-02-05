@@ -12,14 +12,14 @@ void loop() {
   // Start list of modules
   Serial.println("Connected module:");
   // Ping modules every 1s to receive their response
-  // if (TotemModule::find(11)) { // Search for distance sensor module
-  // if (TotemModule::find(11, 9724)) { // Search for distance sensor module with serial 9724
-  if (TotemModule::find()) {
+  // if (TotemX4Module::find(11)) { // Search for distance sensor module
+  // if (TotemX4Module::find(11, 9724)) { // Search for distance sensor module with serial 9724
+  if (TotemX4Module::find()) {
     // Print module information
     Serial.print("number: ");
-    Serial.print(TotemModule::foundNumber);
+    Serial.print(TotemX4Module::foundNumber);
     Serial.print(", serial: ");
-    Serial.println(TotemModule::foundSerial);
+    Serial.println(TotemX4Module::foundSerial);
   }
   else {
     Serial.println("No modules found");

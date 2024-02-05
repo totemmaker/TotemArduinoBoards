@@ -1,6 +1,6 @@
 # Totem Arduino core
 
-Fork of official [arduino-esp32](https://github.com/espressif/arduino-esp32) repository to add support for for Totemmaker development boards:
+Fork of official [arduino-esp32](https://github.com/espressif/arduino-esp32) repository to add support for Totemmaker development boards:
 
 - [RoboBoard X3](https://docs.totemmaker.net/roboboard-x3/)
 - [RoboBoard X4](https://docs.totemmaker.net/roboboard-x4/)
