@@ -12,6 +12,59 @@
         {
           "name": "Totem Boards",
           "architecture": "esp32",
+          "version": "2.0.14-totem.2",
+          "category": "ESP32",
+          "url": "https://github.com/totemmaker/TotemArduinoBoards/releases/download/2.0.14-totem.2/totemmaker-2.0.14-totem.2.zip",
+          "archiveFileName": "totemmaker-2.0.14-totem.2.zip",
+          "checksum": "SHA-256:a65bd8adfd47d5b71d8fb6773e3286b8dde83c8721d4e28a65b62cfe918205cd",
+          "size": "208936761",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "RoboBoard X3"
+            },
+            {
+              "name": "RoboBoard X4"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "totemmaker",
+              "name": "xtensa-esp32-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "totemmaker",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "totemmaker",
+              "name": "openocd-esp32",
+              "version": "v0.12.0-esp32-20230419"
+            },
+            {
+              "packager": "totemmaker",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "totemmaker",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "totemmaker",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            }
+          ]
+        },
+        {
+          "name": "Totem Boards",
+          "architecture": "esp32",
           "version": "2.0.14-totem.1",
           "category": "ESP32",
           "url": "https://github.com/totemmaker/TotemArduinoBoards/releases/download/2.0.14-totem.1/totemmaker-2.0.14-totem.1.zip",
