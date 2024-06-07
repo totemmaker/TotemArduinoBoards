@@ -2,15 +2,6 @@
 #define Pins_Arduino_h
 
 #include <stdint.h>
-#include "soc/soc_caps.h"
-
-#define EXTERNAL_NUM_INTERRUPTS 4
-#define NUM_DIGITAL_PINS        4
-#define NUM_ANALOG_INPUTS       3
-
-#define analogInputToDigitalPin(p)  (((p)<20)?(analogChannelToDigitalPin(p)):-1)
-#define digitalPinToInterrupt(p)    (((p)<40)?(p):-1)
-#define digitalPinHasPWM(p)         (p < 34)
 
 static const uint8_t BUTTON_BUILTIN = 18;
 static const uint8_t LED_BUILTIN = 13;
