@@ -123,6 +123,10 @@ public:
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::BoardClass Board;
+
+} // namespace totem
 
 #endif /* TOTEM_INCLUDE_BOARD */

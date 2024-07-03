@@ -8,6 +8,7 @@
 #ifndef INCLUDE_TOTEM_IMU
 #define INCLUDE_TOTEM_IMU
 
+namespace totem {
 ///////////////////////
 //  Sensor reading
 ///////////////////////
@@ -47,6 +48,8 @@ private:
     } accel, gyro;
 };
 
+} // namespace totem
+
 namespace _Totem {
 
 class IMUClass {
@@ -56,7 +59,7 @@ public:
     int begin(uint8_t i2cNum = 0);
     /// @brief Read latest measurements
     /// @return Measurements object "IMUData"
-    IMUData read();
+    totem::IMUData read();
 
     ///////////////////////
     //   Configuration
@@ -88,6 +91,10 @@ public:
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::IMUClass IMU;
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_IMU */

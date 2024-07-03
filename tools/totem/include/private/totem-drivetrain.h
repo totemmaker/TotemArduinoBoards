@@ -126,6 +126,8 @@ public:
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::DrivetrainClass Drivetrain;
 
 // Helper class to read joystick position
@@ -157,5 +159,7 @@ public:
     // Read joystick position from center [0:100]%
     static int getMagnitude(uint8_t exp, int x, int y);
 };
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_DRIVETRAIN */

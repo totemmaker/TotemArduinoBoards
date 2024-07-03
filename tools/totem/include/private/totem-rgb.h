@@ -8,6 +8,8 @@
 #ifndef INCLUDE_TOTEM_RGB
 #define INCLUDE_TOTEM_RGB
 
+#include <stdint.h>
+
 namespace _Totem {
 
 class SingleRGB {
@@ -63,11 +65,19 @@ public:
     ///////////////////////
     
     /// @brief Set maximum LED brightness
-    /// @param dim [0:255] max brightness
-    void setDim(uint8_t dim);
+    /// @param level [0:255] max brightness
+    void setBrightness(uint8_t level);
     /// @brief Read configured maximum LED brightness
     /// @return [0:255] max brightness
-    int getDim();
+    int getBrightness();
+    /// @brief [deprecated] Set maximum LED brightness
+    /// @param dim [0:255] max brightness
+    [[deprecated("Replaced by setBrightness()")]]
+    void setDim(uint8_t dim) { setBrightness(dim); }
+    /// @brief [deprecated] Read configured maximum LED brightness
+    /// @return [0:255] max brightness
+    [[deprecated("Replaced by getBrightness()")]]
+    int getDim() { return getBrightness(); }
     
     /// @brief Change all LED to Totem colors (green,yellow,blue)
     void colorTotem();
@@ -87,6 +97,10 @@ public:
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::RGBClass RGB;
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_RGB */

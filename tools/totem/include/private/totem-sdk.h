@@ -31,14 +31,10 @@ void initRoboBoard();
 #ifdef ARDUINO_ROBOBOARD_X3
 #define ROBOBOARD_X3 1
 #define ROBOBOARD_X4 0
-#endif
+#endif // ARDUINO_ROBOBOARD_X3
 #ifdef ARDUINO_ROBOBOARD_X4
 #define ROBOBOARD_X3 0
 #define ROBOBOARD_X4 1
-#include "../private_module/totem-module-11.h"
-#include "../private_module/totem-module-14.h"
-#include "../private_module/totem-module-15.h"
-#include "../private_module/totem-module-22.h"
 // Legacy RoboBoard X4 (revision 1.0) GPIO control functions
 // For later boards use standard Arduino functions
 void X410_digitalWrite(uint8_t pin, uint8_t value);
@@ -46,7 +42,11 @@ int X410_digitalRead(uint8_t pin);
 void X410_analogWrite(uint8_t pin, int value);
 int X410_analogRead(uint8_t pin);
 void X410_pinMode(uint8_t pin, uint8_t mode);
-#endif
+#endif // ARDUINO_ROBOBOARD_X4
+
+#ifndef REQUIRE_TOTEM_PREFIX
+using namespace totem;
+#endif // REQUIRE_TOTEM_PREFIX
 
 #endif // __cplusplus
 

@@ -21,6 +21,10 @@ public:
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::BatteryClass Battery;
+
+} // namespace totem
 
 #endif /* TOTEM_INCLUDE_BATTERY */

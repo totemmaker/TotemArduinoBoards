@@ -25,6 +25,8 @@ struct ButtonStatus {
 
 } // namespace _Totem
 
+namespace totem {
+
 class IOButton {
 
 public:
@@ -127,5 +129,7 @@ private:
 };
 
 extern IOButton Button;
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_BUTTON */

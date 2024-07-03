@@ -8,6 +8,8 @@
 #ifndef INCLUDE_TOTEM_LED
 #define INCLUDE_TOTEM_LED
 
+namespace totem {
+
 class IOLED {
 public:
     /// @brief Create LED control interface
@@ -51,5 +53,7 @@ private:
 };
 
 extern IOLED LED;
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_LED */

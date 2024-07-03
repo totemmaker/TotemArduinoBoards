@@ -8,6 +8,8 @@
 #ifndef INCLUDE_TOTEM_COLOR
 #define INCLUDE_TOTEM_COLOR
 
+namespace totem {
+
 struct Color {
 enum {
     // Red HTML Color Names
@@ -194,5 +196,7 @@ operator uint32_t() {
 private:
     uint32_t code;
 };
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_COLOR */

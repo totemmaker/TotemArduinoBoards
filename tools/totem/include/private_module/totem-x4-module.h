@@ -18,9 +18,9 @@ namespace _Totem {
 class TotemModule {
 public:
     TotemModule *next = nullptr;
-    using DataReceiver = void (*)(ModuleData data);
-    using DataReceiver2 = void (*)(void *context, ModuleData data);
-    using DataReceiver3 = void (*)(void *context, ModuleData data, int ack);
+    using DataReceiver = void (*)(totem::ModuleData data);
+    using DataReceiver2 = void (*)(void *context, totem::ModuleData data);
+    using DataReceiver3 = void (*)(void *context, totem::ModuleData data, int ack);
 
     TotemModule(uint16_t number, uint16_t serial, void *context, DataReceiver3 receiver);
     TotemModule(uint16_t number, uint16_t serial, void *context, DataReceiver2 receiver);
@@ -31,7 +31,7 @@ public:
 
     static void processMessageCAN(uint32_t id, uint8_t *data, uint8_t len);
     static void onMessageCAN() {
-        auto packet = CAN.getPacket();
+        auto packet = totem::CAN.getPacket();
         uint32_t id = packet.id;
         if (packet.ext) id |= 0x80000000UL;
         if (packet.rtr) id |= 0x40000000UL;
@@ -41,11 +41,11 @@ public:
         int ext = id & 0x80000000UL;
         int rtr = id & 0x40000000UL;
         id = ext ? (id & 0x1FFFFFFF) : (id & 0x7FF);
-        return CAN.writePacket(ext, id, data, len, rtr);
+        return totem::CAN.writePacket(ext, id, data, len, rtr);
     }
     static void initCAN() {
-        CAN.addEvent(onMessageCAN);
-        CAN.begin(500);
+        totem::CAN.addEvent(onMessageCAN);
+        totem::CAN.begin(500);
     }
 
     bool write(const char *command) {
@@ -90,10 +90,10 @@ public:
     bool read(const char *command) {
         return read(hashCmd(command));
     }
-    ModuleData readWait(const char *command) {
+    totem::ModuleData readWait(const char *command) {
         return readWait(hashCmd(command));
     }
-    bool readWait(const char *command, ModuleData &result) {
+    bool readWait(const char *command, totem::ModuleData &result) {
         return readWait(hashCmd(command), result);
     }
     bool subscribe(const char *command, int intervalMs = 0) {
@@ -154,17 +154,17 @@ public:
     bool read(uint32_t command) {
         return moduleRead(command, false);
     }
-    ModuleData readWait(uint32_t command) {
+    totem::ModuleData readWait(uint32_t command) {
         response.command = command;
         response.waiting = true;
         bool succ = moduleRead(response.command, true);
         if (!succ || response.waiting) {
-            ModuleData data(0, (uint8_t*)"", 0);
+            totem::ModuleData data(0, (uint8_t*)"", 0);
             return data;
         }
         return response.data;
     }
-    bool readWait(uint32_t command, ModuleData &result) {
+    bool readWait(uint32_t command, totem::ModuleData &result) {
         response.command = command;
         response.waiting = true;
         bool succ = moduleRead(response.command, true);
@@ -222,7 +222,7 @@ private:
     void prepareWait(int command);
     bool waitResponse(int timeout);
     bool isFromModule(uint16_t number, uint16_t serial);
-    void onModuleData(ModuleData msgData, int ack);
+    void onModuleData(totem::ModuleData msgData, int ack);
     uint32_t requestError = 0;
     void setError(uint32_t err) {
         requestError = err;
@@ -238,7 +238,7 @@ private:
     
     struct {
         int command;
-        ModuleData data;
+        totem::ModuleData data;
         bool waiting;
     } response;
     void *receiverContext = nullptr;
@@ -268,7 +268,7 @@ static constexpr uint32_t CMD(const char *cmdString) {
 }
 // Event data object
 struct Event {
-    ModuleData data;
+    totem::ModuleData data;
     struct {
         uint8_t subscribed : 1;
         uint8_t streaming : 1;
@@ -315,7 +315,7 @@ protected:
         module.write(cmd, value);
     }
     // Read command returning ModuleData object
-    ModuleData readCmd(uint32_t cmd) {
+    totem::ModuleData readCmd(uint32_t cmd) {
         // Return event object if command is added to the list
         _Totem::Event *event = findEvent(cmd);
         if (event) {
@@ -360,7 +360,7 @@ private:
         return idx == -1 ? nullptr : &eventList[idx];
     }
     // Module data handler
-    static void onModuleDataReceive(void *context, ModuleData moduleData, int ack) {
+    static void onModuleDataReceive(void *context, totem::ModuleData moduleData, int ack) {
         TotemX4Module *instance = (TotemX4Module*)context;
         int idx = instance->findEventIdx(moduleData.getHashCmd());
         if (idx != -1) {

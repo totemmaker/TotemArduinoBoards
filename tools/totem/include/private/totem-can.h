@@ -10,6 +10,8 @@
 
 #if ARDUINO_ROBOBOARD_X4
 
+namespace totem {
+
 struct CANPacket {
     uint16_t ext : 1;
     uint16_t rtr : 1;
@@ -18,6 +20,8 @@ struct CANPacket {
     uint8_t len;
     uint8_t data[8];
 };
+
+} // namespace totem
 
 namespace _Totem {
 
@@ -159,7 +163,7 @@ public:
 
     /// @brief Get latest read CAN packet
     /// @return CANPacket structure
-    CANPacket getPacket();
+    totem::CANPacket getPacket();
 
     /// @brief Return CAN peripheral alerts
     /// @return alerts state
@@ -171,7 +175,11 @@ public:
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::CANClass CAN;
+
+} // namespace totem
 
 #endif // ARDUINO_ROBOBOARD_X4
 

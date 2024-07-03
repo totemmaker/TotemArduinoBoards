@@ -8,10 +8,14 @@
 #ifndef INCLUDE_TOTEM_SERVO
 #define INCLUDE_TOTEM_SERVO
 
+namespace totem {
+
 struct ServoSequence {
     uint32_t delay;
     int position;
 };
+
+} // namespace totem
 
 namespace _Totem {
 
@@ -28,8 +32,8 @@ public:
     void spinPosDuration(int position, uint32_t duration);
     /// @brief Turn motor arm to position with exact speed
     /// @param position [-100:100]%. 0 - center
-    /// @param rpm change position with speed (RPM)
-    void spinPosRPM(int position, float rpm);
+    /// @param rpm change position with speed [1:60] (RPM)
+    void spinPosRPM(int position, uint32_t rpm);
     /// @brief Turn motor arm to position
     /// @param position [-100:100]%. 0 - center
     void spinPos(int position) { spinPosDuration(position, 0); }
@@ -39,8 +43,8 @@ public:
     void spinAngleDuration(uint32_t angle, uint32_t duration);
     /// @brief Turn motor arm to angle degrees with exact speed
     /// @param angle [0:180]deg
-    /// @param rpm change position with speed (RPM)
-    void spinAngleRPM(uint32_t angle, float rpm);
+    /// @param rpm change position with speed [1:60] (RPM)
+    void spinAngleRPM(uint32_t angle, uint32_t rpm);
     /// @brief Turn motor arm to angle degrees
     /// @param angle [0:180]deg
     void spinAngle(uint32_t angle) { spinAngleDuration(angle, 0); }
@@ -50,8 +54,8 @@ public:
     void spinPulseDuration(uint32_t pulse, uint32_t duration);
     /// @brief Turn motor arm to exact pulse (microseconds) with exact speed
     /// @param pulse [500:2500]us. Limit: [0:period]us.
-    /// @param rpm change position with speed (RPM)
-    void spinPulseRPM(uint32_t pulse, float rpm);
+    /// @param rpm change position with speed [1:60] (RPM)
+    void spinPulseRPM(uint32_t pulse, uint32_t rpm);
     /// @brief Turn motor arm to exact pulse (microseconds)
     /// @param pulse [500:2500]us. Limit: [0:period]us.
     void spinPulse(uint32_t pulse) { spinPulseDuration(pulse, 0); }
@@ -75,14 +79,14 @@ public:
     ///////////////////////
     
     /// @brief Set constant Servo motor speed RPM (Rounds-Per-Minute)
-    /// @param rpm Typically: [0.0:60.0]
-    void setSpeedRPM(float rpm);
+    /// @param rpm Typically: [1:60]
+    void setSpeedRPM(uint32_t rpm);
     /// @brief Set constant Servo motor speed sec/60deg (seconds / 60 degree)
     /// @param seconds Typically: [0.09:0.18] sec/60deg
     void setSpeedS60(float seconds);
     /// @brief Read Servo port speed limit
     /// @return RPM (Rounds-Per-Minute)
-    float getSpeedRPM();
+    int getSpeedRPM();
     /// @brief Read Servo port speed limit
     /// @return  sec/60deg (seconds / 60 degree)
     float getSpeedS60();
@@ -95,7 +99,7 @@ public:
     /// @param seq array list of moves
     /// @param times (optional) number of times to run (0 - repeat)
     template<int SIZE>
-    void run(const ServoSequence (&seq)[SIZE], uint32_t times = 1) {
+    void run(const totem::ServoSequence (&seq)[SIZE], uint32_t times = 1) {
         run(seq, SIZE, times);
     }
     
@@ -121,6 +125,7 @@ public:
     void setInvert(bool state);
     /// @brief Set Servo signal PWM period. Default: 20000us (50Hz)
     /// @param period [1:65535] us (microseconds)
+    [[deprecated("Use Servo.setPeriod()")]]
     void setPeriod(uint32_t period);
     /// @brief Set Servo motor configuration. Default: 180deg, 500us, 2500us
     /// @param angleMax 180 or 270 degrees
@@ -147,6 +152,7 @@ public:
     bool getInvert();
     /// @brief Read configured Servo period (us)
     /// @return [1:65535] us (microseconds)
+    [[deprecated("Use Servo.getPeriod()")]]
     int getPeriod();
     // MotorType struct
     struct MotorType {
@@ -172,7 +178,7 @@ public:
 
     SingleServoClass(uint8_t port);
 private:
-    void run(const ServoSequence seq[], uint32_t size, uint32_t times);
+    void run(const totem::ServoSequence seq[], uint32_t size, uint32_t times);
 };
 
 class ServoClass {
@@ -187,8 +193,8 @@ public:
     void spinPosDuration(int position, uint32_t duration);
     /// @brief Turn motor arm to position with exact speed
     /// @param position [-100:100]%. 0 - center
-    /// @param rpm change position with speed (RPM)
-    void spinPosRPM(int position, float rpm);
+    /// @param rpm change position with speed [1:60] (RPM)
+    void spinPosRPM(int position, uint32_t rpm);
     /// @brief Turn motor arm to position
     /// @param position [-100:100]%. 0 - center
     void spinPos(int position) { spinPosDuration(position, 0); }
@@ -198,8 +204,8 @@ public:
     void spinAngleDuration(uint32_t angle, uint32_t duration);
     /// @brief Turn motor arm to angle degrees with exact speed
     /// @param angle [0:180]deg
-    /// @param rpm change position with speed (RPM)
-    void spinAngleRPM(uint32_t angle, float rpm);
+    /// @param rpm change position with speed [1:60] (RPM)
+    void spinAngleRPM(uint32_t angle, uint32_t rpm);
     /// @brief Turn motor arm to angle degrees
     /// @param angle [0:180]deg
     void spinAngle(uint32_t angle) { spinAngleDuration(angle, 0); }
@@ -209,8 +215,8 @@ public:
     void spinPulseDuration(uint32_t pulse, uint32_t duration);
     /// @brief Turn motor arm to exact pulse (microseconds) with exact speed
     /// @param pulse [500:2500]us. Limit: [0:period]us.
-    /// @param rpm change position with speed (RPM)
-    void spinPulseRPM(uint32_t pulse, float rpm);
+    /// @param rpm change position with speed [1:60] (RPM)
+    void spinPulseRPM(uint32_t pulse, uint32_t rpm);
     /// @brief Turn motor arm to exact pulse (microseconds)
     /// @param pulse [500:2500]us. Limit: [0:period]us.
     void spinPulse(uint32_t pulse) { spinPulseDuration(pulse, 0); }
@@ -225,8 +231,8 @@ public:
     ///////////////////////
 
     /// @brief Set constant Servo motor speed RPM (Rounds-Per-Minute)
-    /// @param rpm Typically: [0.0:60.0]
-    void setSpeedRPM(float rpm);
+    /// @param rpm Typically: [1:60]
+    void setSpeedRPM(uint32_t rpm);
     /// @brief Set constant Servo motor speed sec/60deg (seconds / 60 degree)
     /// @param seconds Typically: [0.09:0.18] sec/60deg
     void setSpeedS60(float seconds);
@@ -239,7 +245,7 @@ public:
     /// @param seq array list of moves
     /// @param times (optional) number of times to run (0 - repeat)
     template<int SIZE>
-    void run(const ServoSequence (&seq)[SIZE], uint32_t times = 1) {
+    void run(const totem::ServoSequence (&seq)[SIZE], uint32_t times = 1) {
         run(seq, SIZE, times);
     }
 
@@ -266,6 +272,10 @@ public:
     /// @brief Set Servo signal PWM period. Default: 20000us (50Hz)
     /// @param period [1:65535] us (microseconds)
     void setPeriod(uint32_t period);
+    /// @brief Set Servo signal PWM period for specific port (if hardware supports it)
+    /// @param period [1:65535] us (microseconds)
+    /// @param port port number
+    void setPeriod(uint32_t period, uint8_t port);
     /// @brief Set Servo motor configuration. Default: 180deg, 500us, 2500us
     /// @param angleMax 180 or 270 degrees
     /// @param usMin [0:period]us pulse (500)
@@ -297,13 +307,27 @@ public:
     /// @return single Servo motor control interface
     SingleServoClass& operator[](int num);
 
+    /// @brief Read configured Servo period (us)
+    /// @return [1:65535] us (microseconds)
+    int getPeriod();
+    /// @brief Read configured Servo period (us) of specific port (if hardware supports it)
+    /// @param port port number
+    int getPeriod(uint32_t port);
+    /// @brief Get amount of ports board has
+    /// @return [2,3,4] (depending on board revision)
+    int getPortsCount();
+
     ServoClass();
 private:
-    void run(const ServoSequence seq[], uint32_t size, uint32_t times);
+    void run(const totem::ServoSequence seq[], uint32_t size, uint32_t times);
 };
 
 } // namespace _Totem
 
+namespace totem {
+
 extern _Totem::ServoClass Servo;
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_SERVO */

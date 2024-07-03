@@ -8,6 +8,8 @@
 #ifndef INCLUDE_TOTEM_MODULE_DATA
 #define INCLUDE_TOTEM_MODULE_DATA
 
+namespace totem {
+
 struct ModuleData {
     bool isInt() {
         return ptr == nullptr;
@@ -51,5 +53,7 @@ private:
     uint8_t *ptr = nullptr;
     int32_t value = 0;
 };
+
+} // namespace totem
 
 #endif /* INCLUDE_TOTEM_MODULE_DATA */
