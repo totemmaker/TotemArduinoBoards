@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule11.h>
 /*
   RoboBoard X4 example to find connected TotemBUS modules
 */

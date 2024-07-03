@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <TotemModule14.h>
+#include <TotemModule15.h>
 /*
   Module:  [14] Line Follower module
            [15] Potentiometer module

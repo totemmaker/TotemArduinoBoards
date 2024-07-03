@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule22.h>
 /*
   Module:  [22] Totem Environment sensor module
   RoboBoard example to control status LED

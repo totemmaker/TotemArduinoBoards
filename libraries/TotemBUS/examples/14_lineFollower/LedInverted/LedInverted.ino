@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule14.h>
 /*
   Module:  [14] Totem Line Follower
   RoboBoard example showing inverted functionality of LED position display.

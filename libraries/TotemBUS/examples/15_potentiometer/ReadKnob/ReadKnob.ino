@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule15.h>
 /*
   Module:  [15] Totem Potentiometer module
   RoboBoard example to read knob position and button state.

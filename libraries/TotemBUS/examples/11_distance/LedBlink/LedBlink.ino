@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule11.h>
 /*
   Module:  [11] Totem Distance sensor
   RoboBoard example to control Module 11 RGB LED.

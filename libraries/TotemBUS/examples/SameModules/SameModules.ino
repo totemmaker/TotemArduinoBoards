@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule11.h>
 /*
   Module:  [11] Distance sensor module
   RoboBoard example to control two identical modules at the same time.

@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <TotemModule11.h>
 /*
   Module:  [11] Totem Distance sensor
   RoboBoard example to enable RGB bright mode.
