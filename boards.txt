@@ -3,9 +3,10 @@ menu.UploadSpeed=Upload Speed
 menu.EraseFlash=Erase All Flash Before Sketch Upload
 
 # Custom options
-menu.RemoteControl=Remote control
-menu.BoardStatus=Board status
-menu.ChargingMode=Charging mode
+menu.RemoteControl=Remote Control
+menu.BoardStatus=Board Status
+menu.ChargingMode=Charging Mode
+menu.PrefixAPI=Totem Prefix
 
 ##############################################################
 
@@ -41,7 +42,7 @@ roboboardx3.build.flash_freq=80m
 roboboardx3.build.flash_mode=dio
 roboboardx3.build.boot=qio
 roboboardx3.build.partitions=default_8MB
-roboboardx3.build.defines=-D_MENU_REMOTE_{remote.control} -D_MENU_CHARGING_{charging.mode} -D_MENU_STATUS_{board.status}
+roboboardx3.build.defines=-D_MENU_REMOTE_{remote.control} -D_MENU_CHARGING_{charging.mode} -D_MENU_STATUS_{board.status} {api.prefix}
 roboboardx3.build.code_debug=1
 roboboardx3.build.loop_core=-DARDUINO_RUNNING_CORE=1
 roboboardx3.build.event_core=-DARDUINO_EVENT_RUNNING_CORE=1
@@ -66,11 +67,11 @@ roboboardx3.menu.EraseFlash.none.upload.erase_cmd=
 roboboardx3.menu.EraseFlash.all=Enabled
 roboboardx3.menu.EraseFlash.all.upload.erase_cmd=-e
 
-roboboardx3.menu.RemoteControl.off=Default
+roboboardx3.menu.RemoteControl.off=Not included
 roboboardx3.menu.RemoteControl.off.remote.control=
-roboboardx3.menu.RemoteControl.on=Totem App
+roboboardx3.menu.RemoteControl.on=TotemApp.begin()
 roboboardx3.menu.RemoteControl.on.remote.control=APP
-roboboardx3.menu.BoardStatus.off=Default
+roboboardx3.menu.BoardStatus.off=Not included
 roboboardx3.menu.BoardStatus.off.board.status=
 roboboardx3.menu.BoardStatus.on=RGB + Beep
 roboboardx3.menu.BoardStatus.on.board.status=ON
@@ -78,6 +79,10 @@ roboboardx3.menu.ChargingMode.off=Default
 roboboardx3.menu.ChargingMode.off.charging.mode=
 roboboardx3.menu.ChargingMode.on=Enabled
 roboboardx3.menu.ChargingMode.on.charging.mode=ON
+roboboardx3.menu.PrefixAPI.prefix_no=(no prefix) Board
+roboboardx3.menu.PrefixAPI.prefix_no.api.prefix=
+roboboardx3.menu.PrefixAPI.prefix_yes=totem::Board
+roboboardx3.menu.PrefixAPI.prefix_yes.api.prefix=-DREQUIRE_TOTEM_PREFIX
 
 ##############################################################
 
@@ -113,7 +118,7 @@ roboboardx4.build.flash_freq=80m
 roboboardx4.build.flash_mode=dio
 roboboardx4.build.boot=qio
 roboboardx4.build.partitions=default_8MB
-roboboardx4.build.defines=-D_MENU_REMOTE_{remote.control} -D_MENU_STATUS_{board.status}
+roboboardx4.build.defines=-D_MENU_REMOTE_{remote.control} -D_MENU_STATUS_{board.status} {api.prefix}
 roboboardx4.build.code_debug=1
 roboboardx4.build.loop_core=-DARDUINO_RUNNING_CORE=1
 roboboardx4.build.event_core=-DARDUINO_EVENT_RUNNING_CORE=1
@@ -138,13 +143,17 @@ roboboardx4.menu.EraseFlash.none.upload.erase_cmd=
 roboboardx4.menu.EraseFlash.all=Enabled
 roboboardx4.menu.EraseFlash.all.upload.erase_cmd=-e
 
-roboboardx4.menu.RemoteControl.off=Default
+roboboardx4.menu.RemoteControl.off=Not included
 roboboardx4.menu.RemoteControl.off.remote.control=
-roboboardx4.menu.RemoteControl.on=Totem App
+roboboardx4.menu.RemoteControl.on=TotemApp.begin()
 roboboardx4.menu.RemoteControl.on.remote.control=APP
-roboboardx4.menu.BoardStatus.off=Default
+roboboardx4.menu.BoardStatus.off=Not included
 roboboardx4.menu.BoardStatus.off.board.status=
 roboboardx4.menu.BoardStatus.on=RGB + Beep
 roboboardx4.menu.BoardStatus.on.board.status=ON
+roboboardx4.menu.PrefixAPI.prefix_no=(no prefix) Board
+roboboardx4.menu.PrefixAPI.prefix_no.api.prefix=
+roboboardx4.menu.PrefixAPI.prefix_yes=totem::Board
+roboboardx4.menu.PrefixAPI.prefix_yes.api.prefix=-DREQUIRE_TOTEM_PREFIX
 
 ##############################################################
