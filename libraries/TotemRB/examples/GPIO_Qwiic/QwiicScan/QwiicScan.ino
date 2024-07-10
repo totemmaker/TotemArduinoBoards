@@ -26,9 +26,9 @@ void loop() {
   bool isAnythingDetected = false;
   // Loop all available I2C addresses
   int address = 0x01;
-  int endAddress = 0x7F;
+  int endAddress = 0x7D;
   // Loop all I2C devices
-  for (; address < endAddress; address++) {
+  for (; address <= endAddress; address++) {
     // Start I2C transmission to selected address
     Wire.beginTransmission(address);
     // Get result of transmission

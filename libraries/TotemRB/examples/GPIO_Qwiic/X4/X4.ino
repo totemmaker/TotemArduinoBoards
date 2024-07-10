@@ -7,6 +7,9 @@
   Connect junper cable between GPIOA <-> GPIOC or
   GPIOB <-> GPIOD to light up LED.
 */
+#if !ROBOBOARD_X4
+#error "This example only works with RoboBoard X4"
+#endif
 // Initialize program
 void setup() {
   // Use standard Arduino API to interact with GPIO pins

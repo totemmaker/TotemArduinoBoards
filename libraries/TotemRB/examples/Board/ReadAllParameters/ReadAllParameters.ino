@@ -10,8 +10,6 @@ void setup() {
   Serial.begin(115200);
   // Required by IMU
   Wire.begin();
-  // Uncomment to connect Totem App
-  // TotemApp.begin();
 }
 // Loop program
 void loop() {
@@ -20,17 +18,18 @@ void loop() {
   Serial.printf("\n\n-----Board-----\n");
   Serial.printf("RoboBoard X%d\t%s (revision)\n", Board.getNumber(), Board.getRevisionStr());
   Serial.printf("MAC:\t\t%s\n", WiFi.macAddress().c_str());
-  if (Board.getNumber() == 4)
-    Serial.printf("Driver:\t\t%s\n", Board.getDriverVersionStr());
+#if ROBOBOARD_X4
+  Serial.printf("Driver:\t\t%s\n", Board.getDriverVersionStr());
+#endif
   Serial.printf("Software:\t%s\n", Board.getSoftwareVersionStr());
   Serial.printf("Name:\t\t%s\n", Board.getName());
   Serial.printf("Boot color:\t0x%x\n", Board.getColor());
   Serial.printf("USB in:\t\t%s\n", Board.isUSB() ? "Yes" : "No");
   Serial.printf("\n----Settings---\n");
-  if (Board.getNumber() == 3) {
+#if ROBOBOARD_X3
     Serial.printf("3V3 regulator:\t%s\n", Board.getEnable3V3() ? "Enabled" : "Disabled");
     Serial.printf("Charging mode:\t%s\n", Board.getChargingMode() ? "Enabled" : "Disabled");
-  }
+#endif
   Serial.printf("Status RGB:\t%s\n", Board.getStatusRGB() ? "Enabled" : "Disabled");
   Serial.printf("Status sound:\t%s\n", Board.getStatusSound() ? "Enabled" : "Disabled");
   // Print IMU sensor stats
@@ -43,39 +42,34 @@ void loop() {
   // Print battery info
   Serial.printf("\n----Battery----\n");
   Serial.printf("SOC: \t\t%d%%\n", Battery.getSOC());
-  if (Board.getNumber() == 3) { // getCurrent() and isCharging() only available in RoboBoard X3
+#if ROBOBOARD_X3 // getCurrent() and isCharging() only available in RoboBoard X3
     Serial.printf("Voltage:\t%.2fV %s\n", Battery.getVoltage(), Board.isUSB() ? "(USB)" : "");
     Serial.printf("Current:\t%.2fA\n", Battery.getCurrent());
     Serial.printf("Charging:\t%s\n", Battery.isCharging() ? "Yes" : "No");
-  }
-  else {
+#else // ROBOBOARD_X4
     Serial.printf("Voltage:\t%.2fV\n", Battery.getVoltage());
-  }
+#endif
   // DC settings
   int cnt = 4;
   Serial.printf("\n-------DC------\n");
+  Serial.printf("\nPWM Frequency:\t%dHz\n", DC.getFrequency());
   Serial.printf("DC\t\tA\tB\tC\tD");
   Serial.printf("\nEnabled:");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%s", DC[i].getEnable() ? "Yes" : "No"); }
   Serial.printf("\nInvert:\t");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%s", DC[i].getInvert() ? "Yes" : "No"); }
-  Serial.printf("\nFrequency:");
-  for(int i=0;i<cnt;i++) { Serial.printf("\t%d", DC[i].getFrequency()); }
-  if (Board.getNumber() == 3) {
-    Serial.printf("\nDecay:\t");
-    for(int i=0;i<cnt;i++) { Serial.printf("\t%s", DC[i].getFastDecay() ? "Fast" : "Slow"); }
-  }
+  Serial.printf("\nDecay:\t");
+  for(int i=0;i<cnt;i++) { Serial.printf("\t%s", DC[i].getFastDecay() ? "Fast" : "Slow"); }
   Serial.printf("\nAutobrake:");
-  for(int i=0;i<cnt;i++) { Serial.printf("\t%d", DC[i].getAutobrake()); }
+  for(int i=0;i<cnt;i++) { Serial.printf("\t%d%%", DC[i].getAutobrake()); }
   Serial.printf("\nRange:\t");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d:%d", DC[i].getRange().min, DC[i].getRange().max); }
   Serial.printf("\nSpin:\t");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d%%", DC[i].getSpin()); }
   // Servo settings
   Serial.printf("\n\n-----Servo-----\n");
-  if (Board.getNumber() == 4) cnt = 3;
-  else if (Board.getRevision() == 30) cnt = 2;
-  else cnt = 4;
+  Serial.printf("\nPWM Period:\t%dus (%dHz)\n", Servo.getPeriod(), 1000000/Servo.getPeriod());
+  cnt = Servo.getPortsCount(); // Returns number of servo ports board has
   if (cnt == 2) Serial.printf("Servo\t\tA\tB");
   if (cnt == 3) Serial.printf("Servo\t\tA\tB\tC");
   if (cnt == 4) Serial.printf("Servo\t\tA\tB\tC\tD");
@@ -83,8 +77,6 @@ void loop() {
   for(int i=0;i<cnt;i++) { Serial.printf("\t%s", Servo[i].getEnable() ? "Yes" : "No"); }
   Serial.printf("\nInvert:\t");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%s", Servo[i].getInvert() ? "Yes" : "No"); }
-  Serial.printf("\nPeriod:\t");
-  for(int i=0;i<cnt;i++) { Serial.printf("\t%d", Servo[i].getPeriod()); }
   Serial.printf("\nMotor angle:");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d", Servo[i].getMotor().angle); }
   Serial.printf("\nMotor usMin:");
@@ -97,6 +89,8 @@ void loop() {
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d", Servo[i].getTrim().mid); }
   Serial.printf("\nTrim max:");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d", Servo[i].getTrim().max); }
+  Serial.printf("\nRPM:\t");
+  for(int i=0;i<cnt;i++) { Serial.printf("\t%d", Servo[i].getSpeedRPM()); }
   Serial.printf("\nPulse:\t");
   for(int i=0;i<cnt;i++) { Serial.printf("\t%d", Servo[i].getPulse()); }
   // Delay 3 seconds

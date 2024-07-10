@@ -8,9 +8,10 @@
   NOTE: For listen mode to work - there must be at least 2 devices on CAN bus.
 
   Documentation: https://docs.totemmaker.net/roboboard/api/can
-  
-  Only works with RoboBoard X4!
 */
+#if !ROBOBOARD_X4
+#pragma GCC error "This example only works with RoboBoard X4"
+#endif
 // Function that prints CAN packet to serial monitor
 void printPacket(CANPacket &packet) {
   Serial.print("Got "); // Print type (EXT or STD)

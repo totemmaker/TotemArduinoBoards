@@ -6,9 +6,10 @@
         CAN bus for "normal" mode to work.
 
   Documentation: https://docs.totemmaker.net/roboboard/api/can
-
-  Only works with RoboBoard X4!
 */
+#if !ROBOBOARD_X4
+#pragma GCC error "This example only works with RoboBoard X4"
+#endif
 // Setup program
 void setup() {
   // Start serial monitor at baud 115200

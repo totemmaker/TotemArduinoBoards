@@ -1,16 +1,17 @@
 #include <Arduino.h>
 /*
   Example of using CAN peripheral in Loopback mode.
-  This mode is used to testing CAN bus without any devices connected.
+  This mode is used to test CAN bus without any devices connected.
   All written packets will be received by "read" functions right away.
 
   Function sendCAN will send packets each 200ms
   loop will receive these packets
 
   Documentation: https://docs.totemmaker.net/roboboard/api/can
-  
-  Only works with RoboBoard X4!
 */
+#if !ROBOBOARD_X4
+#pragma GCC error "This example only works with RoboBoard X4"
+#endif
 // Function that prints CAN packet to serial monitor
 void printPacket(CANPacket &packet) {
   Serial.print("Got "); // Print type (EXT or STD)

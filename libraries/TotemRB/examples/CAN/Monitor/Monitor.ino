@@ -3,9 +3,10 @@
   CAN bus monitor example. Print received packets to Serial Monitor.
 
   Documentation: https://docs.totemmaker.net/roboboard/api/can
-
-  Only works with RoboBoard X4!
 */
+#if !ROBOBOARD_X4
+#pragma GCC error "This example only works with RoboBoard X4"
+#endif
 
 // #define DISPLAY_TIMESTAMP
 // #define LISTEN_MODE

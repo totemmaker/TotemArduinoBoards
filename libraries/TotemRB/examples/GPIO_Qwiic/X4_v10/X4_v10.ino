@@ -11,11 +11,16 @@
   Connect junper cable between GPIOA <-> GPIOC or
   GPIOB <-> GPIOD to light up LED.
 */
+#if !ROBOBOARD_X4
+#error "This example only works with RoboBoard X4"
+#endif
 // Initialize program
 void setup() {
   // Use X4 functions GPIO pins
-  X410_pinMode(GPIOC, INPUT);  // Set GPIOC to INPUT with pulling to LOW (when noting is connected. Prevent from floating)
-  X410_pinMode(GPIOD, INPUT);  // Set GPIOD to INPUT with pulling to LOW (when noting is connected. Prevent from floating)
+  X410_pinMode(GPIOA, OUTPUT); // Set GPIOA to OUTPUT
+  X410_pinMode(GPIOB, OUTPUT); // Set GPIOB to OUTPUT
+  X410_pinMode(GPIOC, INPUT_PULLDOWN);  // Set GPIOC to INPUT with pulling to LOW (when noting is connected. Prevent from floating)
+  X410_pinMode(GPIOD, INPUT_PULLDOWN);  // Set GPIOD to INPUT with pulling to LOW (when noting is connected. Prevent from floating)
 }
 // Loop program
 void loop() {

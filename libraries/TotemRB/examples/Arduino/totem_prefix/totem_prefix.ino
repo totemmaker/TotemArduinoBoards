@@ -3,7 +3,7 @@
   RoboBoard has predefined control functions like: Battery, Board, Button, CAN, RGB, ...
   These are globally defined objects for easy access without require for including libraries.
   
-  Some third-party Arduino libraries may define variables with same name (like "RGB") and this
+  Some third-party Arduino libraries may define variables with same name (like "RGB") and it
   will result in compile errors. This example demonstrates how to resolve this:
 
   PlatformIO: In platformio.ini add: build_flags = -DREQUIRE_TOTEM_PREFIX
@@ -24,6 +24,7 @@ RGBConverter RGB;
 // Initialize program
 void setup() {
   // Custom RGB can be accessed
+  // Will error in "reference to 'RGB' is ambiguous" if "Totem Prefix" not selected
   int color = RGB.toHex(0, 255, 0);
   // Totem RoboBoard functions can be accessed under "totem::" namespace
   totem::RGB.color(color);

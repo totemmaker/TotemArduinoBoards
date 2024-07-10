@@ -4,9 +4,10 @@
   Documentation:
   TWAI: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/twai.html
   Totem: https://docs.totemmaker.net/roboboard/api/can
-
-  Only works with RoboBoard X4!
 */
+#if !ROBOBOARD_X4
+#pragma GCC error "This example only works with RoboBoard X4"
+#endif
 // Include TWAI driver
 #include <driver/twai.h>
 // Select mode
@@ -42,8 +43,6 @@ void setup() {
     Serial.printf("\ntwai_driver_install() error: 0x%X (%s)", err, esp_err_to_name(err));
     delay(1000);
   }
-  // Enable CAN transceiver chip on pin 5
-  digitalWrite(5, LOW); // LOW - enable, HIGH - disable
   // Start twai driver
   err = twai_start();
   // Print error (if not OK)

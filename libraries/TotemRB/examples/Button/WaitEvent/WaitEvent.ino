@@ -12,8 +12,10 @@ void setup() {
 // Loop program
 void loop() {
   // Wait until button is clicked
-  Serial.println("Waiting for button click...");
-  Button.waitClick();
+  // Print message each 1s (timeout)
+  while (!Button.waitClick(1000)) {
+    Serial.println("Waiting for button click...");
+  }
   Serial.println("-> Button was clicked");
   // Wait until button is double clicked
   Serial.println("Waiting for button double click...");

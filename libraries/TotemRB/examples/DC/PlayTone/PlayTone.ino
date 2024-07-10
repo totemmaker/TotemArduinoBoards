@@ -26,11 +26,7 @@ void loop() {
   */
   for (int i=0; i<5; i++) {
     DC.tone(800, 100); // Play 800Hz tone for 100ms
-    delay(100);
-    // RoboBoard X3 does not support tone duration at the moment
-    // Stop it manually
-    if (Board.getNumber() == 3) DC.tone(0);
-    delay(400);
+    delay(500);
   }
   /*
     Alarm

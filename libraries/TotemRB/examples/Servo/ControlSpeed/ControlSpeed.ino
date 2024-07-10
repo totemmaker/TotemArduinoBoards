@@ -1,6 +1,5 @@
 #include <Arduino.h>
 /*
-  Board:  [X4] RoboBoard X4 (X3 servo speed not yet supported)
   RoboBoard example to control Servo motor position
 
   PWM (Pulse-width modulation) is used to control servo motor position.
@@ -55,7 +54,7 @@ void loop() {
   // Also overrides setSpeedRPM() setting
   RGB.color(Color::Blue);
   Servo.spinAngleDuration(90, 500); // Spin to position 90 in 1 second
-  delay(500);
+  delay(1000);
   Servo.spinAngleDuration(0, 2000); // Spin to position 0 in 2 seconds
   Servo.wait();
   delay(1000);

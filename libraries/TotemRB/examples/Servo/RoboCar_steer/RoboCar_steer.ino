@@ -2,6 +2,8 @@
 /*
   Example displaying how to use Servo library to steer RoboCar front wheels.
   Servo motor should be connected to Servo port A.
+
+  RoboCar kit examples: https://github.com/totemmaker/arduino-examples/tree/master/kit_RoboCar
 */
 // Initialize program
 void setup() {

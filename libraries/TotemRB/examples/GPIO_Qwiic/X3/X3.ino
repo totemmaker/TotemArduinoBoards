@@ -3,6 +3,9 @@
   Board:  [X3] RoboBoard X3
   RoboBoard example to interact with GPIO pins.
 */
+#if !ROBOBOARD_X4
+#error "This example only works with RoboBoard X4"
+#endif
 // Initialize program
 void setup() {
   // Use standard Arduino API to interact with GPIO pins

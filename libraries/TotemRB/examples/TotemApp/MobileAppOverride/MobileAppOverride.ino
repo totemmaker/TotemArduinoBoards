@@ -5,6 +5,9 @@
   This example allows to intercept these motor commands or
   block them from further execution. Received "value" can be used
   for custom implementation.
+
+  Check this code for usage example:
+  https://github.com/totemmaker/arduino-examples/blob/master/roboboard_x3/high_power_motors/high_power_motors.ino
 */
 // Event function called when app button is clicked
 bool appOverride(int cmd, int value) {
