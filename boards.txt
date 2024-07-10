@@ -14,6 +14,8 @@ roboboardx3.name=RoboBoard X3
 
 roboboardx3.bootloader.tool=esptool_py
 roboboardx3.bootloader.tool.default=esptool_py
+roboboardx3.bootloader.command=
+roboboardx3.bootloader.command.linux=
 
 roboboardx3.upload.tool=esptool_py
 roboboardx3.upload.tool.default=esptool_py
@@ -90,6 +92,8 @@ roboboardx4.name=RoboBoard X4
 
 roboboardx4.bootloader.tool=esptool_py
 roboboardx4.bootloader.tool.default=esptool_py
+roboboardx4.bootloader.command="{path}/{cmd}" {bootloader.pattern_args}
+roboboardx4.bootloader.command.linux=python3 "{path}/{cmd}" {bootloader.pattern_args}
 
 roboboardx4.upload.tool=esptool_py
 roboboardx4.upload.tool.default=esptool_py

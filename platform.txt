@@ -224,7 +224,9 @@ tools.esptool_py.erase.pattern.linux=python3 "{path}/{cmd}" {erase.pattern_args}
 tools.esptool_py.bootloader.protocol=serial
 tools.esptool_py.bootloader.params.verbose=
 tools.esptool_py.bootloader.params.quiet=
-tools.esptool_py.bootloader.pattern=
+tools.esptool_py.bootloader.pattern_args=--chip {build.mcu} --port "{serial.port}" --baud {upload.speed} {upload.flags} --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size {build.flash_size} 0x0 {runtime.platform.path}/variants/{build.variant}/binaries/driver_update.bin
+tools.esptool_py.bootloader.pattern={bootloader.command}
+tools.esptool_py.bootloader.linux={bootloader.command.linux}
 
 ## Upload Sketch Through OTA (Arduino IDE 1.x)
 ## -------------------------------------------
